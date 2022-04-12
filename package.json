@@ -1,0 +1,42 @@
+{
+  "name": "back-granja",
+  "version": "1.0.0",
+  "description": "Esta es la parte del proyecto que se encargara de gestionar y servir los datos a las distintias partes que los necesiten.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexanderMota/back-granja.git"
+  },
+  "author": "B. Alexander M. Maldonado",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlexanderMota/back-granja/issues"
+  },
+  "homepage": "https://github.com/AlexanderMota/back-granja#readme",
+  "dependencies": {
+    "awilix": "^7.0.1",
+    "bcryptjs": "^2.4.3",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "express-async-errors": "^3.1.1",
+    "helmet": "^5.0.2",
+    "jsonwebtoken": "^8.5.1",
+    "memory-cache": "^0.2.0",
+    "mongoose": "^6.2.10",
+    "mongoose-autopopulate": "^0.16.1",
+    "mysql": "^2.18.1",
+    "swagger-ui-express": "^4.3.0"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.0",
+    "jest": "^27.5.1",
+    "mockingoose": "^2.15.2",
+    "nodemon": "^2.0.15"
+  }
+}
