@@ -1,3 +1,3 @@
 module.exports = {
-  ONE_HOUR: 360
+  MID_HOUR: 180
 };
