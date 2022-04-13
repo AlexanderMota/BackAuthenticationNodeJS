@@ -8,8 +8,12 @@ module.exports = class EmpleadoRepository extends BaseRepository{
         _empleado = Empleado;
     }
 
+    async get(idEmpleado) {
+        return await _empleado.findOne({idEmpleado:idEmpleado});
+    }
+
     async getEmpleadoByNombre(nombre){
-        return await _empleado.findOne({nombre});
+        return await _empleado.findOne({nombre:nombre});
     }
 }
 

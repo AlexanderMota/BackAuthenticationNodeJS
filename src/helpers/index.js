@@ -1,4 +1,3 @@
 module.exports = {
-  JwtHelper: require("./jwt.helper"),
-  CACHE_TIME: require("./cache-time.helper")
+  JwtHelper: require("./jwt.helper")
 };

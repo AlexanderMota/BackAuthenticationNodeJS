@@ -5,11 +5,11 @@ const { CACHE_TIME } = require("../helpers");
 module.exports = function({ EmpleadoController }) {
   const router = Router();
 
-  router.get("/", [AuthMiddleware, ParseIntMiddleware, CacheMiddleware(CACHE_TIME.MID_HOUR)], EmpleadoController.getAll);
-  router.get("/local", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.getAllSQL);
+  router.get("/", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.getAll);
+  router.get("/local", AuthMiddleware, EmpleadoController.getAllSQL);
   router.get("/:idEmpleado", EmpleadoController.get);
-  router.patch("/:idEmpleado", EmpleadoController.update);
-  router.delete("/:idEmpleado", EmpleadoController.delete);
+  router.patch("/:idEmpleado", ParseIntMiddleware, EmpleadoController.update);
+  router.delete("/:idEmpleado", ParseIntMiddleware, EmpleadoController.delete);
 
   return router;
 };
