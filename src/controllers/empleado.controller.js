@@ -12,7 +12,9 @@ module.exports = class EmpleadoController {
   }
 
   async getAll(req, res){
-    const empleados = await _empleadoService.getAll();
+    const {pageSize, pageNum} = req.query;
+    console.log(pageSize);
+    const empleados = await _empleadoService.getAll(pageSize, pageNum);
     return res.send(empleados);
   }
 
