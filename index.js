@@ -1,13 +1,19 @@
-const mysql = require('mysql');
+const container = require("./src/server/container");
+const server = container.resolve("app");
+const { MONGO_URI } = container.resolve("config");
 
-const con = mysql.createConnection({
-    host:'localhost',
-    user:'root',
-    password:'1234',
-    database:'dbgranja'
-});
+const mongoose = require("mongoose");
+//mongoose.set("useCreateIndex", true);
 
-con.connect((err)=>{
-    if(err) throw err;
-    console.log('Conexión correcta.');
-});
+mongoose
+  .connect(MONGO_URI, {
+    useNewUrlParser: true,
+    //useFindAndModify: false,
+    useUnifiedTopology: true
+  })
+  .then(() => server.start())
+  .catch(console.log);
+
+
+
+
