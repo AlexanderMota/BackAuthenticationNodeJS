@@ -1,0 +1,212 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Backend ::TFG-DAM:: ApiREST",
+    "version": "1.0.0",
+    "title": "Swagger TFG-DAM",
+    "contact": {
+      "email": "ba.mota@iesdoctorbalmis.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "Empleado",
+      "description": "Guia para navegar por los empleados de la empresa"
+    }
+  ],
+  "schemes": ["http", "https"],
+  "paths": {
+    "/empleados": {
+      "get": {
+        "tags": ["Empleado"],
+        "summary": "Muestra toda la plantilla",
+        "description": "Muestra toda la plantilla",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "pageNum",
+            "type": "number",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "pageSize",
+            "type": "number",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Empleado"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/empleados/{idEmpleado}": {
+      "get": {
+        "tags": ["Empleado"],
+        "summary": "Busca un empleado por su id",
+        "description": "",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "idEmpleado",
+            "in": "path",
+            "type": "string",
+            "description": "Id del Empleado en la bd",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Empleado"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid tag value"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Empleado"],
+        "summary": "Actualiza un empleado concreto",
+        "description": "",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "idEmpleado",
+            "in": "path",
+            "type": "string",
+            "description": "Id del Empleado en la bd",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Authorization token with admin role",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Empleado"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid tag value"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Empleado"],
+        "summary": "Elimina un empleado de la base de datos",
+        "description": "",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "idEmpleado",
+            "in": "path",
+            "type": "string",
+            "description": "Id del Empleado en la bd",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Authorization token with admin role",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Empleado"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid tag value"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Empleado": {
+      "type": "object",
+      "properties": {
+        "idEmpleado": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "nombre": {
+          "type": "string"
+        },
+        "apellidos": {
+          "type": "string"
+        },
+        "telefono": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "_id": {
+          "type": "string"
+        },
+        "__v": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "ApiResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
