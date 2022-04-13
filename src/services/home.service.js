@@ -1,8 +1,14 @@
+const {getAllEmpleados} = require('../controllers')
 class HomeService {
   index() {
-    return {
-      message: "Hello World!"
-    };
+    getAllEmpleados()
+      .then((value) => {
+        console.log(value);
+        return {
+          message: "Hola empleados: " + value.toString()
+        };
+      })
+      .catch(console.log);
   }
 }
 

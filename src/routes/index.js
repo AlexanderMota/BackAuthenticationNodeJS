@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const compression = require("compression");
-//require("express-async-errors");
+require("express-async-errors");
 const { NotFoundMiddleware, ErrorMiddleware } = require("../middlewares");
 //const swaggerUI = require("swagger-ui-express");
 //const { SWAGGER_PATH } = require("../config");
@@ -14,19 +14,19 @@ module.exports = function({
   const router = express.Router();
   const apiRoutes = express.Router();
 
-  /*apiRoutes
+  apiRoutes
     .use(express.json())
     .use(cors())
     .use(helmet())
-    .use(compression());*/
+    .use(compression());
 
   apiRoutes.use("/home", HomeRoutes);
 
   router.use("/v1/api", apiRoutes);
   //router.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
-  //router.use(NotFoundMiddleware);
-  //router.use(ErrorMiddleware);
+  router.use(NotFoundMiddleware);
+  router.use(ErrorMiddleware);
 
   return router;
 };

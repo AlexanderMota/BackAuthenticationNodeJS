@@ -21,14 +21,12 @@ const {
 const Routes = require("../routes");
 
 // models
-const { EmpleadoSeq } = require("../models");
+const { Empleado } = require("../models");
 
-// repositories
-// const {
-//   UserRepository,
-//   IdeaRepository,
-//   CommentRepository
-// } = require("../repositories");
+//repositories
+const {
+  EmpleadoRepository
+} = require("../repositories");
 
 const container = createContainer();
 
@@ -48,12 +46,10 @@ container
     HomeRoutes: asFunction(HomeRoutes).singleton()
   })
   .register({
-    EmpleadoSeq: asValue(EmpleadoSeq)
+    Empleado: asValue(Empleado)
   })
-  /*.register({
-    UserRepository: asClass(UserRepository).singleton(),
-    IdeaRepository: asClass(IdeaRepository).singleton(),
-    CommentRepository: asClass(CommentRepository).singleton()
-  })*/;
+  .register({
+    EmpleadoRepository: asClass(EmpleadoRepository).singleton()
+  });
 
 module.exports = container;

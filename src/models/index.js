@@ -34,8 +34,9 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+
 module.exports = {
   db,
   EmpleadoSeq : require('./empleado.sequelize'),
-  EmpleadoMon : require('./empleado.mongo')
+  Empleado : require('./empleado.mongo')
 };

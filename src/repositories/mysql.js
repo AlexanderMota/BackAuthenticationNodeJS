@@ -1,4 +1,4 @@
-module.exports = {async function() {
+module.exports = async function() {
   const mysql2 = require('mysql2/promise');
   const conn = await mysql2.createConnection({
       host:'localhost',
@@ -8,4 +8,4 @@ module.exports = {async function() {
   const [rows, fields] = await conn.execute('select * from empleados');
   await conn.end();
   return rows;
-}}
+}
