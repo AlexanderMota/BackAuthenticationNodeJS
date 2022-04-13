@@ -10,7 +10,8 @@ const { NotFoundMiddleware, ErrorMiddleware } = require("../middlewares");
 
 module.exports = function({
   HomeRoutes,
-  EmpleadoRoutes
+  EmpleadoRoutes,
+  AuthRoutes
 }) {
   const router = express.Router();
   const apiRoutes = express.Router();
@@ -23,8 +24,9 @@ module.exports = function({
 
   apiRoutes.use("/home", HomeRoutes);
   apiRoutes.use("/empleados", EmpleadoRoutes);
+  apiRoutes.use("/auth", AuthRoutes);
 
-  router.use("/v1/api", apiRoutes);
+  router.use("/api", apiRoutes);
   //router.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
   router.use(NotFoundMiddleware);
