@@ -9,7 +9,8 @@ const { NotFoundMiddleware, ErrorMiddleware } = require("../middlewares");
 //const swaggerDocument = require(SWAGGER_PATH);
 
 module.exports = function({
-  HomeRoutes
+  HomeRoutes,
+  EmpleadoRoutes
 }) {
   const router = express.Router();
   const apiRoutes = express.Router();
@@ -21,6 +22,7 @@ module.exports = function({
     .use(compression());
 
   apiRoutes.use("/home", HomeRoutes);
+  apiRoutes.use("/empleados", EmpleadoRoutes);
 
   router.use("/v1/api", apiRoutes);
   //router.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));

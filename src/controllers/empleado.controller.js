@@ -16,6 +16,11 @@ module.exports = class EmpleadoController {
     return res.send(empleados);
   }
 
+  async getAllSQL(req, res){
+    const empleados = await _empleadoService.getAllSQL();
+    return res.send(empleados);
+  }
+
   async update(req, res){
     const {body} = req;
     const {idEmpleado} = req.params;

@@ -18,7 +18,8 @@ const {
 
 // routes
 const {
-  HomeRoutes
+  HomeRoutes,
+  EmpleadoRoutes
 } = require("../routes/index.routes");
 const Routes = require("../routes");
 
@@ -47,7 +48,8 @@ container
     EmpleadoController: asClass(EmpleadoController.bind(EmpleadoController)).singleton()
   })
   .register({
-    HomeRoutes: asFunction(HomeRoutes).singleton()
+    HomeRoutes: asFunction(HomeRoutes).singleton(),
+    EmpleadoRoutes: asFunction(EmpleadoRoutes).singleton()
   })
   .register({
     Empleado: asValue(Empleado)

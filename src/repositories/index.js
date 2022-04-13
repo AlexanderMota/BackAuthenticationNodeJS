@@ -1,3 +1,4 @@
 module.exports = {
-    EmpleadoRepository : require('./empleado.repository')
+    EmpleadoRepository : require('./empleado.repository'),
+    mysql: require('./mysql')
 }
