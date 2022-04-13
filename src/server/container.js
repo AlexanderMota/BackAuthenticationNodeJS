@@ -6,12 +6,14 @@ const app = require(".");
 
 // services
 const {
-  HomeService
+  HomeService,
+  EmpleadoService
 } = require("../services");
 
 // controllers
 const {
-  HomeController
+  HomeController,
+  EmpleadoController
 } = require("../controllers");
 
 // routes
@@ -37,10 +39,12 @@ container
     config: asValue(config)
   })
   .register({
-    HomeService: asClass(HomeService).singleton()
+    HomeService: asClass(HomeService).singleton(),
+    EmpleadoService: asClass(EmpleadoService).singleton()
   })
   .register({
-    HomeController: asClass(HomeController.bind(HomeController)).singleton()
+    HomeController: asClass(HomeController.bind(HomeController)).singleton(),
+    EmpleadoController: asClass(EmpleadoController.bind(EmpleadoController)).singleton()
   })
   .register({
     HomeRoutes: asFunction(HomeRoutes).singleton()
