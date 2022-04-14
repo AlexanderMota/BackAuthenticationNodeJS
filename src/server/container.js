@@ -8,6 +8,7 @@ const app = require(".");
 const {
   HomeService,
   EmpleadoService,
+  TareaService,
   AuthService
 } = require("../services");
 
@@ -15,6 +16,7 @@ const {
 const {
   HomeController,
   EmpleadoController,
+  TareaController,
   AuthController
 } = require("../controllers");
 
@@ -22,16 +24,18 @@ const {
 const {
   HomeRoutes,
   EmpleadoRoutes,
+  TareaRoutes,
   AuthRoutes
 } = require("../routes/index.routes");
 const Routes = require("../routes");
 
 // models
-const { Empleado } = require("../models");
+const { Empleado, Tarea } = require("../models");
 
 // repositories
 const {
-  EmpleadoRepository
+  EmpleadoRepository,
+  TareaRepository
 } = require("../repositories");
 
 const container = createContainer();
@@ -45,23 +49,28 @@ container
   .register({
     HomeService: asClass(HomeService).singleton(),
     EmpleadoService: asClass(EmpleadoService).singleton(),
+    TareaService: asClass(TareaService).singleton(),
     AuthService: asClass(AuthService).singleton()
   })
   .register({
     HomeController: asClass(HomeController.bind(HomeController)).singleton(),
     AuthController: asClass(AuthController.bind(AuthController)).singleton(),
-    EmpleadoController: asClass(EmpleadoController.bind(EmpleadoController)).singleton()
+    EmpleadoController: asClass(EmpleadoController.bind(EmpleadoController)).singleton(),
+    TareaController: asClass(TareaController.bind(TareaController)).singleton()
   })
   .register({
     HomeRoutes: asFunction(HomeRoutes).singleton(),
     EmpleadoRoutes: asFunction(EmpleadoRoutes).singleton(),
+    TareaRoutes: asFunction(TareaRoutes).singleton(),
     AuthRoutes: asFunction(AuthRoutes).singleton()
   })
   .register({
-    Empleado: asValue(Empleado)
+    Empleado: asValue(Empleado),
+    Tarea: asValue(Tarea)
   })
   .register({
-    EmpleadoRepository: asClass(EmpleadoRepository).singleton()
+    EmpleadoRepository: asClass(EmpleadoRepository).singleton(),
+    TareaRepository: asClass(TareaRepository).singleton()
   });
 
 module.exports = container;

@@ -1,4 +1,4 @@
-'use strict';
+/*'use strict';
 
 const fs = require('fs');
 const path = require('path');
@@ -33,10 +33,11 @@ Object.keys(db).forEach(modelName => {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
-
+*/
 
 module.exports = {
-  db,
-  EmpleadoSeq : require('./empleado.sequelize'),
-  Empleado : require('./empleado.mongo')
+  //db,
+  //EmpleadoSeq : require('./empleado.sequelize'),
+  Empleado : require('./empleado.mongo'),
+  Tarea : require('./tarea.mongo')
 };

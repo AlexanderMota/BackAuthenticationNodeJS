@@ -11,6 +11,7 @@ const swaggerDocument = require(SWAGGER_PATH);
 module.exports = function({
   HomeRoutes,
   EmpleadoRoutes,
+  TareaRoutes,
   AuthRoutes
 }) {
   const router = express.Router();
@@ -24,6 +25,7 @@ module.exports = function({
 
   apiRoutes.use("/home", HomeRoutes);
   apiRoutes.use("/empleados", EmpleadoRoutes);
+  apiRoutes.use("/tareas", TareaRoutes);
   apiRoutes.use("/auth", AuthRoutes);
 
   router.use("/api", apiRoutes);
