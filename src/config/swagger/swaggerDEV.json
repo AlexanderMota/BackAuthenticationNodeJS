@@ -15,18 +15,92 @@
   "basePath": "/api",
   "tags": [
     {
-      "name": "Empleado",
-      "description": "Guia para navegar por los empleados de la empresa"
+      "name": "Granja-ApiREST",
+      "description": "Guia para navegar por el api de la empresa"
     }
   ],
   "schemes": ["http", "https"],
   "paths": {
+    "/auth/signin": {
+      "post": {
+        "tags": [
+          "Autenticación"
+        ],
+        "summary": "Solicita token de sesion",
+        "parameters": [
+            {
+                "name": "UserPassJson",
+                "in": "body",
+                "description": "Objeto json con un 'nombre' y 'password' registrados en la bd. Necesario para obtener un token (string) con el cual poder consultar la api",
+                "required": true,
+                "schema": {
+                  "$ref": "#/definitions/Usuario"
+                }
+            }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Token"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "tags": [
+          "Autenticación"
+        ],
+        "summary": "Registra a un usuario en la bd",
+        "parameters": [
+            {
+                "name": "EmpleadoJson",
+                "in": "body",
+                "description": "Objeto empleado en formato json para registrarlo en la bd. Necesario para obtener un token (string) con el cual poder consultar la api",
+                "required": true,
+                "schema": {
+                  "$ref": "#/definitions/Empleado"
+                }
+            },
+            {
+              "name": "Authorization",
+              "type": "string",
+              "in": "header",
+              "required": true
+            }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Empleado"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+
     "/empleados": {
       "get": {
         "tags": ["Empleado"],
         "summary": "Muestra toda la plantilla",
         "description": "Muestra toda la plantilla",
         "produces": ["application/json"],
+        
         "parameters": [
           {
             "name": "pageNum",
@@ -39,6 +113,12 @@
             "type": "number",
             "in": "query",
             "required": false
+          },
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
           }
         ],
         "responses": {
@@ -159,9 +239,180 @@
           }
         }
       }
+    },
+
+    "/tareas": {
+      "get": {
+        "tags": ["Tarea"],
+        "summary": "Muestra todas las tareas guardadas",
+        "description": "Muestra todas las tareas guardadas",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "pageNum",
+            "type": "number",
+            "in": "query",
+            "required": false
+          },
+          {
+            "name": "pageSize",
+            "type": "number",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Tarea"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/tareas/{idTarea}": {
+      "get": {
+        "tags": ["Tarea"],
+        "summary": "Busca una tarea por su id",
+        "description": "",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "idTarea",
+            "in": "path",
+            "type": "string",
+            "description": "Id de la Tarea en la bd",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Tarea"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid tag value"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Tarea"],
+        "summary": "Actualiza una Tarea concreta",
+        "description": "",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "idTarea",
+            "in": "path",
+            "type": "string",
+            "description": "Id de la Tarea en la bd",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Authorization token with admin role",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Tarea"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid tag value"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Tarea"],
+        "summary": "Elimina una Tarea de la base de datos",
+        "description": "",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "idTarea",
+            "in": "path",
+            "type": "string",
+            "description": "Id de la Tarea en la bd",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Authorization token with admin role",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref2": "#/definitions/Tarea"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid tag value"
+          }
+        }
+      }
     }
   },
+
   "definitions": {
+    "Token": { 
+      "type" : "object",
+      "properties" : {
+        "token": { "type" : "string" },
+        "empleado": { "type" : "object",
+        "properties" : {
+          "_id": { "type" : "string" },
+          "idEmpleado": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "nombre": { "type" : "string" },
+          "apellidos": { "type" : "string" },
+          "telefono": { "type" : "string" },
+          "email": { "type" : "string" },
+          "__v": {
+            "type": "integer",
+            "format": "int64"
+          }
+      }
+        }
+      }
+    },
+    "Usuario": { 
+      "type" : "object",
+      "properties" : {
+        "nombre": { "type" : "string" },
+        "password": { "type" : "string" }
+      }
+    },
     "Empleado": {
       "type": "object",
       "properties": {
@@ -183,6 +434,40 @@
         },
         "password": {
           "type": "string"
+        },
+        "_id": {
+          "type": "string"
+        },
+        "__v": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "Tarea": {
+      "type": "object",
+      "properties": {
+        "idTarea": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "nombre": {
+          "type": "string"
+        },
+        "descripcion": {
+          "type": "string"
+        },
+        "importancia": {
+          "type": "string"
+        },
+        "fechainicio": {
+          "type": "string"
+        },
+        "fechafin": {
+          "type": "string"
+        },
+        "terminada": {
+          "type": "boolean"
         },
         "_id": {
           "type": "string"
