@@ -28,15 +28,15 @@
         ],
         "summary": "Solicita token de sesion",
         "parameters": [
-            {
-                "name": "UserPassJson",
-                "in": "body",
-                "description": "Objeto json con un 'nombre' y 'password' registrados en la bd. Necesario para obtener un token (string) con el cual poder consultar la api",
-                "required": true,
-                "schema": {
-                  "$ref": "#/definitions/Usuario"
-                }
+          {
+            "name": "UserPassJson",
+            "in": "body",
+            "description": "Objeto json con un 'nombre' y 'password' registrados en la bd. Necesario para obtener un token (string) con el cual poder consultar la api",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Usuario"
             }
+          }
         ],
         "responses": {
           "200": {
@@ -103,22 +103,24 @@
         
         "parameters": [
           {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
             "name": "pageNum",
             "type": "number",
             "in": "query",
+            "description": "Número de la pagina de registros a mostrar. Por defecto 1.",
             "required": false
           },
           {
             "name": "pageSize",
             "type": "number",
             "in": "query",
+            "description": "Tamaño de la pagina de registros a mostrar. Por defecto 5.",
             "required": false
-          },
-          {
-            "name": "Authorization",
-            "type": "string",
-            "in": "header",
-            "required": true
           }
         ],
         "responses": {
@@ -149,6 +151,12 @@
             "in": "path",
             "type": "string",
             "description": "Id del Empleado en la bd",
+            "required": true
+          },
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
             "required": true
           }
         ],
@@ -186,6 +194,15 @@
             "description": "Authorization token with admin role",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "Empleado",
+            "in": "body",
+            "description": "Objeto json con un Empleado para actualizar en la bd. Si no existe no se crea.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Empleado"
+            }
           }
         ],
         "responses": {
@@ -240,6 +257,101 @@
         }
       }
     },
+    "/empleados/tarea/{idTarea}":{
+      "get": {
+        "tags": ["Empleado"],
+        "summary": "Muestra trabajadores de una  tarea",
+        "description": "Muestra todos los trabajadores guardados asociados a una tarea especificada",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "idTarea",
+            "in": "path",
+            "type": "string",
+            "description": "Id de la Tarea en la bd",
+            "required": true
+          },
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "pageNum",
+            "type": "number",
+            "in": "query",
+            "description": "Número de la pagina de registros a mostrar. Por defecto 1.",
+            "required": false
+          },
+          {
+            "name": "pageSize",
+            "type": "number",
+            "in": "query",
+            "description": "Tamaño de la pagina de registros a mostrar. Por defecto 5.",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Tarea"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/empleados/addtarea":{
+      "post": {
+        "tags": ["Empleado"],
+        "summary": "Muestra trabajadores de tarea",
+        "description": "Muestra todos los trabajadores guardados asociados a una tarea especificada",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "idEmpleado",
+            "in": "query",
+            "type": "string",
+            "description": "Id del Empleado en la bd",
+            "required": true
+          },
+          {
+            "name": "idTarea",
+            "in": "query",
+            "type": "string",
+            "description": "Id de la Tarea en la bd",
+            "required": true
+          },
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
 
     "/tareas": {
       "get": {
@@ -249,15 +361,23 @@
         "produces": ["application/json"],
         "parameters": [
           {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
             "name": "pageNum",
             "type": "number",
             "in": "query",
+            "description": "Número de la pagina de registros a mostrar. Por defecto 1.",
             "required": false
           },
           {
             "name": "pageSize",
             "type": "number",
             "in": "query",
+            "description": "Tamaño de la pagina de registros a mostrar. Por defecto 5.",
             "required": false
           }
         ],
@@ -289,6 +409,12 @@
             "in": "path",
             "type": "string",
             "description": "Id de la Tarea en la bd",
+            "required": true
+          },
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
             "required": true
           }
         ],
@@ -326,6 +452,15 @@
             "description": "Authorization token with admin role",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "Tarea",
+            "in": "body",
+            "description": "Objeto json con un Tarea para actualizar en la bd. Si no existe no se crea.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Tarea"
+            }
           }
         ],
         "responses": {
@@ -376,6 +511,101 @@
           },
           "400": {
             "description": "Invalid tag value"
+          }
+        }
+      }
+    },
+    "/tareas/empleado/{idEmpleado}": {
+      "get": {
+        "tags": ["Tarea"],
+        "summary": "Muestra tareas de trabajador",
+        "description": "Muestra todas las tareas guardadas asociadas a un trabajador especificado",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "idEmpleado",
+            "in": "path",
+            "type": "string",
+            "description": "Id de la Tarea en la bd",
+            "required": true
+          },
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "pageNum",
+            "type": "number",
+            "in": "query",
+            "description": "Número de la pagina de registros a mostrar. Por defecto 1.",
+            "required": false
+          },
+          {
+            "name": "pageSize",
+            "type": "number",
+            "in": "query",
+            "description": "Tamaño de la pagina de registros a mostrar. Por defecto 5.",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Tarea"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/tareas/addempleado": {
+      "post": {
+        "tags": ["Tarea"],
+        "summary": "Muestra tareas de trabajador",
+        "description": "Muestra todas las tareas guardadas asociadas a un trabajador especificado",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "idTarea",
+            "in": "query",
+            "type": "string",
+            "description": "Id de la Tarea en la bd",
+            "required": true
+          },
+          {
+            "name": "idEmpleado",
+            "in": "query",
+            "type": "string",
+            "description": "Id del Empleado en la bd",
+            "required": true
+          },
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
           }
         }
       }
