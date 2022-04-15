@@ -14,9 +14,17 @@ module.exports = class TareaRepository extends BaseRepository{
 
     async mongoGetTareasByIdEmpleado(idEmpleado,pageSize = 5, pageNum = 1) {
         const skips = pageSize * (pageNum - 1);
-        const idTareas = await _tareaHasEmpleados.find({"idEmpleado":idEmpleado});
+        const idEmpleadoM = await _empleado.find({idEmpleado:idEmpleado},{_id:1});
+        if(!idEmpleadoM){
+            return false;
+        }
+        const idTareas = await _tareaHasEmpleados.find({idEmpleado:idEmpleadoM[0]._id.toString()},{_id:0,idTarea:1});
+        if(!idTareas){
+            return false;
+        }
+        console.log(idTareas);
         return await _tarea
-            .find({idTarea:idTareas})
+            .findById(idTareas[0].idTarea)
             .skip(skips)
             .limit(pageSize);
     }
@@ -34,12 +42,11 @@ module.exports = class TareaRepository extends BaseRepository{
         if(!_idMEmpleado){
             return false;
         }
-        console.log(_idMTarea + " /// " + _idMEmpleado);
         
         return await _tareaHasEmpleados.create(
             {
-                idTarea:_idMTarea,
-                idEmpleado:_idMEmpleado
+                idTarea:_idMTarea._id,
+                idEmpleado:_idMEmpleado._id
             }
         );
     }

@@ -21,7 +21,7 @@ module.exports = class TareaController {
 
   async mongoGetTareasByIdEmpleado(req, res){
     const {pageSize, pageNum} = req.query;
-    const { idEmpleado } = req.param;
+    const { idEmpleado } = req.params;
     // arreglo provisional que facilita las pruebas por el id numerico
     const tarea = await _tareaService.mongoGetTareasByIdEmpleado(idEmpleado, pageSize, pageNum);
     return res.send(tarea);
