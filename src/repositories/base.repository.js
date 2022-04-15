@@ -3,14 +3,14 @@ class BaseRepository {
       this.model = model;
     }
   
-    async get(id) {
+    async mongoGet(id) {
       return await this.model.findById(id);
     }
   
     // async getAll() {
     //   return await this.model.find()
     // }
-    async getAll(pageSize = 5, pageNum = 1) {
+    async mongoGetAll(pageSize = 5, pageNum = 1) {
         const skips = pageSize * (pageNum - 1);
         return await this.model
           .find()
@@ -19,15 +19,15 @@ class BaseRepository {
     }
 
   
-    async create(entity) {
+    async mongoCreate(entity) {
       return await this.model.create(entity);
     }
   
-    async update(id, entity) {
+    async mongoUpdate(id, entity) {
       return await this.model.findByIdAndUpdate(id, entity, { new: true });
     }
   
-    async delete(id) {
+    async mongoDelete(id) {
       await this.model.findByIdAndDelete(id);
       return true;
     }

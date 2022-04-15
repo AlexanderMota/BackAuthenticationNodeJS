@@ -3,7 +3,7 @@ class BaseService {
     this.repository = repository;
   }
 
-  async get(id) {
+  async mongoGet(id) {
     if (!id) {
       const error = new Error();
       error.status = 400;
@@ -11,7 +11,7 @@ class BaseService {
       throw error;
     }
 
-    const currentEntity = await this.repository.get(id);
+    const currentEntity = await this.repository.mongoGet(id);
 
     if (!currentEntity) {
       const error = new Error();
@@ -23,15 +23,15 @@ class BaseService {
     return currentEntity;
   }
 
-  async getAll(pageSize, pageNum) {
-    return await this.repository.getAll(pageSize, pageNum);
+  async mongoGetAll(pageSize, pageNum) {
+    return await this.repository.mongoGetAll(pageSize, pageNum);
   }
 
-  async create(entity) {
-    return await this.repository.create(entity);
+  async mongoCreate(entity) {
+    return await this.repository.mongoCreate(entity);
   }
 
-  async update(id, entity) {
+  async mongoUpdate(id, entity) {
     if (!id) {
       const error = new Error();
       error.status = 400;
@@ -39,10 +39,19 @@ class BaseService {
       throw error;
     }
 
-    return await this.repository.update(id, entity);
+    const currentEntity = await this.repository.mongoGet(id);
+
+    if (!currentEntity) {
+      const error = new Error();
+      error.status = 404;
+      error.message = "entity does not found";
+      throw error;
+    }
+
+    return await this.repository.mongoUpdate(id, currentEntity);
   }
 
-  async delete(id) {
+  async mongoDelete(id) {
     if (!id) {
       const error = new Error();
       error.status = 400;
@@ -50,7 +59,7 @@ class BaseService {
       throw error;
     }
 
-    return await this.repository.delete(id);
+    return await this.repository.mongoDelete(id);
   }
 }
 

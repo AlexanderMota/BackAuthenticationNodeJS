@@ -8,10 +8,16 @@ module.exports = class EmpleadoService extends BaseService{
         super(EmpleadoRepository);
         _empleadoRep = EmpleadoRepository;
     }
-    async getAllSQL(){
+    async mysqlGet(){
+        return await _empleadoRep.getOne(nombre);
+    }
+    async mysqlGetAll(){
         return await mydb();
     }
-    async getEmpleadoByNombre(nombre){
-        return await _empleadoRep.getEmpleadoByNombre(nombre);
+    async mongoGetEmpleadoByIdEmpleado(nombre){
+        return await _empleadoRep.mongoGetEmpleadoByIdEmpleado(nombre);
+    }
+    async mongoGetEmpleadoByNombre(nombre){
+        return await _empleadoRep.mongoGetEmpleadoByNombre(nombre);
     }
 }

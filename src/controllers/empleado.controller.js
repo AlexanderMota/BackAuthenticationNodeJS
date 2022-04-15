@@ -5,34 +5,34 @@ module.exports = class EmpleadoController {
     _empleadoService = EmpleadoService;
   }
 
-  async get(req, res) {
+  async mongoGet(req, res) {
     const { idEmpleado } = req.params;
-    const empleado = await _empleadoService.get(idEmpleado);
+    const empleado = await _empleadoService.mongoGet(idEmpleado);
     return res.send(empleado);
   }
 
-  async getAll(req, res){
+  async mongoGetAll(req, res){
     const {pageSize, pageNum} = req.query;
     console.log(pageSize);
-    const empleados = await _empleadoService.getAll(pageSize, pageNum);
+    const empleados = await _empleadoService.mongoGetAll(pageSize, pageNum);
     return res.send(empleados);
   }
 
-  async getAllSQL(req, res){
-    const empleados = await _empleadoService.getAllSQL();
+  async mysqlGetAll(req, res){
+    const empleados = await _empleadoService.mysqlGetAll();
     return res.send(empleados);
   }
 
-  async update(req, res){
+  async mongoUpdate(req, res){
     const {body} = req;
     const {idEmpleado} = req.params;
-    const updateEmpleado = await _empleadoService.update(idEmpleado,body);
+    const updateEmpleado = await _empleadoService.mongoUpdate(idEmpleado,body);
     return res.send(updateEmpleado);
   }
 
-  async delete(req,res){
+  async mongoDelete(req,res){
     const {idEmpleado} = req.params;
-    const deletedEmpleado = await _empleadoService.delete(idEmpleado);
+    const deletedEmpleado = await _empleadoService.mongoDelete(idEmpleado);
     return res.send(deletedEmpleado);
   }
 }

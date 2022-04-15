@@ -8,11 +8,11 @@ module.exports = class EmpleadoRepository extends BaseRepository{
         _empleado = Empleado;
     }
 
-    async get(idEmpleado) {
+    async mongoGetEmpleadoByIdEmpleado(idEmpleado) {
         return await _empleado.findOne({idEmpleado:idEmpleado});
     }
 
-    async getEmpleadoByNombre(nombre){
+    async mongoGetEmpleadoByNombre(nombre){
         return await _empleado.findOne({nombre:nombre});
     }
 }

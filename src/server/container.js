@@ -30,7 +30,7 @@ const {
 const Routes = require("../routes");
 
 // models
-const { Empleado, Tarea } = require("../models");
+const { Empleado, Tarea , TareaHasEmpleados} = require("../models");
 
 // repositories
 const {
@@ -66,7 +66,8 @@ container
   })
   .register({
     Empleado: asValue(Empleado),
-    Tarea: asValue(Tarea)
+    Tarea: asValue(Tarea),
+    TareaHasEmpleados: asValue(TareaHasEmpleados)
   })
   .register({
     EmpleadoRepository: asClass(EmpleadoRepository).singleton(),

@@ -8,7 +8,7 @@ module.exports = class AuthService{
 
     async signUp(empleado){
         const {nombre} = empleado;
-        const empleadoExists = await _empleadoService.getEmpleadoByNombre(nombre);
+        const empleadoExists = await _empleadoService.mongoGetEmpleadoByNombre(nombre);
         if(empleadoExists){
             const error = new Error();
             error.status = 400;
@@ -21,7 +21,7 @@ module.exports = class AuthService{
     
     async signIn(empleado){
         const {nombre,password} = empleado;
-        const empleadoExists = await _empleadoService.getEmpleadoByNombre(nombre);
+        const empleadoExists = await _empleadoService.mongoGetEmpleadoByNombre(nombre);
         if(!empleadoExists){
             const error = new Error();
             error.status = 404;
