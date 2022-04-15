@@ -12,6 +12,11 @@ module.exports = class TareaController {
     const tarea = await _tareaService.mongoGet(idTarea);
     return res.send(tarea);
   }
+  async mongoGetTareaByIdTarea(req, res) {
+    const { idTarea } = req.params;
+    const tarea = await _tareaService.mongoGetTareaByIdTarea(idTarea);
+    return res.send(tarea);
+  }
 
   async mongoGetAll(req, res){
     const {pageSize, pageNum} = req.query;

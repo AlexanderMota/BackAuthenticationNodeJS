@@ -10,7 +10,17 @@ module.exports = class EmpleadoController {
     const empleado = await _empleadoService.mongoGet(idEmpleado);
     return res.send(empleado);
   }
-
+  async mongoGetEmpleadoByIdEmpleado(req, res) {
+    const { idEmpleado } = req.params;
+    const empleado = await _empleadoService.mongoGetEmpleadoByIdEmpleado(idEmpleado);
+    return res.send(empleado);
+  }
+  async mongoGetEmpleadosByIdTarea(req, res) {
+    const {pageSize, pageNum} = req.query;
+    const { idTarea } = req.params;
+    const empleados = await _empleadoService.mongoGetEmpleadosByIdTarea(idTarea, pageSize, pageNum);
+    return res.send(empleados);
+  }
   async mongoGetAll(req, res){
     const {pageSize, pageNum} = req.query;
     console.log(pageSize);
@@ -26,6 +36,7 @@ module.exports = class EmpleadoController {
   async mongoUpdate(req, res){
     const {body} = req;
     const {idEmpleado} = req.params;
+
     const updateEmpleado = await _empleadoService.mongoUpdate(idEmpleado,body);
     return res.send(updateEmpleado);
   }

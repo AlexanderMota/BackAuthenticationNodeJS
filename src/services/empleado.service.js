@@ -14,10 +14,31 @@ module.exports = class EmpleadoService extends BaseService{
     async mysqlGetAll(){
         return await mydb();
     }
-    async mongoGetEmpleadoByIdEmpleado(nombre){
-        return await _empleadoRep.mongoGetEmpleadoByIdEmpleado(nombre);
+    async mongoGetEmpleadoByIdEmpleado(idEmpleado){
+        return await _empleadoRep.mongoGetEmpleadoByIdEmpleado(idEmpleado);
+    }
+    async mongoGetEmpleadosByIdTarea(idTarea, pageSize, pageNum){
+        return await _empleadoRep.mongoGetEmpleadosByIdTarea(idTarea, pageSize, pageNum);
     }
     async mongoGetEmpleadoByNombre(nombre){
         return await _empleadoRep.mongoGetEmpleadoByNombre(nombre);
+    }
+    async mongoUpdate(idEmpleado, empleado){
+        if (!idEmpleado) {
+          const error = new Error();
+          error.status = 400;
+          error.message = "id must be sent";
+          throw error;
+        }
+        const {_id} = await _empleadoRep.mongoGetEmpleadoByIdEmpleado(idEmpleado);
+    
+        if (!_id) {
+          const error = new Error();
+          error.status = 404;
+          error.message = "entity does not found";
+          throw error;
+        }
+    
+        return await _empleadoRep.mongoUpdate(_id,empleado);
     }
 }

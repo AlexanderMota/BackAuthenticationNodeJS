@@ -39,16 +39,16 @@ class BaseService {
       throw error;
     }
 
-    const currentEntity = await this.repository.mongoGet(id);
+    const {_id} = await this.repository.mongoGet(id);
 
-    if (!currentEntity) {
+    if (!_id) {
       const error = new Error();
       error.status = 404;
       error.message = "entity does not found";
       throw error;
     }
 
-    return await this.repository.mongoUpdate(id, currentEntity);
+    return await this.repository.mongoUpdate(id, entity);
   }
 
   async mongoDelete(id) {

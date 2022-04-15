@@ -20,15 +20,16 @@ module.exports = class TareaRepository extends BaseRepository{
         }
         const idTareas = await _tareaHasEmpleados.find({idEmpleado:idEmpleadoM[0]._id.toString()},{_id:0,idTarea:1});
         
+        if(!idTareas){
+            return false;
+        }
+        
         const ids = [];
         idTareas.forEach(async (value) => {
                 ids.push(value.idTarea);
             }
         );
 
-        if(!idTareas){
-            return false;
-        }
         return await _tarea
             .find({ _id:{ $in: ids}})
             .skip(skips)
@@ -48,23 +49,23 @@ module.exports = class TareaRepository extends BaseRepository{
         if(!_idMEmpleado){
             return false;
         }
+
+        const _id = await _tareaHasEmpleados.find({$and:[
+            {"idTarea":_idMTarea._id.toString()},
+            {"idEmpleado":_idMEmpleado._id.toString()}
+        ]},{"_id":1});
         
-        if(
-            await _tareaHasEmpleados.findOne({
-                idEmpleado:_idMEmpleado._id.toString()},
-                {_id:1}
-            )
-        ){
-            console.log("Parece que el trabajador ya esta registrado en esta tarea")
-            return false;
+        if (_id !== undefined){
+            if (_id[0] !== undefined){
+                console.log("Parece que el trabajador ya esta registrado en esta tarea")
+                return false;
+            }
         }
 
-        return await _tareaHasEmpleados.create(
-            {
-                idTarea:_idMTarea._id,
-                idEmpleado:_idMEmpleado._id
-            }
-        );
+        return await _tareaHasEmpleados.create({
+            idTarea:_idMTarea._id,
+            idEmpleado:_idMEmpleado._id
+        });
     }
 
     async mongoGetTareaByNombre(nombre){

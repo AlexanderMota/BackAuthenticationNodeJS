@@ -4,8 +4,8 @@ const { AuthMiddleware, ParseIntMiddleware,CacheMiddleware } = require("../middl
 module.exports = function({ AuthController }) {
   const router = Router();
 
-  router.post("/signup", [AuthMiddleware, ParseIntMiddleware],AuthController.signUp);
-  router.post("/signin", AuthController.signIn);
+  router.post("/signup", [AuthMiddleware, ParseIntMiddleware], AuthController.signUp);
+  router.post("/signin", ParseIntMiddleware, AuthController.signIn);
 
   return router;
 };

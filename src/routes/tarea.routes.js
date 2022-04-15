@@ -6,7 +6,7 @@ module.exports = function({ TareaController }) {
   const router = Router();
 
   router.get("/", [AuthMiddleware, ParseIntMiddleware], TareaController.mongoGetAll);
-  router.get("/:idTarea", [AuthMiddleware, ParseIntMiddleware], TareaController.mongoGet);
+  router.get("/:idTarea", [AuthMiddleware, ParseIntMiddleware], TareaController.mongoGetTareaByIdTarea);
   router.get("/local", [AuthMiddleware, ParseIntMiddleware], TareaController.mysqlGetAll);
   router.get("/empleado/:idEmpleado", [AuthMiddleware,ParseIntMiddleware], TareaController.mongoGetTareasByIdEmpleado);
 

@@ -16,7 +16,7 @@ module.exports = class AuthService{
             throw error;
         }
 
-        return await _empleadoService.create(empleado);
+        return await _empleadoService.mongoCreate(empleado);
     }
     
     async signIn(empleado){
