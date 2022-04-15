@@ -20,7 +20,7 @@ module.exports = class EmpleadoService extends BaseService{
     async mongoAddEmpleado(idTarea, idEmpleado){
         return await _tareaRep.mongoAddEmpleado(idTarea, idEmpleado);
     }
-    async mongoGetTareasByIdEmpleado(idEmpleado){
-        return await _tareaRep.mongoGetTareasByIdEmpleado(idEmpleado);
+    async mongoGetTareasByIdEmpleado(idEmpleado, pageSize, pageNum){
+        return await _tareaRep.mongoGetTareasByIdEmpleado(idEmpleado, pageSize, pageNum);
     }
 }

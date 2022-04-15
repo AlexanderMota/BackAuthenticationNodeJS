@@ -12,19 +12,25 @@ module.exports = class TareaRepository extends BaseRepository{
         _tareaHasEmpleados = TareaHasEmpleados;
     }
 
-    async mongoGetTareasByIdEmpleado(idEmpleado,pageSize = 5, pageNum = 1) {
+    async mongoGetTareasByIdEmpleado(idEmpleado, pageSize = 5, pageNum = 1) {
         const skips = pageSize * (pageNum - 1);
         const idEmpleadoM = await _empleado.find({idEmpleado:idEmpleado},{_id:1});
         if(!idEmpleadoM){
             return false;
         }
         const idTareas = await _tareaHasEmpleados.find({idEmpleado:idEmpleadoM[0]._id.toString()},{_id:0,idTarea:1});
+        
+        const ids = [];
+        idTareas.forEach(async (value) => {
+                ids.push(value.idTarea);
+            }
+        );
+
         if(!idTareas){
             return false;
         }
-        console.log(idTareas);
         return await _tarea
-            .findById(idTareas[0].idTarea)
+            .find({ _id:{ $in: ids}})
             .skip(skips)
             .limit(pageSize);
     }
@@ -43,6 +49,16 @@ module.exports = class TareaRepository extends BaseRepository{
             return false;
         }
         
+        if(
+            await _tareaHasEmpleados.findOne({
+                idEmpleado:_idMEmpleado._id.toString()},
+                {_id:1}
+            )
+        ){
+            console.log("Parece que el trabajador ya esta registrado en esta tarea")
+            return false;
+        }
+
         return await _tareaHasEmpleados.create(
             {
                 idTarea:_idMTarea._id,
