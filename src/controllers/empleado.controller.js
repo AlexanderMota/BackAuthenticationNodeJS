@@ -1,8 +1,10 @@
 let _empleadoService = null;
+let _tareaService = null;
 
 module.exports = class EmpleadoController {
-  constructor({ EmpleadoService }) {
+  constructor({ EmpleadoService, TareaService }) {
     _empleadoService = EmpleadoService;
+    _tareaService = TareaService;
   }
 
   async mongoGet(req, res) {
@@ -31,6 +33,14 @@ module.exports = class EmpleadoController {
   async mysqlGetAll(req, res){
     const empleados = await _empleadoService.mysqlGetAll();
     return res.send(empleados);
+  }
+  async mongoAddTarea(req, res){
+    const { idTarea, idEmpleado } = req.query;
+    const flag = await _tareaService.mongoAddEmpleado(idTarea, idEmpleado);
+    if(flag){ 
+      return res.send({200:"",message:"Empleado asignado a tarea con exito"});
+    }
+    return res.send({400:"",message:"Algo fue mal"});
   }
 
   async mongoUpdate(req, res){
