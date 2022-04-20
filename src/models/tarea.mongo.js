@@ -8,7 +8,8 @@ const TareaSchema = new Schema({
   importancia: { type: String, required: true },
   fechainicio: { type: String, required: true },
   fechafin: { type: String },
-  terminada: { type: Boolean, required: true  }
+  terminada: { type: Boolean, required: true  },
+  numeroTrabajadores: { type: Number, required: true }
 });
 
 module.exports = mongoose.model("tarea", TareaSchema);

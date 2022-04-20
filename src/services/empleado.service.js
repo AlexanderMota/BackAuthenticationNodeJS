@@ -39,6 +39,7 @@ module.exports = class EmpleadoService extends BaseService{
           throw error;
         }
     
-        return await _empleadoRep.mongoUpdate(_id,empleado);
+        await _empleadoRep.mongoUpdate(_id,empleado);
+        return {status : 201, message:"entity updated"}
     }
 }

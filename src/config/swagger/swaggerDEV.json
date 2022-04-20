@@ -20,7 +20,39 @@
     }
   ],
   "schemes": ["http", "https"],
-  "paths": {
+  "paths": {"/auth": {
+    "post": {
+      "tags": [
+        "Autenticación"
+      ],
+      "summary": "Verifica si el token sigue activo",
+      "parameters": [
+        {
+          "name": "token",
+          "in": "query",
+          "description": "Cadena de texto que representa el token",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "successful operation",
+          "schema": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/ApiResponse"
+            }
+          }
+        },
+        "400": {
+          "description": "Invalid status value"
+        }
+      }
+    }
+  },
     "/auth/signin": {
       "post": {
         "tags": [
@@ -44,7 +76,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Token"
+                "$ref": "#/definitions/ApiResponse"
               }
             }
           },
@@ -83,7 +115,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Empleado"
+                "$ref": "#/definitions/ApiResponse"
               }
             }
           },
@@ -211,7 +243,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Empleado"
+                "$ref": "#/definitions/ApiResponse"
               }
             }
           },
@@ -247,7 +279,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Empleado"
+                "$ref": "#/definitions/ApiResponse"
               }
             }
           },
@@ -298,7 +330,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Tarea"
+                "$ref": "#/definitions/Empleado"
               }
             }
           },
@@ -469,7 +501,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Tarea"
+                "$ref": "#/definitions/ApiResponse"
               }
             }
           },
@@ -505,7 +537,7 @@
             "schema": {
               "type": "object",
               "items": {
-                "$ref2": "#/definitions/Tarea"
+                "$ref2": "#/definitions/ApiResponse"
               }
             }
           },
@@ -613,29 +645,6 @@
   },
 
   "definitions": {
-    "Token": { 
-      "type" : "object",
-      "properties" : {
-        "token": { "type" : "string" },
-        "empleado": { "type" : "object",
-        "properties" : {
-          "_id": { "type" : "string" },
-          "idEmpleado": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "nombre": { "type" : "string" },
-          "apellidos": { "type" : "string" },
-          "telefono": { "type" : "string" },
-          "email": { "type" : "string" },
-          "__v": {
-            "type": "integer",
-            "format": "int64"
-          }
-      }
-        }
-      }
-    },
     "Usuario": { 
       "type" : "object",
       "properties" : {
@@ -699,6 +708,10 @@
         "terminada": {
           "type": "boolean"
         },
+        "numeroTrabajadores": {
+          "type": "integer",
+          "format": "int64"
+        },
         "_id": {
           "type": "string"
         },
@@ -711,12 +724,9 @@
     "ApiResponse": {
       "type": "object",
       "properties": {
-        "code": {
+        "status": {
           "type": "integer",
           "format": "int32"
-        },
-        "type": {
-          "type": "string"
         },
         "message": {
           "type": "string"

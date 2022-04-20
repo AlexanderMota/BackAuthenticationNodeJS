@@ -5,6 +5,12 @@ module.exports = class AuthController {
     _authService = AuthService;
   }
 
+  async compruebaToken(req, res){
+    const {token} = req.query;
+    const resToken = await _authService.compruebaToken(token);
+    return res.status(201).send(resToken);
+  }
+
   async signUp(req, res) {
     const {body} = req;
     const createdEmpleado = await _authService.signUp(body);
