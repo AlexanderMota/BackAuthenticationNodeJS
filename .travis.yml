@@ -2,5 +2,5 @@ language: node_js
 node_js:
   - stable
 deploy:
-  provider: heroku
-  app: app-granja
+  - provider: heroku
+  - app: app-granja
