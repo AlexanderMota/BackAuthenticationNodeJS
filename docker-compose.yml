@@ -11,7 +11,7 @@ services:
       - APPLICATION_NAME=Back-granja
       - JWT_SECRET=4l3x4nd3r82@_
       - CACHE_KEY=myStrongPassword
-      - SWAGGER_DOC=swaggerPROD
+      - SWAGGER_DOC=swagger
     ports:
       - "5000:5000"
 
