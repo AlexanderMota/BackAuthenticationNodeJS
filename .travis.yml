@@ -3,4 +3,4 @@ node_js:
   - stable
 deploy:
   - provider: heroku
-  - app: app-granja
+  - app: api-granja

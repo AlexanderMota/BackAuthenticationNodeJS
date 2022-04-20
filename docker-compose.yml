@@ -8,7 +8,7 @@ services:
     environment:
       - PORT=5000
       - MONGO_URI=mongodb+srv://AlexSinMas:1231212_@cluster0.gwz1u.mongodb.net/shareyouridea?retryWrites=true&w=majority
-      - APPLICATION_NAME=Back-granja
+      - APPLICATION_NAME=api-granja
       - JWT_SECRET=4l3x4nd3r82@_
       - CACHE_KEY=myStrongPassword
       - SWAGGER_DOC=swagger
