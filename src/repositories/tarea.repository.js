@@ -40,6 +40,10 @@ module.exports = class TareaRepository extends BaseRepository{
         return await _tarea.findOne({idTarea:idTarea});
     }
 
+    async mongoGetTareaByNombre(nombre){
+        return await _tarea.findOne({nombre:nombre});
+    }
+
     async mongoAddEmpleado(idTarea, idEmpleado){
         const _idMTarea = await _tarea.findOne({idTarea:idTarea},{_id:1});
         if(!_idMTarea){
@@ -66,10 +70,6 @@ module.exports = class TareaRepository extends BaseRepository{
             idTarea:_idMTarea._id,
             idEmpleado:_idMEmpleado._id
         });
-    }
-
-    async mongoGetTareaByNombre(nombre){
-        return await _tarea.findOne({nombre:nombre});
     }
 }
 

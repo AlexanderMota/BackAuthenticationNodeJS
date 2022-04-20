@@ -1,15 +1,13 @@
 let _tareaService = null;
-//let _empleadoService = null;
 
 module.exports = class TareaController {
-  constructor({ TareaService, EmpleadoService }) {
+  constructor({ TareaService }) {
     _tareaService = TareaService;
-    //_empleadoService = EmpleadoService;
   }
 
   async mongoGet(req, res) {
-    const { idTarea } = req.params;
-    const tarea = await _tareaService.mongoGet(idTarea);
+    const { _id } = req.params;
+    const tarea = await _tareaService.mongoGet(_id);
     return res.send(tarea);
   }
   async mongoGetTareaByIdTarea(req, res) {
@@ -32,13 +30,27 @@ module.exports = class TareaController {
     return res.send(tarea);
   }
 
-  async mongoAddEmpleado(req, res){
+  async addEmpleado(req, res){
     const { idTarea, idEmpleado } = req.query;
     const flag = await _tareaService.mongoAddEmpleado(idTarea, idEmpleado);
     if(flag){
       return res.send({200:"",message:"Tarea asignada a empleado con exito"});
     }
     return res.send({400:"",message:"Algo fue mal"});
+  }
+
+  async solicitarTarea(req, res){
+    const { idTarea, idEmpleado } = req.query;
+    const flag = await _tareaService.mongoSolicitarTarea(idTarea, idEmpleado);
+    if(flag){
+      return res.send({200:"",message:"Solicitud realizada con éxito"});
+    }
+    return res.send({400:"",message:"Algo fue mal"});
+  }
+
+  async mongoGetAllSolicitudes(req, res){
+    const { pageSize, pageNum } = req.query;
+    return res.send(await _tareaService.mongoGetAllSolicitudes(pageSize, pageNum));
   }
 
   async mysqlGetAll(req, res){

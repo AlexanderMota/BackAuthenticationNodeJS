@@ -9,9 +9,11 @@ module.exports = function({ TareaController }) {
   router.get("/:idTarea", [AuthMiddleware, ParseIntMiddleware], TareaController.mongoGetTareaByIdTarea);
   router.get("/local", [AuthMiddleware, ParseIntMiddleware], TareaController.mysqlGetAll);
   router.get("/empleado/:idEmpleado", [AuthMiddleware,ParseIntMiddleware], TareaController.mongoGetTareasByIdEmpleado);
+  router.get("/solicitudes/todas", [AuthMiddleware, ParseIntMiddleware], TareaController.mongoGetAllSolicitudes);
 
   router.post("/", [AuthMiddleware, ParseIntMiddleware], TareaController.mongoCreate);
-  router.post("/addempleado", [AuthMiddleware, ParseIntMiddleware], TareaController.mongoAddEmpleado);
+  router.post("/solicitar", [AuthMiddleware, ParseIntMiddleware], TareaController.solicitarTarea);
+  router.post("/addempleado", [AuthMiddleware, ParseIntMiddleware], TareaController.addEmpleado);
 
   router.patch("/:idTarea", [AuthMiddleware, ParseIntMiddleware], TareaController.mongoUpdate);
 

@@ -30,12 +30,18 @@ const {
 const Routes = require("../routes");
 
 // models
-const { Empleado, Tarea , TareaHasEmpleados} = require("../models");
+const { 
+  Empleado, 
+  Tarea, 
+  TareaHasEmpleados, 
+  Solicitud
+} = require("../models");
 
 // repositories
 const {
   EmpleadoRepository,
-  TareaRepository
+  TareaRepository,
+  SolicitudRepository
 } = require("../repositories");
 
 const container = createContainer();
@@ -67,11 +73,13 @@ container
   .register({
     Empleado: asValue(Empleado),
     Tarea: asValue(Tarea),
-    TareaHasEmpleados: asValue(TareaHasEmpleados)
+    TareaHasEmpleados: asValue(TareaHasEmpleados),
+    Solicitud: asValue(Solicitud)
   })
   .register({
     EmpleadoRepository: asClass(EmpleadoRepository).singleton(),
-    TareaRepository: asClass(TareaRepository).singleton()
+    TareaRepository: asClass(TareaRepository).singleton(),
+    SolicitudRepository: asClass(SolicitudRepository).singleton()
   });
 
 module.exports = container;

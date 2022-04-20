@@ -20,7 +20,8 @@
     }
   ],
   "schemes": ["http", "https"],
-  "paths": {"/auth": {
+  "paths": {
+    "/auth": {
     "post": {
       "tags": [
         "Autenticación"
@@ -52,7 +53,7 @@
         }
       }
     }
-  },
+    },
     "/auth/signin": {
       "post": {
         "tags": [
@@ -598,11 +599,11 @@
         }
       }
     },
-    "/tareas/addempleado": {
+    "/tareas/solicitar": {
       "post": {
         "tags": ["Tarea"],
-        "summary": "Muestra tareas de trabajador",
-        "description": "Muestra todas las tareas guardadas asociadas a un trabajador especificado",
+        "summary": "Solicitar tarea",
+        "description": "Solicita la asignación de un empleado a una tarea",
         "produces": ["application/json"],
         "parameters": [
           {
@@ -633,6 +634,95 @@
               "type": "array",
               "items": {
                 "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/tareas/addempleado": {
+      "post": {
+        "tags": ["Tarea"],
+        "summary": "Añade un trabajador a una tarea",
+        "description": "Añade un trabajador a una tarea",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "idTarea",
+            "in": "query",
+            "type": "string",
+            "description": "Id de la Tarea en la bd",
+            "required": true
+          },
+          {
+            "name": "idEmpleado",
+            "in": "query",
+            "type": "string",
+            "description": "Id del Empleado en la bd",
+            "required": true
+          },
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/tareas/solicitudes/todas": {
+      "get": {
+        "tags": ["Tarea"],
+        "summary": "Muestra solicitudes",
+        "description": "Muestra todas las solicitudes de asignación a tareas",
+        "produces": ["application/json"],
+        
+        "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "pageNum",
+            "type": "number",
+            "in": "query",
+            "description": "Número de la pagina de registros a mostrar. Por defecto 1.",
+            "required": false
+          },
+          {
+            "name": "pageSize",
+            "type": "number",
+            "in": "query",
+            "description": "Tamaño de la pagina de registros a mostrar. Por defecto 5.",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Solicitud"
               }
             }
           },
@@ -680,6 +770,26 @@
         "__v": {
           "type": "integer",
           "format": "int64"
+        }
+      }
+    },
+    "Solicitud": {
+      "type": "object",
+      "properties": {
+        "idSolicitud": {
+          "type": "string"
+        },
+        "idEmpleado": {
+          "type": "string"
+        },
+        "idTarea": {
+          "type": "string"
+        },
+        "fechaSolicitud": {
+          "type": "string"
+        },
+        "aprovada": {
+          "type": "boolean"
         }
       }
     },
