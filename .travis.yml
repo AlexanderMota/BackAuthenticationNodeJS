@@ -1,5 +1,3 @@
-before_install:
-- echo -e "machine github.com\n  login $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" > ~/.netrc
 language: node_js
 services:
   - docker
@@ -8,5 +6,4 @@ node_js:
 deploy:
   - provider: heroku
   - app: api-granja
-  - api_key: 
-    - securee: "iFFvnLzlk57/vhUN3wfwgnsqKPIZ7J8Rx1KC/5VOQqUt0H/u3LnQtnfV/GgOE41OxXFzR3Ggly+7mr3Z/jjkBMvU7lTyemzIHWDEewCBUb7DKF9y1iEoORDqAAwQrJEYwg0p1/tRS2HSnAam5R/yfl+FqWzwFF1TJw8tjkvtDfJAaVo3U0SE1vKmTxblke3zgxDojGFmdd7s+LnXFVvSIE8nrg+IaySKv8rgoR570CjA+nXktvlZtbuAkCcuAcfnwoDBURCP78t6y2BBkRbsFUqEsoJ66IpjiaLrSsiYijUFu/isRobQshNjRCd0YlMZNXDqH7GvHF7M16DWOKlXaLsc7doii8n8Dc/u7Y0euc27P4Xtel/2d8Al+TDyI7UI65NaBfndO0fg+I2kDkiG1D+DBlXFf8Wi/KTCY/BVIoeW+Mg4PuGws+Yikyghoo0ybtvnyZVD8U7D/N0Q1Lx/q51lDKixBSPGFu3s5/ISmkKOUFmLryqGv83i319k9mDcXNLjn0/2ey8JR1BpEF0Q78oT05hR+6WkDZ0zbutVJq7JbYr55PPHo/1Kxavm/000blgGrz8hzdcZE7XzaYgiQ0X1B6PuqnVsbulvnrEaogA1iWeBRKYVNnkDt2nOnCxv2C/tSnJ0ssMkeiof6In5OIZjE2aJKF1yYfhxBVNtSLU="
+  - api_key: iFFvnLzlk57/vhUN3wfwgnsqKPIZ7J8Rx1KC/5VOQqUt0H/u3LnQtnfV/GgOE41OxXFzR3Ggly+7mr3Z/jjkBMvU7lTyemzIHWDEewCBUb7DKF9y1iEoORDqAAwQrJEYwg0p1/tRS2HSnAam5R/yfl+FqWzwFF1TJw8tjkvtDfJAaVo3U0SE1vKmTxblke3zgxDojGFmdd7s+LnXFVvSIE8nrg+IaySKv8rgoR570CjA+nXktvlZtbuAkCcuAcfnwoDBURCP78t6y2BBkRbsFUqEsoJ66IpjiaLrSsiYijUFu/isRobQshNjRCd0YlMZNXDqH7GvHF7M16DWOKlXaLsc7doii8n8Dc/u7Y0euc27P4Xtel/2d8Al+TDyI7UI65NaBfndO0fg+I2kDkiG1D+DBlXFf8Wi/KTCY/BVIoeW+Mg4PuGws+Yikyghoo0ybtvnyZVD8U7D/N0Q1Lx/q51lDKixBSPGFu3s5/ISmkKOUFmLryqGv83i319k9mDcXNLjn0/2ey8JR1BpEF0Q78oT05hR+6WkDZ0zbutVJq7JbYr55PPHo/1Kxavm/000blgGrz8hzdcZE7XzaYgiQ0X1B6PuqnVsbulvnrEaogA1iWeBRKYVNnkDt2nOnCxv2C/tSnJ0ssMkeiof6In5OIZjE2aJKF1yYfhxBVNtSLU=
