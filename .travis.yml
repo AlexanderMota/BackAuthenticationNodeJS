@@ -1,7 +1,9 @@
 language: node_js
+services:
+  - docker
 node_js:
   - stable
 deploy:
   - provider: heroku
   - app: api-granja
-  - api_key: 0726b401-1584-45f7-9a1c-7cc15623be40
+  - api_key: API_KEY_TRAVIS
