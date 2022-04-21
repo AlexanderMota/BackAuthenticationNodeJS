@@ -4,5 +4,5 @@ node_js:
 deploy:
   - provider: heroku
   - app: api-granja
-    - api_key:
-      - secure: cdfa5904-54f5-499d-a62d-33fade408a85
+  - api_key:
+    - secure: cdfa5904-54f5-499d-a62d-33fade408a85
