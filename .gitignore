@@ -72,6 +72,10 @@ typings/
 .env
 .env.test
 
+# Docker environment variables file
+.docker-compose.yml
+.Dockerfile
+
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 
