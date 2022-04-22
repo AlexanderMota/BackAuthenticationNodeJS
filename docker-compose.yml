@@ -6,14 +6,14 @@ services:
     depends_on:
       - mongo
     environment:
-      - PORT=5000
-      - MONGO_URI=mongodb+srv://AlexSinMas:1231212_@cluster0.gwz1u.mongodb.net/shareyouridea?retryWrites=true&w=majority
+      - PORT=8080
+      - MONGO_URI=mongodb://azure-mongodb-granja:hZFGnpIxvW37tgv9yVYq8oCCaFp8fGDVXAqIy8WqaoO2CZ7Co6VFOGD9tnpn4LDdoia29qOG8Rl9vo5P6xVI3g==@azure-mongodb-granja.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&maxIdleTimeMS=120000&appName=@azure-mongodb-granja@
       - APPLICATION_NAME=api-granja
       - JWT_SECRET=4l3x4nd3r82@_
       - CACHE_KEY=myStrongPassword
       - SWAGGER_DOC=swagger
     ports:
-      - "5000:5000"
+      - "8080:8080"
 
   mongo:
     image: mongo
