@@ -34,7 +34,8 @@
     "sequelize": "^6.18.0",
     "sequelize-cli": "^6.4.1",
     "swagger-ui-express": "^4.3.0",
-    "travis": "^0.1.1"
+    "travis": "^0.1.1",
+    "dotenv": "^16.0.0"
   },
   "devDependencies": {
     "dotenv": "^16.0.0",
