@@ -9,6 +9,7 @@ services:
       - PORT=8080
       - MONGO_URI=mongodb://azure-mongodb-granja:hZFGnpIxvW37tgv9yVYq8oCCaFp8fGDVXAqIy8WqaoO2CZ7Co6VFOGD9tnpn4LDdoia29qOG8Rl9vo5P6xVI3g==@azure-mongodb-granja.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&maxIdleTimeMS=120000&appName=@azure-mongodb-granja@
       - APPLICATION_NAME=api-granja
+      - DATABASE_URI_DEV= "mongodb+srv://AlexSinMas:1231212_@cluster0.gwz1u.mongodb.net/shareyouridea?retryWrites=true&w=majority"
       - JWT_SECRET=4l3x4nd3r82@_
       - CACHE_KEY=myStrongPassword
       - SWAGGER_DOC=swagger
