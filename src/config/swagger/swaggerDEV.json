@@ -428,6 +428,43 @@
             "description": "Invalid status value"
           }
         }
+      },
+      "post": {
+        "tags": ["Tarea"],
+        "summary": "Crea las tareas recibidas",
+        "description": "Crea las tareas recibidas",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "EmpleadoJson",
+            "in": "body",
+            "description": "Objeto empleado en formato json para registrarlo en la bd. Necesario para obtener un token (string) con el cual poder consultar la api",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Tarea"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
       }
     },
     "/tareas/{idTarea}": {
