@@ -6,7 +6,6 @@ const app = require(".");
 
 // services
 const {
-  HomeService,
   EmpleadoService,
   TareaService,
   AuthService
@@ -14,7 +13,6 @@ const {
 
 // controllers
 const {
-  HomeController,
   EmpleadoController,
   TareaController,
   AuthController
@@ -22,7 +20,6 @@ const {
 
 // routes
 const {
-  HomeRoutes,
   EmpleadoRoutes,
   TareaRoutes,
   AuthRoutes
@@ -53,19 +50,16 @@ container
     config: asValue(config)
   })
   .register({
-    HomeService: asClass(HomeService).singleton(),
     EmpleadoService: asClass(EmpleadoService).singleton(),
     TareaService: asClass(TareaService).singleton(),
     AuthService: asClass(AuthService).singleton()
   })
   .register({
-    HomeController: asClass(HomeController.bind(HomeController)).singleton(),
     AuthController: asClass(AuthController.bind(AuthController)).singleton(),
     EmpleadoController: asClass(EmpleadoController.bind(EmpleadoController)).singleton(),
     TareaController: asClass(TareaController.bind(TareaController)).singleton()
   })
   .register({
-    HomeRoutes: asFunction(HomeRoutes).singleton(),
     EmpleadoRoutes: asFunction(EmpleadoRoutes).singleton(),
     TareaRoutes: asFunction(TareaRoutes).singleton(),
     AuthRoutes: asFunction(AuthRoutes).singleton()

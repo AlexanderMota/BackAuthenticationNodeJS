@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/fd8e22c8-f2f8-4272-9bec-52bbe5dd1443/resourceGroups/appsvc_linux_centralus_basic/providers/Microsoft.Web/sites/api-granja",
+    "appService.deploySubpath": "."
+}
