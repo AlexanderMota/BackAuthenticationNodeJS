@@ -40,8 +40,21 @@ module.exports = class EmpleadoService extends BaseService{
             let tar = await _tareaRep.mongoGet(sols[i].idTarea);
             let emp = await _empleadoRep.mongoGet(sols[i].idEmpleado);
             
-            listaRes.push({"tarea":tar,"empleado":emp,"fechaSolicitud":sols[i].fechaSolicitud})
+            listaRes.push({"idSolicitud":sols[i]._id.toString(),"tarea":tar,"empleado":emp,"fechaSolicitud":sols[i].fechaSolicitud})
          }
+         console.log(listaRes);
         return listaRes;
+    }
+    async mongoGetSolicitud(id){
+        const sol = await _solicitudRep.mongoGet(id);
+        let res = {};
+        let tar = await _tareaRep.mongoGet(sol.idTarea);
+        let emp = await _empleadoRep.mongoGet(sol.idEmpleado);
+        const idx = sol._id
+            
+        res={"idSolicitud":idx.value,"tarea":tar,"empleado":emp,"fechaSolicitud":sol.fechaSolicitud};
+         
+        console.log(res);
+        return res;
     }
 }

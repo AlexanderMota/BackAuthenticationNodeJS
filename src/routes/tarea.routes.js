@@ -10,6 +10,7 @@ module.exports = function({ TareaController }) {
   router.get("/local", [AuthMiddleware, ParseIntMiddleware], TareaController.mysqlGetAll);
   router.get("/empleado/:idEmpleado", [AuthMiddleware,ParseIntMiddleware], TareaController.mongoGetTareasByIdEmpleado);
   router.get("/solicitudes/todas", [AuthMiddleware, ParseIntMiddleware], TareaController.mongoGetAllSolicitudes);
+  router.get("/solicitud/:id", [AuthMiddleware,ParseIntMiddleware], TareaController.mongoGetSolicitud);
 
   router.post("/", [AuthMiddleware, ParseIntMiddleware], TareaController.mongoCreate);
   router.post("/solicitar", [AuthMiddleware, ParseIntMiddleware], TareaController.solicitarTarea);

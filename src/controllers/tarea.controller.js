@@ -52,6 +52,10 @@ module.exports = class TareaController {
     const { pageSize, pageNum } = req.query;
     return res.send(await _tareaService.mongoGetAllSolicitudes(pageSize, pageNum));
   }
+  async mongoGetSolicitud(req, res){
+    const { id } = req.params;
+    return res.send(await _tareaService.mongoGetSolicitud(id));
+  }
 
   async mysqlGetAll(req, res){
     const tarea = await _tareaService.mysqlGetAll();
