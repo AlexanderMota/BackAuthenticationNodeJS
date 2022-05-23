@@ -23,8 +23,8 @@ class BaseService {
     return currentEntity;
   }
 
-  async mongoGetAll(pageSize, pageNum) {
-    return await this.repository.mongoGetAll(pageSize, pageNum);
+  async mongoGetAll(pageSize, pageNum, campo={}) {
+    return await this.repository.mongoGetAll(pageSize, pageNum, campo);
   }
 
   async mongoCreate(entity) {

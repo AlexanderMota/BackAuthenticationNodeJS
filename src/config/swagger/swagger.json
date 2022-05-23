@@ -386,7 +386,6 @@
       }
     },
 
-    
     "/tareas": {
       "get": {
         "tags": ["Tarea"],
@@ -776,7 +775,7 @@
     "Usuario": { 
       "type" : "object",
       "properties" : {
-        "nombre": { "type" : "string" },
+        "email": { "type" : "string" },
         "password": { "type" : "string" }
       }
     },

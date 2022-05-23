@@ -11,7 +11,11 @@ module.exports = class TareaRepository extends BaseRepository{
         _empleado = Empleado;
         _tareaHasEmpleados = TareaHasEmpleados;
     }
-
+    async mongopruebas() {
+        const resi = await _tarea.find();
+        console.log(resi);
+        return {status:0,message:"en pruebas"};
+    }
     async mongoGetTareasByIdEmpleado(idEmpleado, pageSize = 5, pageNum = 1) {
         const skips = pageSize * (pageNum - 1);
         const idEmpleadoM = await _empleado.find({idEmpleado:idEmpleado},{_id:1});
@@ -45,31 +49,35 @@ module.exports = class TareaRepository extends BaseRepository{
     }
 
     async mongoAddEmpleado(idTarea, idEmpleado){
-        const _idMTarea = await _tarea.findOne({idTarea:idTarea},{_id:1});
+        /*const _idMTarea = await _tarea.findOne({idTarea:idTarea},{_id:1});
         if(!_idMTarea){
             return false;
         }
         const _idMEmpleado = await _empleado.findOne({idEmpleado:idEmpleado},{_id:1});
         if(!_idMEmpleado){
             return false;
-        }
+        }*/
 
         const _id = await _tareaHasEmpleados.find({$and:[
-            {"idTarea":_idMTarea._id.toString()},
-            {"idEmpleado":_idMEmpleado._id.toString()}
+            {"idTarea":idTarea},
+            {"idEmpleado":idEmpleado}
         ]},{"_id":1});
         
+        //console.log(_id);
+
         if (_id !== undefined){
             if (_id[0] !== undefined){
-                console.log("Parece que el trabajador ya esta registrado en esta tarea")
+                //console.log("Parece que el trabajador ya esta registrado en esta tarea")
                 return false;
             }
         }
-
-        return await _tareaHasEmpleados.create({
-            idTarea:_idMTarea._id,
-            idEmpleado:_idMEmpleado._id
+        console.log("llega a create...");
+        await _tareaHasEmpleados.create({
+            idTarea:idTarea,
+            idEmpleado:idEmpleado,
+            fechacreacion:new Date(Date.now())
         });
+        return true;
     }
 }
 

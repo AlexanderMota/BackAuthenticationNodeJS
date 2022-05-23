@@ -23,6 +23,9 @@ module.exports = class EmpleadoService extends BaseService{
     async mongoGetEmpleadoByNombre(nombre){
         return await _empleadoRep.mongoGetEmpleadoByNombre(nombre);
     }
+    async mongoGetEmpleadoByEmail(email){
+        return await _empleadoRep.mongoGetEmpleadoByEmail(email);
+    }
     async mongoUpdate(idEmpleado, empleado){
         if (!idEmpleado) {
           const error = new Error();

@@ -6,19 +6,25 @@ module.exports = class TareaController {
   }
 
   async mongoGet(req, res) {
-    const { _id } = req.params;
-    const tarea = await _tareaService.mongoGet(_id);
+    const { id } = req.params;
+    //console.log("mongogetTarea"+id);
+    const tarea = await _tareaService.mongoGet(id);
+    //console.log(tarea);
     return res.send(tarea);
   }
   async mongoGetTareaByIdTarea(req, res) {
     const { idTarea } = req.params;
+    //console.log(idTarea);
     const tarea = await _tareaService.mongoGetTareaByIdTarea(idTarea);
     return res.send(tarea);
   }
-
+  async mongopruebas(){
+    const resi = await _tareaService.mongopruebas()
+    return res.send(resi);
+  }
   async mongoGetAll(req, res){
     const {pageSize, pageNum} = req.query;
-    const tarea = await _tareaService.mongoGetAll(pageSize, pageNum);
+    const tarea = await _tareaService.mongoGetAll(pageSize, pageNum,{ $query: {}, $orderby: { nombre : -1 } });
     return res.send(tarea);
   }
 
@@ -31,21 +37,23 @@ module.exports = class TareaController {
   }
 
   async addEmpleado(req, res){
+    //console.log("req");
     const { idTarea, idEmpleado } = req.query;
+    //console.log(idTarea, idEmpleado);
     const flag = await _tareaService.mongoAddEmpleado(idTarea, idEmpleado);
     if(flag){
-      return res.send({200:"",message:"Tarea asignada a empleado con exito"});
+      return res.send({status:201,message:"Tarea asignada a empleado con exito"});
     }
-    return res.send({400:"",message:"Algo fue mal"});
+    return res.send({status:403,message:"Algo fue mal"});
   }
 
   async solicitarTarea(req, res){
     const { idTarea, idEmpleado } = req.query;
     const flag = await _tareaService.mongoSolicitarTarea(idTarea, idEmpleado);
     if(flag){
-      return res.send({200:"",message:"Solicitud realizada con éxito"});
+      return res.send({status:201,message:"Solicitud realizada con exito"});
     }
-    return res.send({400:"",message:"Algo fue mal"});
+    return res.send({status:400,message:"Algo fue mal"});
   }
 
   async mongoGetAllSolicitudes(req, res){
@@ -64,20 +72,26 @@ module.exports = class TareaController {
   
   async mongoCreate(req, res){
     const {body} = req;
-    const tarea = await _tareaService.mongoCreate(body);
-    return res.send(tarea);
+    //console.log(body);
+    if(await _tareaService.mongoCreate(body)){
+      return res.send({status:201,message:"tarea creada correctamente"});
+    }else{
+      return res.send({status: 400, message:"parametro incorrecto"});
+    }
   }
 
   async mongoUpdate(req, res){
     const {body} = req;
-    const {idTarea} = req.params;
-    const updateTarea = await _tareaService.mongoUpdate(idTarea,body);
-    return res.send(updateTarea);
+    const {id} = req.params;
+    //console.log("update tarea"+id);
+    const updateTarea = await _tareaService.mongoUpdate(id,body);
+    //console.log(updateTarea);
+    return res.send({status:202,message:"tarea actualizada correctamente"});
   }
 
   async mongoDelete(req,res){
-    const {idTarea} = req.params;
-    const deleteTarea = await _tareaService.mongoDelete(idTarea);
+    const {id} = req.params;
+    const deleteTarea = await _tareaService.mongoDelete(id);
     return res.send(deleteTarea);
   }
 }

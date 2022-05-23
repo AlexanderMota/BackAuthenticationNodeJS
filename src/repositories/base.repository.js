@@ -15,7 +15,6 @@ class BaseRepository {
         .limit(pageSize);
   }
 
-
   async mongoCreate(entity) {
     return await this.model.create(entity);
   }

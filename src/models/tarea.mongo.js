@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const TareaSchema = new Schema({
-  idTarea: { type: Number, required: true },
+  idTarea: { type: Number, required: false },
   nombre: { type: String, required: true },
   descripcion: { type: String, required: true },
   importancia: { type: String, required: true },

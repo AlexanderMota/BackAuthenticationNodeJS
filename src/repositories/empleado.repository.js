@@ -16,6 +16,9 @@ module.exports = class EmpleadoRepository extends BaseRepository{
         return await _empleado.findOne({idEmpleado:idEmpleado});
     }
 
+    async mongoGetEmpleadoByEmail(email) {
+        return await _empleado.findOne({email:email});
+    }
     async mongoGetEmpleadosByIdTarea(idTarea, pageSize = 5, pageNum = 1) {
         const skips = pageSize * (pageNum - 1);
         const idTareaM = await _tarea.find({idTarea:idTarea},{_id:1});
