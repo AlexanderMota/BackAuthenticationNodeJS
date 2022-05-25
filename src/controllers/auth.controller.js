@@ -13,7 +13,7 @@ module.exports = class AuthController {
 
   async signUp(req, res) {
     const {body} = req;
-    console.log(body);
+    //console.log(body);
     const createdEmpleado = await _authService.signUp(body);
     return res.status(201).send(createdEmpleado);
   }

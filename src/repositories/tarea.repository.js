@@ -13,7 +13,7 @@ module.exports = class TareaRepository extends BaseRepository{
     }
     async mongopruebas() {
         const resi = await _tarea.find();
-        console.log(resi);
+        //console.log(resi);
         return {status:0,message:"en pruebas"};
     }
     async mongoGetTareasByIdEmpleado(idEmpleado, pageSize = 5, pageNum = 1) {

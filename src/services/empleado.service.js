@@ -18,6 +18,7 @@ module.exports = class EmpleadoService extends BaseService{
         return await _empleadoRep.mongoGetEmpleadoByIdEmpleado(idEmpleado);
     }
     async mongoGetEmpleadosByIdTarea(idTarea, pageSize, pageNum){
+        //console.log("empledoServ - getempbyidtar: "+ idTarea);
         return await _empleadoRep.mongoGetEmpleadosByIdTarea(idTarea, pageSize, pageNum);
     }
     async mongoGetEmpleadoByNombre(nombre){

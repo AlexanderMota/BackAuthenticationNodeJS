@@ -37,7 +37,7 @@ module.exports = class SolicitudRepository extends BaseRepository{
         }
 
         //console.log("llegando");
-        const resifff = await _solicitud.create({
+        await _solicitud.create({
             idTarea:idTarea,
             idEmpleado:idEmpleado,
             fechaSolicitud: new Date(Date.now())

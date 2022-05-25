@@ -21,27 +21,42 @@ module.exports = class EmpleadoRepository extends BaseRepository{
     }
     async mongoGetEmpleadosByIdTarea(idTarea, pageSize = 5, pageNum = 1) {
         const skips = pageSize * (pageNum - 1);
-        const idTareaM = await _tarea.find({idTarea:idTarea},{_id:1});
-        if(!idTareaM){
+        //const { _id } = await _tarea.findById(idTarea);
+        console.log(idTarea);
+        /*if(!tareaM){
             return false;
-        }
-        const idEmpleados = await _tareaHasEmpleados.find({idTarea:idTareaM[0]._id.toString()},{_id:0,idEmpleado:1});
+        }*/
+        const idEmpleados  = await _tareaHasEmpleados.find({idTarea:idTarea});
         
+        //console.log("ids empleados: "+idEmpleados);
         if(!idEmpleados){
             return false;
         }
-        const ids = [];
-        idEmpleados.forEach(async (value) => {
-                ids.push(value.idEmpleado);
-            }
-        );
+        const empleados = [];
 
-        return await _empleado
-            .find({ _id:{ $in: ids}})
-            .skip(skips)
-            .limit(pageSize);
+
+        for (var i = 0; i < idEmpleados.length; i++) {
+            //console.log(idEmpleados[i].idEmpleado);
+            let emp = await _empleado.find({_id:idEmpleados[i].idEmpleado});
+            //console.log(emp);
+            empleados.push(emp);
+        }
+        //console.log(empleados);
+        return empleados;
     }
-
+    async mongoGetAllSolicitudes(pageSize, pageNum,campo={$query: {}, $orderby: { fechasolicitud : 1 }}){
+        const sols = await _solicitudRep.mongoGetAll(pageSize, pageNum,campo);
+        //console.log(sols);
+        let listaRes = [];
+        for (var i = 0; i < sols.length; i++) {
+            let tar = await _tareaRep.mongoGet(sols[i].idTarea);
+            let emp = await _empleadoRep.mongoGet(sols[i].idEmpleado);
+            
+            listaRes.push({"idSolicitud":sols[i]._id.toString(),"tarea":tar,"empleado":emp,"fechaSolicitud":sols[i].fechaSolicitud})
+            //console.log(listaRes[i]);
+        }
+        return listaRes;
+    }
     async mongoGetEmpleadoByNombre(nombre){
         return await _empleado.findOne({nombre:nombre});
     }

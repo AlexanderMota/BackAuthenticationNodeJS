@@ -20,12 +20,13 @@ module.exports = class EmpleadoController {
   async mongoGetEmpleadosByIdTarea(req, res) {
     const {pageSize, pageNum} = req.query;
     const { idTarea } = req.params;
+    //console.log(idTarea);
     const empleados = await _empleadoService.mongoGetEmpleadosByIdTarea(idTarea, pageSize, pageNum);
     return res.send(empleados);
   }
   async mongoGetAll(req, res){
     const {pageSize, pageNum} = req.query;
-    console.log(pageSize);
+    //console.log(pageSize);
     const empleados = await _empleadoService.mongoGetAll(pageSize, pageNum);
     return res.send(empleados);
   }
