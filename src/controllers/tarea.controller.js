@@ -38,10 +38,13 @@ module.exports = class TareaController {
 
   async addEmpleado(req, res){
     //console.log("req");
-    const { idTarea, idEmpleado } = req.query;
+    const { idTarea, idEmpleado, idSolicitud } = req.query;
+    //console.log(idSolicitud);
     //console.log(idTarea, idEmpleado);
     const flag = await _tareaService.mongoAddEmpleado(idTarea, idEmpleado);
     if(flag){
+      const del = await _tareaService.mongoDeteleSolicitud(idSolicitud);
+      //console.log(del);
       return res.send({status:201,message:"Tarea asignada a empleado con exito"});
     }
     return res.send({status:403,message:"Algo fue mal"});
@@ -93,6 +96,11 @@ module.exports = class TareaController {
     const {id} = req.params;
     const deleteTarea = await _tareaService.mongoDelete(id);
     return res.send(deleteTarea);
+  }
+  async mongoDeteleSolicitud(req,res){
+    const {id} = req.params;
+    const deleteSolicitud = await _tareaService.mongoDeteleSolicitud(id);
+    return res.send(deleteSolicitud);
   }
 }
 

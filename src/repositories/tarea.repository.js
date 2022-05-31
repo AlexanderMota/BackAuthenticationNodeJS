@@ -18,11 +18,7 @@ module.exports = class TareaRepository extends BaseRepository{
     }
     async mongoGetTareasByIdEmpleado(idEmpleado, pageSize = 5, pageNum = 1) {
         const skips = pageSize * (pageNum - 1);
-        const idEmpleadoM = await _empleado.find({idEmpleado:idEmpleado},{_id:1});
-        if(!idEmpleadoM){
-            return false;
-        }
-        const idTareas = await _tareaHasEmpleados.find({idEmpleado:idEmpleadoM[0]._id.toString()},{_id:0,idTarea:1});
+        const idTareas = await _tareaHasEmpleados.find({idEmpleado:idEmpleado},{_id:0,idTarea:1});
         
         if(!idTareas){
             return false;

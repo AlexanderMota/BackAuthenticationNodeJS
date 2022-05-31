@@ -7,7 +7,7 @@ module.exports = function({ EmpleadoController }) {
 
   router.get("/", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoGetAll);
   router.get("/local", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mysqlGetAll);
-  router.get("/:idEmpleado", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoGetEmpleadoByIdEmpleado);
+  router.get("/:id", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoGet);
   router.get("/tarea/:idTarea", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoGetEmpleadosByIdTarea);
   
   router.patch("/:idEmpleado", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoUpdate);

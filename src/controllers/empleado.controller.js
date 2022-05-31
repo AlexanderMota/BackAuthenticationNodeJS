@@ -8,8 +8,8 @@ module.exports = class EmpleadoController {
   }
 
   async mongoGet(req, res) {
-    const { _id } = req.params;
-    const empleado = await _empleadoService.mongoGet(_id);
+    const { id } = req.params;
+    const empleado = await _empleadoService.mongoGet(id);
     return res.send(empleado);
   }
   async mongoGetEmpleadoByIdEmpleado(req, res) {
