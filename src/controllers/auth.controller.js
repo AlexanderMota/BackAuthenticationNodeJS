@@ -13,13 +13,20 @@ module.exports = class AuthController {
 
   async signUp(req, res) {
     const {body} = req;
-    //console.log(body);
+    //console.log("aqui > "+body);
     const createdEmpleado = await _authService.signUp(body);
     return res.status(201).send(createdEmpleado);
   }
   async signIn(req, res) {
     const {body} = req;
+    //console.log(body);
     const creds = await _authService.signIn(body);
+    return res.send(creds);
+  }
+  async updatePerfil(req, res){
+    const {body} = req;
+    //console.log(body);
+    const creds = await _authService.updatePerfil(body);
     return res.send(creds);
   }
 }

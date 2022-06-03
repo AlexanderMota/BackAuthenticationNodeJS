@@ -21,11 +21,6 @@ module.exports = class EmpleadoRepository extends BaseRepository{
     }
     async mongoGetEmpleadosByIdTarea(idTarea, pageSize = 5, pageNum = 1) {
         const skips = pageSize * (pageNum - 1);
-        //const { _id } = await _tarea.findById(idTarea);
-        console.log(idTarea);
-        /*if(!tareaM){
-            return false;
-        }*/
         const idEmpleados  = await _tareaHasEmpleados.find({idTarea:idTarea});
         
         //console.log("ids empleados: "+idEmpleados);
@@ -39,7 +34,7 @@ module.exports = class EmpleadoRepository extends BaseRepository{
             //console.log(idEmpleados[i].idEmpleado);
             let emp = await _empleado.find({_id:idEmpleados[i].idEmpleado});
             //console.log(emp);
-            empleados.push(emp);
+            empleados.push(emp[0]);
         }
         //console.log(empleados);
         return empleados;

@@ -45,35 +45,35 @@ module.exports = class TareaRepository extends BaseRepository{
     }
 
     async mongoAddEmpleado(idTarea, idEmpleado){
-        /*const _idMTarea = await _tarea.findOne({idTarea:idTarea},{_id:1});
-        if(!_idMTarea){
-            return false;
-        }
-        const _idMEmpleado = await _empleado.findOne({idEmpleado:idEmpleado},{_id:1});
-        if(!_idMEmpleado){
-            return false;
-        }*/
 
         const _id = await _tareaHasEmpleados.find({$and:[
             {"idTarea":idTarea},
             {"idEmpleado":idEmpleado}
         ]},{"_id":1});
         
-        //console.log(_id);
 
         if (_id !== undefined){
             if (_id[0] !== undefined){
-                //console.log("Parece que el trabajador ya esta registrado en esta tarea")
+                console.log("Parece que el trabajador ya esta registrado en esta tarea")
                 return false;
             }
         }
-        console.log("llega a create...");
+        
         await _tareaHasEmpleados.create({
             idTarea:idTarea,
             idEmpleado:idEmpleado,
             fechacreacion:new Date(Date.now())
         });
         return true;
+    }
+    async mongoQuitaEmpledeTarea(id){
+        const resi = await _tareaHasEmpleados.mongoDelete(id);
+        if(resi){
+            return {status:201,message:"delete contrato correct"};
+        }else{
+            return {status:401,message:"delete contrato error"};
+        };
+         
     }
 }
 

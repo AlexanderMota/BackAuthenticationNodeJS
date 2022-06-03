@@ -1,12 +1,13 @@
 const BaseService = require('./base.service');
-const mydb = require('../repositories/mysql')
+const mydb = require('../repositories/mysql');
+var mongoose = require('mongoose');
 
 let _tareaRep = null;
 let _empleadoRep = null;
 let _solicitudRep = null;
 
 module.exports = class EmpleadoService extends BaseService{
-    constructor({TareaRepository, EmpleadoRepository, SolicitudRepository}){
+    constructor({TareaRepository, EmpleadoRepository, SolicitudRepository,}){
         super(TareaRepository);
         _tareaRep = TareaRepository;
         _empleadoRep = EmpleadoRepository;
@@ -43,10 +44,14 @@ module.exports = class EmpleadoService extends BaseService{
             let tar = await _tareaRep.mongoGet(sols[i].idTarea);
             let emp = await _empleadoRep.mongoGet(sols[i].idEmpleado);
             
-            listaRes.push({"idSolicitud":sols[i]._id.toString(),"tarea":tar,"empleado":emp,"fechaSolicitud":sols[i].fechaSolicitud})
-            //console.log(listaRes[i]);
+            listaRes.push({
+                "idSolicitud":sols[i]._id.toString(),
+                "tarea":tar,
+                "empleado":emp,
+                "fechaSolicitud":sols[i].fechaSolicitud
+            });
         }
-        console.log(listaRes);
+        //console.log(listaRes);
         return listaRes;
     }
     async mongoGetSolicitud(id){
@@ -59,7 +64,19 @@ module.exports = class EmpleadoService extends BaseService{
         return {"idSolicitud":idx.value,"tarea":tar,"empleado":emp,"fechaSolicitud":sol.fechaSolicitud};
     }
     async mongoDeteleSolicitud(id){
-        const resi = await _solicitudRep.mongoDelete(id);
+            var idObj = mongoose.Types.ObjectId(id);
+            console.log(idObj);
+        const resi = await _solicitudRep.mongoDelete(idObj);
+        if(resi){
+            return {status:201,message:"delete solicitud correct"};
+        }else{
+            return {status:401,message:"delete solicitud error"};
+        };
+         
+    }
+    
+    async mongoQuitaEmpledeTarea(id){
+        const resi = await _tareaRep.mongoQuitaEmpledeTarea(id);
         if(resi){
             return {status:201,message:"delete solicitud correct"};
         }else{

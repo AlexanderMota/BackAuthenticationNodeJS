@@ -14,7 +14,14 @@ class BaseRepository {
         .skip(skips)
         .limit(pageSize);
   }
-
+  
+  async mongoGetOrderBy(pageSize = 5, pageNum = 1,order = {nombre:1}) {
+    const skips = pageSize * (pageNum - 1);
+    return await this.model
+      .find()
+      .skip(skips)
+      .limit(pageSize).sort(order);
+}
   async mongoCreate(entity) {
     return await this.model.create(entity);
   }

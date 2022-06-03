@@ -19,7 +19,7 @@ module.exports = class TareaController {
     return res.send(tarea);
   }
   async mongopruebas(){
-    const resi = await _tareaService.mongopruebas()
+    const resi = await _tareaService.mongopruebas();
     return res.send(resi);
   }
   async mongoGetAll(req, res){
@@ -27,7 +27,11 @@ module.exports = class TareaController {
     const tarea = await _tareaService.mongoGetAll(pageSize, pageNum,{ $query: {}, $orderby: { nombre : -1 } });
     return res.send(tarea);
   }
-
+  async mongoGetOrderBy(req, res){
+    const {pageSize, pageNum} = req.query;
+    const tarea = await _tareaService.mongoGetOrderBy(pageSize, pageNum);
+    return res.send(tarea);
+  }
   async mongoGetTareasByIdEmpleado(req, res){
     const {pageSize, pageNum} = req.query;
     const { idEmpleado } = req.params;
@@ -55,8 +59,7 @@ module.exports = class TareaController {
     const flag = await _tareaService.mongoSolicitarTarea(idTarea, idEmpleado);
     if(flag){
       return res.send({status:201,message:"Solicitud realizada con exito"});
-    }
-    return res.send({status:400,message:"Algo fue mal"});
+    } return res.send({status:400,message:"Algo fue mal"});
   }
 
   async mongoGetAllSolicitudes(req, res){
@@ -100,6 +103,11 @@ module.exports = class TareaController {
   async mongoDeteleSolicitud(req,res){
     const {id} = req.params;
     const deleteSolicitud = await _tareaService.mongoDeteleSolicitud(id);
+    return res.send(deleteSolicitud);
+  }
+  async mongoDeteleContrato(req,res){
+    const {id} = req.params;
+    const deleteSolicitud = await _tareaService.mongoQuitaEmpledeTarea(id);
     return res.send(deleteSolicitud);
   }
 }

@@ -9,5 +9,6 @@ module.exports = function({ AuthController }) {
   router.post("/signup", [AuthMiddleware, ParseIntMiddleware], AuthController.signUp);
   router.post("/signin", ParseIntMiddleware, AuthController.signIn);
 
+  router.patch("/", [AuthMiddleware, ParseIntMiddleware], AuthController.updatePerfil);
   return router;
 };

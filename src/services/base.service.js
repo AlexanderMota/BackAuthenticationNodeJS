@@ -27,10 +27,12 @@ class BaseService {
     return await this.repository.mongoGetAll(pageSize, pageNum, campo);
   }
 
+  async mongoGetOrderBy(pageSize, pageNum,campo={}) {
+    return await this.repository.mongoGetOrderBy(pageSize, pageNum);
+  }
   async mongoCreate(entity) {
     return await this.repository.mongoCreate(entity);
   }
-
   async mongoUpdate(id, entity) {
     if (!id) {
       const error = new Error();

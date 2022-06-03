@@ -49,6 +49,10 @@ module.exports = class AuthService{
 
         const token = JwtHelper.generateToken(empleadoToEncode);
 
-        return {status: 201, message:token};
+        return {status: 201, message:token, empleado:empleadoExists};
+    }
+    async updatePerfil(empleado){
+        await _empleadoService.mongoUpdate(empleado._id,empleado);
+        return {status: 201, message:"Empleado actualizado con exito"};
     }
 }

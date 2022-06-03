@@ -5,7 +5,7 @@ const { CACHE_TIME } = require("../helpers");
 module.exports = function({ TareaController }) {
   const router = Router();
 
-  router.get("/", [AuthMiddleware, ParseIntMiddleware], TareaController.mongoGetAll);
+  router.get("/", [AuthMiddleware, ParseIntMiddleware], TareaController.mongoGetOrderBy);
   router.get("/:id", [AuthMiddleware, ParseIntMiddleware], TareaController.mongoGet);
   router.get("/local", [AuthMiddleware, ParseIntMiddleware], TareaController.mysqlGetAll);
   router.get("/empleado/:idEmpleado", [AuthMiddleware,ParseIntMiddleware], TareaController.mongoGetTareasByIdEmpleado);
