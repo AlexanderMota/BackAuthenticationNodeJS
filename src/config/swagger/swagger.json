@@ -172,7 +172,7 @@
         }
       }
     },
-    "/empleados/{idEmpleado}": {
+    "/empleados/byid/{idEmpleado}": {
       "get": {
         "tags": ["Empleado"],
         "summary": "Busca un empleado por su id",
@@ -341,6 +341,57 @@
         }
       }
     },
+    "/empleados/disponible/{idTarea}":{
+      "get": {
+        "tags": ["Empleado"],
+        "summary": "Muestra trabajadores sin una tarea",
+        "description": "Muestra todos los trabajadores guardados, que no estan asociados a una tarea especificada",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "idTarea",
+            "in": "path",
+            "type": "string",
+            "description": "Id de la Tarea en la bd",
+            "required": true
+          },
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "pageNum",
+            "type": "number",
+            "in": "query",
+            "description": "Número de la pagina de registros a mostrar. Por defecto 1.",
+            "required": false
+          },
+          {
+            "name": "pageSize",
+            "type": "number",
+            "in": "query",
+            "description": "Tamaño de la pagina de registros a mostrar. Por defecto 5.",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Empleado"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
     "/empleados/addtarea":{
       "post": {
         "tags": ["Empleado"],
@@ -442,9 +493,9 @@
             "required": true
           },
           {
-            "name": "EmpleadoJson",
+            "name": "TareaJson",
             "in": "body",
-            "description": "Objeto empleado en formato json para registrarlo en la bd. Necesario para obtener un token (string) con el cual poder consultar la api",
+            "description": "Objeto tarea en formato json para registrarlo en la bd. Necesario para obtener un token (string) con el cual poder consultar la api",
             "required": true,
             "schema": {
               "$ref": "#/definitions/Tarea"
@@ -467,7 +518,7 @@
         }
       }
     },
-    "/tareas/{idTarea}": {
+    "/tareas/byid/{idTarea}": {
       "get": {
         "tags": ["Tarea"],
         "summary": "Busca una tarea por su id",
@@ -636,7 +687,153 @@
         }
       }
     },
-    "/tareas/solicitar": {
+    "/tareas/comentarios/{idTarea}": {
+      "get": {
+        "tags": ["Tarea"],
+        "summary": "Muestra comentarios de la tarea",
+        "description": "Muestra todos los comentarios guardados asociados a una tarea especificada",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "idTarea",
+            "in": "path",
+            "type": "string",
+            "description": "Id de la Tarea en la bd",
+            "required": true
+          },
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "pageNum",
+            "type": "number",
+            "in": "query",
+            "description": "Número de la pagina de registros a mostrar. Por defecto 1.",
+            "required": false
+          },
+          {
+            "name": "pageSize",
+            "type": "number",
+            "in": "query",
+            "description": "Tamaño de la pagina de registros a mostrar. Por defecto 5.",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Tarea"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/tareas/supertareas": {
+      "get": {
+        "tags": ["Tarea"],
+        "summary": "Muestra todas las supertareas guardadas",
+        "description": "Muestra todas las supertareas guardadas",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "pageNum",
+            "type": "number",
+            "in": "query",
+            "description": "Número de la pagina de registros a mostrar. Por defecto 1.",
+            "required": false
+          },
+          {
+            "name": "pageSize",
+            "type": "number",
+            "in": "query",
+            "description": "Tamaño de la pagina de registros a mostrar. Por defecto 5.",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Tarea"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/tareas/subtareas/{idTarea}": {
+      "get": {
+        "tags": ["Tarea"],
+        "summary": "Muestra todas las subtareas guardadas en relación a otra.",
+        "description": "Muestra todas las subtareas guardadas en relación a otra.",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "idTarea",
+            "in": "path",
+            "type": "string",
+            "description": "Id de la Tarea en la bd",
+            "required": true
+          },
+          {
+            "name": "pageNum",
+            "type": "number",
+            "in": "query",
+            "description": "Número de la pagina de registros a mostrar. Por defecto 1.",
+            "required": false
+          },
+          {
+            "name": "pageSize",
+            "type": "number",
+            "in": "query",
+            "description": "Tamaño de la pagina de registros a mostrar. Por defecto 5.",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Tarea"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/tareas/solicitar/": {
       "post": {
         "tags": ["Tarea"],
         "summary": "Solicitar tarea",
@@ -680,13 +877,19 @@
         }
       }
     },
-    "/tareas/addempleado": {
+    "/tareas/addempleado/": {
       "post": {
         "tags": ["Tarea"],
         "summary": "Añade un trabajador a una tarea",
         "description": "Añade un trabajador a una tarea",
         "produces": ["application/json"],
         "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
           {
             "name": "idTarea",
             "in": "query",
@@ -700,6 +903,127 @@
             "type": "string",
             "description": "Id del Empleado en la bd",
             "required": true
+          },
+          {
+            "name": "idSolicitud",
+            "in": "query",
+            "type": "string",
+            "description": "Id de la solicitud de registro en una tarea en la bd",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/tareas/addsubtarea/": {
+      "post": {
+        "tags": ["Tarea"],
+        "summary": "Añade una subtarea a una tarea",
+        "description": "Añade una subtarea a una tarea",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "idTarea",
+            "in": "query",
+            "type": "string",
+            "description": "Id de la Tarea en la bd",
+            "required": true
+          },
+          {
+            "name": "idSubtarea",
+            "in": "query",
+            "type": "string",
+            "description": "Id de la subtarea en la bd",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/tareas/addsupertarea/": {
+      "post": {
+        "tags": ["Tarea"],
+        "summary": "Añade una subtarea a una tarea",
+        "description": "Añade una subtarea a una tarea",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "idTarea",
+            "in": "query",
+            "type": "string",
+            "description": "Id de la Tarea en la bd",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/tareas/addcomentario/": {
+      "post": {
+        "tags": ["Tarea"],
+        "summary": "Añade un comentario a una tarea",
+        "description": "Añade un comentario a una tarea",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "ComentarioJson",
+            "in": "body",
+            "description": "Objeto comentario en formato json para registrarlo en la bd.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Comentario"
+            }
           },
           {
             "name": "Authorization",
@@ -724,7 +1048,7 @@
         }
       }
     },
-    "/tareas/solicitudes/todas": {
+    "/tareas/solicitudes": {
       "get": {
         "tags": ["Tarea"],
         "summary": "Muestra solicitudes",
@@ -768,11 +1092,313 @@
           }
         }
       }
+    },
+
+    "/ubicacion": {
+      "get": {
+        "tags": ["Ubicación"],
+        "summary": "Muestra todas las ubicaciones guardadas",
+        "description": "Muestra todas las ubicaciones de interesa para la empresa que se encuentran guardadas en el sistema",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "pageNum",
+            "type": "number",
+            "in": "query",
+            "description": "Número de la pagina de registros a mostrar. Por defecto 1.",
+            "required": false
+          },
+          {
+            "name": "pageSize",
+            "type": "number",
+            "in": "query",
+            "description": "Tamaño de la pagina de registros a mostrar. Por defecto 5.",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Ubicación"],
+        "summary": "Guarda una nueva ubicación",
+        "description": "Guarda una nueva ubicación de interes para alguna actividad de la empresa",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "UbicacionJson",
+            "in": "body",
+            "description": "Objeto empleado en formato json para registrarlo en la bd. Necesario para obtener un token (string) con el cual poder consultar la api",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Ubicacion"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/ubicacion/tarea/{idTarea}": {
+      "get": {
+        "tags": ["Ubicación"],
+        "summary": "Muestra todas las ubicaciones guardadas en relación a una tarea",
+        "description": "Muestra todas las ubicaciones de interes para realizar alguna tarea dentro de la empresa, que se encuentran guardadas en el sistema",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "idTarea",
+            "in": "path",
+            "type": "string",
+            "description": "Id de la tarea asociada a esta ubicación",
+            "required": true
+          },
+          {
+            "name": "pageNum",
+            "type": "number",
+            "in": "query",
+            "description": "Número de la pagina de registros a mostrar. Por defecto 1.",
+            "required": false
+          },
+          {
+            "name": "pageSize",
+            "type": "number",
+            "in": "query",
+            "description": "Tamaño de la pagina de registros a mostrar. Por defecto 5.",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Ubicación"],
+        "summary": "Guarda una nueva ubicación relacionada con una tarea concreta",
+        "description": "Guarda una nueva ubicación de interes para alguna actividad de la empresa, asociada a una tarea concreta.",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "UbicacionJson",
+            "in": "body",
+            "description": "Objeto empleado en formato json para registrarlo en la bd. Necesario para obtener un token (string) con el cual poder consultar la api",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Ubicacion"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/ubicacion/byid/{id}": {
+      "get": {
+        "tags": ["Ubicación"],
+        "summary": "Muestra una ubicación por su id",
+        "description": "Busca una ubicación en función del id que tiene en la base de datos.",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "description": "Id de la ubicación.",
+            "required": false
+          },
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "pageNum",
+            "type": "number",
+            "in": "query",
+            "description": "Número de la pagina de registros a mostrar. Por defecto 1.",
+            "required": false
+          },
+          {
+            "name": "pageSize",
+            "type": "number",
+            "in": "query",
+            "description": "Tamaño de la pagina de registros a mostrar. Por defecto 5.",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+
+    "/vehiculo": {
+      "get": {
+        "tags": ["Vehículo"],
+        "summary": "Muestra todos los vehículos guardados",
+        "description": "Muestra todos los vehículos disponobles para la empresa, que se encuentren registrados en el sistema",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "pageNum",
+            "type": "number",
+            "in": "query",
+            "description": "Número de la pagina de registros a mostrar. Por defecto 1.",
+            "required": false
+          },
+          {
+            "name": "pageSize",
+            "type": "number",
+            "in": "query",
+            "description": "Tamaño de la pagina de registros a mostrar. Por defecto 5.",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Vehículo"],
+        "summary": "Guarda un nuevo vehículo",
+        "description": "Guarda un nuevo vehículo de interes para alguna actividad de la empresa",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "VehiculoJson",
+            "in": "body",
+            "description": "Objeto empleado en formato json para registrarlo en la bd. Necesario para obtener un token (string) con el cual poder consultar la api",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Vehiculo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
     }
   },
-
   "definitions": {
-    "Usuario": { 
+    "Usuario": {
       "type" : "object",
       "properties" : {
         "email": { "type" : "string" },
@@ -782,10 +1408,6 @@
     "Empleado": {
       "type": "object",
       "properties": {
-        "idEmpleado": {
-          "type": "integer",
-          "format": "int64"
-        },
         "nombre": {
           "type": "string"
         },
@@ -798,15 +1420,22 @@
         "email": {
           "type": "string"
         },
+        "rol": {
+          "type": "object",
+          "properties" : {
+            "nombre": {
+              "type": "string"
+            },
+            "valor": {
+              "type": "number"
+            }
+          }
+        },
         "password": {
           "type": "string"
         },
         "_id": {
           "type": "string"
-        },
-        "__v": {
-          "type": "integer",
-          "format": "int64"
         }
       }
     },
@@ -858,13 +1487,75 @@
         "numeroTrabajadores": {
           "type": "integer",
           "format": "int64"
-        },
-        "_id": {
+        }
+      }
+    },
+    "Comentario": {
+      "type": "object",
+      "properties": {
+        "idTarea": {
           "type": "string"
         },
-        "__v": {
+        "idAutor": {
+          "type": "string"
+        },
+        "nombre": {
+          "type": "string"
+        },
+        "descripcion": {
+          "type": "string"
+        },
+        "fecha": {
+          "type": "string"
+        }
+      }
+    },
+    "Vehiculo":{
+      "type":"object",
+      "properties":{
+        "matricula": {
+          "type": "string"
+        },
+        "propietario": {
+          "type": "string"
+        },
+        "plazas": {
           "type": "integer",
           "format": "int64"
+        },
+        "descripcion": {
+          "type": "string"
+        },
+        "fechaRegistro": {
+          "type": "string"
+        }
+      }
+    },
+    "Ubicacion":{
+      "type":"object",
+      "properties":{
+        "idTarea":{
+          "type":"string"
+        },
+        "titulo":{
+          "type":"string"
+        },
+        "descripcion":{
+          "type":"string"
+        },
+        "horasRecogida":{
+          "type":"array",
+          "items":
+            {"type" : "string"}
+        },
+        "longitud":{
+          "type": "number"
+        },
+        "latitud":{
+          "type": "number"
+        },
+        "fechaRegistro":{
+          "type":"string"
         }
       }
     },

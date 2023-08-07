@@ -12,15 +12,38 @@ module.exports = class TareaController {
     //console.log(tarea);
     return res.send(tarea);
   }
+  async mongoGetTareasBy(req, res) {
+    const {parametroBusqueda, valorBusqueda, pageSize, pageNum} = req.query;
+    const tarea = await mongoGetTareasBy(valorBusqueda, parametroBusqueda,pageSize, pageNum);
+    
+    return res.send(tarea);
+  }
   async mongoGetTareaByIdTarea(req, res) {
     const { idTarea } = req.params;
     //console.log(idTarea);
     const tarea = await _tareaService.mongoGetTareaByIdTarea(idTarea);
     return res.send(tarea);
   }
-  async mongopruebas(){
-    const resi = await _tareaService.mongopruebas();
-    return res.send(resi);
+  async mongoGetSupertareas(req, res){
+    const tarea = await _tareaService.mongoGetSupertareas();
+    
+    return res.send(tarea);
+  }
+  async mongoGetSubtareasByIdTarea(req, res){
+    const {idTarea} = req.params;
+    //console.log("mongoGetSubtareasByIdTarea: " + idTarea);
+    const tareas = await _tareaService.mongoGetSubtareasByIdTarea(idTarea);
+    //console.log("mongoGetSubtareasByIdTarea: " + tareas);
+    return res.send(tareas);
+  }
+
+  async mongoGetComentariosByIdTarea(req, res) {
+    const { idTarea } = req.params;
+    const {pageSize, pageNum} = req.query;
+    
+    const comentarios = await _tareaService.mongoGetComentariosByIdTarea(idTarea, pageSize, pageNum);
+    
+    return res.send(comentarios);
   }
   async mongoGetAll(req, res){
     const {pageSize, pageNum} = req.query;
@@ -35,21 +58,47 @@ module.exports = class TareaController {
   async mongoGetTareasByIdEmpleado(req, res){
     const {pageSize, pageNum} = req.query;
     const { idEmpleado } = req.params;
-    // arreglo provisional que facilita las pruebas por el id numerico
+    
     const tarea = await _tareaService.mongoGetTareasByIdEmpleado(idEmpleado, pageSize, pageNum);
     return res.send(tarea);
   }
 
   async addEmpleado(req, res){
-    //console.log("req");
     const { idTarea, idEmpleado, idSolicitud } = req.query;
-    //console.log(idSolicitud);
-    //console.log(idTarea, idEmpleado);
     const flag = await _tareaService.mongoAddEmpleado(idTarea, idEmpleado);
     if(flag){
-      const del = await _tareaService.mongoDeteleSolicitud(idSolicitud);
-      //console.log(del);
+      if(idSolicitud){
+        const del = await _tareaService.mongoDeteleSolicitud(idSolicitud);
+      }
       return res.send({status:201,message:"Tarea asignada a empleado con exito"});
+    }
+    return res.send({status:403,message:"Algo fue mal"});
+  }
+  async addSupertarea(req, res){
+    const { idTarea } = req.query;
+    
+    const flag = await _tareaService.addSupertarea(idTarea);
+    //console.log("tareaController.addSupertarea(): " + flag); 
+    if(flag){
+      return res.send({status:201,message:"Supertarea creada con exito"});
+    }
+    return res.send({status:403,message:"Algo fue mal"});
+  }
+  async addSubtarea(req, res){
+    const { idTarea, idSubtarea } = req.quey;
+    
+    const flag = await _tareaService.addSubtarea(idTarea, idSubtarea);
+    //console.log("tareaController.addSubtarea(): " + flag);
+    if(flag){
+      return res.send({status:201,message:"Tarea asignada a supertarea con exito"});
+    }
+    return res.send({status:403,message:"Algo fue mal"});
+  }
+  async mongoAddComentario(req, res){
+    const  {idTarea, idAutor, nombre, descripcion}= req.body;
+    const flag = await _tareaService.mongoAddComentario( idTarea, idAutor, nombre, descripcion );
+    if(flag){
+      return res.send({status:201,message:"Comentario asignado a la tarea con exito"});
     }
     return res.send({status:403,message:"Algo fue mal"});
   }
@@ -71,27 +120,45 @@ module.exports = class TareaController {
     return res.send(await _tareaService.mongoGetSolicitud(id));
   }
 
-  async mysqlGetAll(req, res){
+  /*async mysqlGetAll(req, res){
     const tarea = await _tareaService.mysqlGetAll();
     return res.send(tarea);
-  }
+  }*/
   
   async mongoCreate(req, res){
     const {body} = req;
     //console.log(body);
-    if(await _tareaService.mongoCreate(body)){
-      return res.send({status:201,message:"tarea creada correctamente"});
+    const {idSuper} = req.query
+    //console.log(idSuper);
+    
+    const respSup = await _tareaService.mongoGetTareasBy(idSuper,"nombre");
+    //si idSuper=='0b', se deberia poder crear supertareas, pendiente de aplicar
+
+    console.log(respSup._id.toString());
+    if(respSup._id != undefined){
+      const resp =  await _tareaService.mongoCreate(body);
+      
+      if(resp?._id){
+        console.log("idSuper: " + respSup._id.toString() + "\nidSub: " + resp._id);
+        const resi = await _tareaService.addSubtarea(respSup._id.toString(),resp._id);
+        console.log(resi);
+        return res.send({status:201,message:"tarea creada correctamente",id:resp._id});
+      }
+    }else if(idSuper == "0b"){
+      const resp2 =  await _tareaService.mongoCreate(body);
+      return res.send({status: 201, message:"supertarea creada correctamente",id:resp2._id.toString()});
     }else{
       return res.send({status: 400, message:"parametro incorrecto"});
     }
+     // return res.send({status: 400, message:"parametro incorrecto"});
   }
 
   async mongoUpdate(req, res){
     const {body} = req;
     const {id} = req.params;
-    //console.log("update tarea"+id);
+    
     const updateTarea = await _tareaService.mongoUpdate(id,body);
-    //console.log(updateTarea);
+    
     return res.send({status:202,message:"tarea actualizada correctamente"});
   }
 

@@ -20,7 +20,7 @@ module.exports = class SolicitudRepository extends BaseRepository{
         ]},{"_id":1});
         if (_idAsignacion !== undefined){
             if (_idAsignacion[0] !== undefined){
-                console.log("el trabajador ya esta registrado en esta tarea")
+                //console.log("el trabajador ya esta registrado en esta tarea")
                 return false;
             }
         }
@@ -31,7 +31,7 @@ module.exports = class SolicitudRepository extends BaseRepository{
         ]},{"_id":1});
         if (_idSolicitud !== undefined){
             if (_idSolicitud[0] !== undefined){
-                console.log("el trabajador ya ha solicitado esta tarea")
+                //console.log("el trabajador ya ha solicitado esta tarea")
                 return false;
             }
         }
@@ -40,7 +40,7 @@ module.exports = class SolicitudRepository extends BaseRepository{
         await _solicitud.create({
             idTarea:idTarea,
             idEmpleado:idEmpleado,
-            fechaSolicitud: new Date(Date.now())
+            fechaSolicitud: new Date(Date.now()).toISOString()
         });
         //console.log(resifff);
         return true;

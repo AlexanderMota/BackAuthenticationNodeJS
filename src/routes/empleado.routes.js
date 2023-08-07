@@ -1,20 +1,23 @@
 const { Router } = require("express");
-const { AuthMiddleware, ParseIntMiddleware,CacheMiddleware } = require("../middlewares");
+const { AuthMiddleware, ParseIntMiddleware } = require("../middlewares");
 const { CACHE_TIME } = require("../helpers");
 
-module.exports = function({ EmpleadoController }) {
+module.exports = ({ EmpleadoController }) => {
   const router = Router();
 
   router.get("/", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoGetAll);
   router.get("/local", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mysqlGetAll);
-  router.get("/:id", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoGet);
+  router.get("/roles", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.getRoles);
+  router.get("/departamentos", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.getDepartamentos);
+  router.get("/byid/:idEmpleado", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoGetEmpleadoByIdEmpleado);
   router.get("/tarea/:idTarea", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoGetEmpleadosByIdTarea);
+  router.get("/disponible/:idTarea", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoGetEmpleadosByIdTareaDist);
   
-  router.patch("/:idEmpleado", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoUpdate);
+  router.patch("/byid/:idEmpleado", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoUpdate);
   
   router.post("/addtarea", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoAddTarea);
   
-  router.delete("/:idEmpleado", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoDelete);
+  router.delete("/byid/:idEmpleado", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoDelete);
 
   return router;
 };

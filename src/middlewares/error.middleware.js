@@ -5,4 +5,6 @@ module.exports = (err, req, res, next) => {
     status: httpStatus,
     message: err.message || "Internal server error"
   });
+
+  next();
 };

@@ -14,14 +14,30 @@ module.exports = class EmpleadoService extends BaseService{
         _solicitudRep = SolicitudRepository;
 
     }
-    async mongopruebas(){
+    /*async mongopruebas(){
         return await _tareaRep.mongopruebas();
     }
     async mysqlGetAll(){
         return await mydb();
     }
+*/
+
+
+    async mongoGetTareasBy(parametro, nombreParam,pageSize , pageNum ) {
+        return await _tareaRep.mongoGetTareasBy(parametro, nombreParam,pageSize, pageNum)
+    }
     async mongoGetTareaByIdTarea(idTarea){
         return await _tareaRep.mongoGetTareaByIdTarea(idTarea);
+        //return await _tareaRep.mongoGetComentariosByIdTarea(idTarea);
+    }
+    async mongoGetSupertareas(){
+        return await _tareaRep.mongoGetSupertareas();
+    }
+    async mongoGetSubtareasByIdTarea(idTarea){
+        return await _tareaRep.mongoGetSubtareasByIdTarea(idTarea);
+    }
+    async mongoGetComentariosByIdTarea(idTarea, pageSize , pageNum ){
+        return await _tareaRep.mongoGetComentariosByIdTarea(idTarea , pageSize , pageNum );
     }
     async mongoGetTareaByNombre(nombre){
         return await _tareaRep.mongoGetTareaByNombre(nombre);
@@ -31,7 +47,21 @@ module.exports = class EmpleadoService extends BaseService{
     }
     async mongoAddEmpleado(idTarea, idEmpleado){
         return await _tareaRep.mongoAddEmpleado(idTarea, idEmpleado);
+        //return await _tareaRep.mongoAddComentario(idTarea, idEmpleado, 'Autor del comentario', 'Cuerpo del comentario');
     }
+    async addSupertarea(idTarea){
+        return await _tareaRep.mongoAddSupertarea(idTarea);
+    }
+    async addSubtarea(idTarea,idSubtarea){
+        return await _tareaRep.mongoAddSubtarea(idTarea, idSubtarea);
+    }
+    async mongoAddComentario(idTarea, idAutor, nombre, descripcion){
+        return await _tareaRep.mongoAddComentario(idTarea, idAutor, nombre, descripcion);
+    }
+
+
+
+
     //hace falta que este metodo genere una notificacion para administrar la solicitud
     async mongoSolicitarTarea(idTarea, idEmpleado){
         return await _solicitudRep.mongoSolicitarTarea(idTarea, idEmpleado);
@@ -65,7 +95,7 @@ module.exports = class EmpleadoService extends BaseService{
     }
     async mongoDeteleSolicitud(id){
             var idObj = mongoose.Types.ObjectId(id);
-            console.log(idObj);
+            //console.log(idObj);
         const resi = await _solicitudRep.mongoDelete(idObj);
         if(resi){
             return {status:201,message:"delete solicitud correct"};
@@ -74,7 +104,6 @@ module.exports = class EmpleadoService extends BaseService{
         };
          
     }
-    
     async mongoQuitaEmpledeTarea(id){
         const resi = await _tareaRep.mongoQuitaEmpledeTarea(id);
         if(resi){

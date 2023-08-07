@@ -12,7 +12,7 @@ module.exports = class AuthService{
 
     async signUp(empleado){
         const {email} = empleado;
-        const empleadoExists = await _empleadoService.mongoGetEmpleadoByNombre(nombre);
+        const empleadoExists = await _empleadoService.mongoGetEmpleadoByEmail(email);
         if(empleadoExists){
             const error = new Error();
             error.status = 400;
@@ -20,6 +20,7 @@ module.exports = class AuthService{
             throw error;
         }
 
+        empleado.fechaContrato = new Date(Date.now());
         await _empleadoService.mongoCreate(empleado);
         return {status: 201, message:"Empleado registrado con exito"};
     }

@@ -8,21 +8,29 @@ const app = require(".");
 const {
   EmpleadoService,
   TareaService,
-  AuthService
+  AuthService,
+  UbicacionService,
+  VehiculoService
 } = require("../services");
 
 // controllers
 const {
   EmpleadoController,
   TareaController,
-  AuthController
+  AuthController,
+  FileManagerController,
+  UbicacionController,
+  VehiculoController
 } = require("../controllers");
 
 // routes
 const {
   EmpleadoRoutes,
   TareaRoutes,
-  AuthRoutes
+  AuthRoutes,
+  FileManagerRoutes,
+  UbicacionRoutes,
+  VehiculoRoutes
 } = require("../routes/index.routes");
 const Routes = require("../routes");
 
@@ -30,15 +38,22 @@ const Routes = require("../routes");
 const { 
   Empleado, 
   Tarea, 
+  Supertarea,
   TareaHasEmpleados, 
-  Solicitud
+  TareaHasSubtareas, 
+  Solicitud,
+  Comentario,
+  Ubicacion,
+  Vehiculo
 } = require("../models");
 
 // repositories
 const {
   EmpleadoRepository,
   TareaRepository,
-  SolicitudRepository
+  SolicitudRepository,
+  UbicacionRepository,
+  VehiculoRepository
 } = require("../repositories");
 
 const container = createContainer();
@@ -52,28 +67,43 @@ container
   .register({
     EmpleadoService: asClass(EmpleadoService).singleton(),
     TareaService: asClass(TareaService).singleton(),
-    AuthService: asClass(AuthService).singleton()
+    AuthService: asClass(AuthService).singleton(),
+    UbicacionService: asClass(UbicacionService).singleton(),
+    VehiculoService: asClass(VehiculoService).singleton()
   })
   .register({
     AuthController: asClass(AuthController.bind(AuthController)).singleton(),
     EmpleadoController: asClass(EmpleadoController.bind(EmpleadoController)).singleton(),
-    TareaController: asClass(TareaController.bind(TareaController)).singleton()
+    TareaController: asClass(TareaController.bind(TareaController)).singleton(),
+    FileManagerController: asClass(FileManagerController.bind(FileManagerController)).singleton(),
+    UbicacionController: asClass(UbicacionController.bind(UbicacionController)).singleton(),
+    VehiculoController: asClass(VehiculoController.bind(VehiculoController)).singleton()
   })
   .register({
     EmpleadoRoutes: asFunction(EmpleadoRoutes).singleton(),
     TareaRoutes: asFunction(TareaRoutes).singleton(),
-    AuthRoutes: asFunction(AuthRoutes).singleton()
+    AuthRoutes: asFunction(AuthRoutes).singleton(),
+    FileManagerRoutes: asFunction(FileManagerRoutes).singleton(),
+    UbicacionRoutes: asFunction(UbicacionRoutes).singleton(),
+    VehiculoRoutes: asFunction(VehiculoRoutes).singleton()
   })
   .register({
     Empleado: asValue(Empleado),
     Tarea: asValue(Tarea),
+    Supertarea: asValue(Supertarea),
     TareaHasEmpleados: asValue(TareaHasEmpleados),
-    Solicitud: asValue(Solicitud)
+    TareaHasSubtareas: asValue(TareaHasSubtareas),
+    Solicitud: asValue(Solicitud),
+    Comentario: asValue(Comentario),
+    Ubicacion: asValue(Ubicacion),
+    Vehiculo: asValue(Vehiculo)
   })
   .register({
     EmpleadoRepository: asClass(EmpleadoRepository).singleton(),
     TareaRepository: asClass(TareaRepository).singleton(),
-    SolicitudRepository: asClass(SolicitudRepository).singleton()
+    SolicitudRepository: asClass(SolicitudRepository).singleton(),
+    UbicacionRepository: asClass(UbicacionRepository).singleton(),
+    VehiculoRepository: asClass(VehiculoRepository).singleton()
   });
 
 module.exports = container;

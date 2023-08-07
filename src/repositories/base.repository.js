@@ -27,6 +27,7 @@ class BaseRepository {
   }
 
   async mongoUpdate(id, entity) {
+    console.log(id + " - " + entity);
     if(!this.model.findById(id)){
       return {error:"id no encontrado"};
     }

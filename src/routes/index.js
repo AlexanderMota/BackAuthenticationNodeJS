@@ -11,7 +11,10 @@ const swaggerDocument = require(SWAGGER_PATH);
 module.exports = function({
   EmpleadoRoutes,
   TareaRoutes,
-  AuthRoutes
+  AuthRoutes,
+  FileManagerRoutes,
+  UbicacionRoutes,
+  VehiculoRoutes
 }) {
   const router = express.Router();
   const apiRoutes = express.Router();
@@ -24,7 +27,10 @@ module.exports = function({
 
   apiRoutes.use("/empleados", EmpleadoRoutes);
   apiRoutes.use("/tareas", TareaRoutes);
-  apiRoutes.use("/auth", AuthRoutes);
+  apiRoutes.use("/auth", AuthRoutes);;
+  apiRoutes.use("/files", FileManagerRoutes);
+  apiRoutes.use("/ubicacion", UbicacionRoutes);
+  apiRoutes.use("/vehiculo", VehiculoRoutes);
 
   router.use("/api", apiRoutes);
   router.use("/", swaggerUI.serve, swaggerUI.setup(swaggerDocument));

@@ -42,6 +42,7 @@ class BaseService {
     }
 
     const {_id} = await this.repository.mongoGet(id);
+    //console.log(_id);
 
     if (!_id) {
       const error = new Error();

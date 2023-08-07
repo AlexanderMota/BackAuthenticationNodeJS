@@ -11,15 +11,15 @@ module.exports = class EmpleadoService extends BaseService{
     async mysqlGet(){
         return await _empleadoRep.getOne(nombre);
     }
-    async mysqlGetAll(){
+    /*async mysqlGetAll(){
         return await mydb();
+    }*/
+    async mongoGetEmpleadosByIdTarea(idEmpleado){
+        return await _empleadoRep.mongoGetEmpleadosByIdTarea(idEmpleado);
     }
-    async mongoGetEmpleadoByIdEmpleado(idEmpleado){
-        return await _empleadoRep.mongoGetEmpleadoByIdEmpleado(idEmpleado);
-    }
-    async mongoGetEmpleadosByIdTarea(idTarea, pageSize, pageNum){
+    async mongoGetEmpleadosByIdTareaDist(idTarea, pageSize, pageNum){
         //console.log("empledoServ - getempbyidtar: "+ idTarea);
-        return await _empleadoRep.mongoGetEmpleadosByIdTarea(idTarea, pageSize, pageNum);
+        return await _empleadoRep.mongoGetEmpleadosByIdTareaDist(idTarea, pageSize, pageNum);
     }
     async mongoGetEmpleadoByNombre(nombre){
         return await _empleadoRep.mongoGetEmpleadoByNombre(nombre);
@@ -27,7 +27,7 @@ module.exports = class EmpleadoService extends BaseService{
     async mongoGetEmpleadoByEmail(email){
         return await _empleadoRep.mongoGetEmpleadoByEmail(email);
     }
-    async mongoUpdate(idEmpleado, empleado){
+    /*async mongoUpdate(idEmpleado, empleado){
         if (!idEmpleado) {
           const error = new Error();
           error.status = 400;
@@ -45,5 +45,5 @@ module.exports = class EmpleadoService extends BaseService{
     
         await _empleadoRep.mongoUpdate(_id,empleado);
         return {status : 201, message:"entity updated"}
-    }
+    }*/
 }

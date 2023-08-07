@@ -3,11 +3,13 @@ const { Schema } = mongoose;
 const { compareSync, hashSync, genSaltSync } = require("bcryptjs");
 
 const EmpleadoSchema = new Schema({
-  idEmpleado: { type: Number, required: true },
+  //idEmpleado: { type: Number, required: true },
   nombre: { type: String, required: true },
   apellidos: { type: String, required: true },
   telefono: { type: String },
   email: { type: String },
+  rol: { nombre : String, valor : Number },
+  fechaContrato : { type: String , default: new Date(Date.now()).toISOString() },
   password: { type: String, required: true }
 });
 
