@@ -22,37 +22,37 @@
   "schemes": ["http", "https"],
   "paths": {
     "/auth": {
-    "post": {
-      "tags": [
-        "Autenticación"
-      ],
-      "summary": "Verifica si el token sigue activo",
-      "parameters": [
-        {
-          "name": "token",
-          "in": "query",
-          "description": "Cadena de texto que representa el token",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "responses": {
-        "200": {
-          "description": "successful operation",
-          "schema": {
-            "type": "array",
-            "items": {
-              "$ref": "#/definitions/ApiResponse"
+      "post": {
+        "tags": [
+          "Autenticación"
+        ],
+        "summary": "Verifica si el token sigue activo",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Cadena de texto que representa el token",
+            "required": true,
+            "schema": {
+              "type": "string"
             }
           }
-        },
-        "400": {
-          "description": "Invalid status value"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
         }
       }
-    }
     },
     "/auth/signin": {
       "post": {
@@ -1275,7 +1275,7 @@
             "in": "path",
             "type": "string",
             "description": "Id de la ubicación.",
-            "required": false
+            "required": true
           },
           {
             "name": "Authorization",
@@ -1310,6 +1310,51 @@
           },
           "400": {
             "description": "Invalid status value"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Ubicación"],
+        "summary": "Actualiza una Ubicación concreta",
+        "description": "Busca y actualiza una ubicación en función del id que tiene en la base de datos.",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "description": "Id de la Ubicación en la bd",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Authorization token with admin role",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Ubicación",
+            "in": "body",
+            "description": "Objeto json con una Ubicación para actualizar en la bd. Si no existe no se crea.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Ubicacion"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid tag value"
           }
         }
       }
@@ -1378,6 +1423,117 @@
             "schema": {
               "$ref": "#/definitions/Vehiculo"
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Vehículo"],
+        "summary": "Actualiza un vehículo",
+        "description": "Actualiza un vehículo. Si no existe no lo crea",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "VehiculoJson",
+            "in": "body",
+            "description": "Objeto empleado en formato json para registrarlo en la bd. Necesario para obtener un token (string) con el cual poder consultar la api",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Vehiculo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/vehiculo/propietario/{idPropietario}": {
+      "get": {
+        "tags": ["Vehículo"],
+        "summary": "Busca un vehículo guardado",
+        "description": "Muestra todos los vehículos del propietario especificado.",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "Id Propietario",
+            "in": "path",
+            "type": "string",
+            "description": "Id del propietario del vehículo.",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/vehiculo/matricula/{matricula}": {
+      "get": {
+        "tags": ["Vehículo"],
+        "summary": "Busca un vehículo guardado",
+        "description": "Muestra todos los vehículos disponobles que coincidan con la matricula especificada (se supone que debe devolver 1 resultado)",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "Matrícula",
+            "in": "path",
+            "type": "string",
+            "description": "Matrícula del vehículo.",
+            "required": true
           }
         ],
         "responses": {
@@ -1526,6 +1682,15 @@
         "descripcion": {
           "type": "string"
         },
+        "destino": {
+          "type": "string"
+        },
+        "lugarRecogida": {
+          "type":"array",
+          "items": {
+            "type" : "string"
+          }
+        },
         "fechaRegistro": {
           "type": "string"
         }
@@ -1543,16 +1708,17 @@
         "descripcion":{
           "type":"string"
         },
-        "horasRecogida":{
-          "type":"array",
-          "items":
-            {"type" : "string"}
-        },
         "longitud":{
           "type": "number"
         },
         "latitud":{
           "type": "number"
+        },
+        "fechaRecogida":{
+          "type":"array",
+          "items": {
+            "type" : "string"
+          }
         },
         "fechaRegistro":{
           "type":"string"

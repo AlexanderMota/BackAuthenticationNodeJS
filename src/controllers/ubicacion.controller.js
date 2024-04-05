@@ -7,11 +7,11 @@ module.exports = class UbicacionController {
 
   async mongoCreate(req, res){
     const {body} = req;
-    //console.log(body);
+    console.log(body);
     if(await _ubicacionService.mongoCreate(body)){
-      return res.send({status:201,message:"ubicación guardada correctamente"});
+      return res.send({status:201,message:"ubicación guardada correctamente."});
     }else{
-      return res.send({status: 400, message:"parametro incorrecto"});
+      return res.send({status: 400, message:"parametro incorrecto."});
     }
   }
   async mongoCreateByIdTarea(req, res){
@@ -19,7 +19,7 @@ module.exports = class UbicacionController {
     const {body} = req;
     body.idTarea = idTarea;
     if(await _ubicacionService.mongoCreate(body)){
-      return res.send({status:201,message:"ubicación guardada correctamente"});
+      return res.send({status:201,message:"Ubicación guardada correctamente."});
     }else{
       return res.send({status: 400, message:"parametro incorrecto"});
     }
@@ -40,6 +40,19 @@ module.exports = class UbicacionController {
     const ubicaciones = await _ubicacionService.mongoGetUbicacionByIdTarea(idTarea);
     //console.log(ubicaciones);
     return res.send(ubicaciones);
+  }
+  async mongoUpdate(req, res){
+
+    const respuesta = await _ubicacionService.mongoUpdate(req.params, req.body);
+    console.log("mongoUpdate: "+respuesta);
+    /*console.log(req.params);
+    const updateEmpleado = await _empleadoService.mongoUpdate(idEmpleado,body);
+    return res.send(updateEmpleado);*/
+
+    return res.send({
+      "status": 200,
+      "message": "recibido"
+    });
   }
   /*async mongoGetEmpleadoByIdEmpleado(req, res) {
     const { idEmpleado } = req.params;
@@ -65,14 +78,6 @@ module.exports = class UbicacionController {
       return res.send({200:"",message:"Empleado asignado a tarea con exito"});
     }
     return res.send({400:"",message:"Algo fue mal"});
-  }
-
-  async mongoUpdate(req, res){
-    const {body} = req;
-    const {idEmpleado} = req.params;
-
-    const updateEmpleado = await _empleadoService.mongoUpdate(idEmpleado,body);
-    return res.send(updateEmpleado);
   }
 
   async mongoDelete(req,res){

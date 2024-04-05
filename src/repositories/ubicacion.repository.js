@@ -1,4 +1,5 @@
 const BaseRepository = require('./base.repository');
+const { ObjectId } = require('mongodb');
 
 let _ubicacion = null;
 let _tarea = null;
@@ -59,6 +60,13 @@ module.exports = class UbicacionRepository extends BaseRepository{
             return await _ubicacion.find({idTarea:res.idTarea});
         }
         return ubi;*/
+    }
+    async mongoUpdate(idUbi, ubicacion){
+        console.log(ubicacion);
+        console.log(idUbi);
+        const { ubiOriginal } = await _tarea.findOne({_id:new ObjectId(idUbi)},{_id:1});
+        console.log(ubiOriginal);
+
     }
 }
 

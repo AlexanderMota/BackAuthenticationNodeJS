@@ -13,15 +13,16 @@ module.exports = class TareaController {
     return res.send(tarea);
   }
   async mongoGetTareasBy(req, res) {
-    const {parametroBusqueda, valorBusqueda, pageSize, pageNum} = req.query;
-    const tarea = await mongoGetTareasBy(valorBusqueda, parametroBusqueda,pageSize, pageNum);
+    const {parametroBusqueda, valorBusqueda, objDevolver, pageSize, pageNum} = req.query;
+    const tarea = await mongoGetTareasBy(valorBusqueda, parametroBusqueda,objDevolver,pageSize, pageNum);
     
     return res.send(tarea);
   }
   async mongoGetTareaByIdTarea(req, res) {
     const { idTarea } = req.params;
-    //console.log(idTarea);
+    console.log(idTarea);
     const tarea = await _tareaService.mongoGetTareaByIdTarea(idTarea);
+    console.log(tarea);
     return res.send(tarea);
   }
   async mongoGetSupertareas(req, res){
@@ -127,26 +128,37 @@ module.exports = class TareaController {
   
   async mongoCreate(req, res){
     const {body} = req;
-    //console.log(body);
+    console.log(body);
     const {idSuper} = req.query
-    //console.log(idSuper);
+    console.log("idSuper: "+idSuper);
+    if(body._id){
+      const tar = await _tareaService.mongoGetTareasBy(body._id,"_id",{_id: true});
+      if(tar){
+        return res.send({status:405,message:"La tarea ya existe en la base de datos",id:resp._id});
+      }
+    }
     
-    const respSup = await _tareaService.mongoGetTareasBy(idSuper,"nombre");
-    //si idSuper=='0b', se deberia poder crear supertareas, pendiente de aplicar
+    const supertarea = await _tareaService.mongoGetTareasBy(idSuper,"_id",{_id: true});
+    //const tarea = await _tareaService.mongoGet(idSuper); //esta es una forma de buscar digamos "estática" y la de arriba seria mas dinamica, pudiendo aportar mas flexibilidad al metodo
+    //const respSup = await _tareaService.mongoGetTareasBy(idSuper,"nombre");
 
-    console.log(respSup._id.toString());
-    if(respSup._id != undefined){
+    //console.log(tarea);
+    if(supertarea){
       const resp =  await _tareaService.mongoCreate(body);
+      /*console.log(supertarea);
+      console.log(resp);*/
       
       if(resp?._id){
-        console.log("idSuper: " + respSup._id.toString() + "\nidSub: " + resp._id);
-        const resi = await _tareaService.addSubtarea(respSup._id.toString(),resp._id);
-        console.log(resi);
+        //console.log("idSuper: " + respSup._id.toString() + "\nidSub: " + resp._id);
+        const resi = await _tareaService.addSubtarea(supertarea._id.toString(),resp._id.toString());
+        //console.log(resi);
         return res.send({status:201,message:"tarea creada correctamente",id:resp._id});
       }
     }else if(idSuper == "0b"){
       const resp2 =  await _tareaService.mongoCreate(body);
       return res.send({status: 201, message:"supertarea creada correctamente",id:resp2._id.toString()});
+    //}else if(idSuper == "existe"){
+      //registra la tarea en la super
     }else{
       return res.send({status: 400, message:"parametro incorrecto"});
     }

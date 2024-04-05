@@ -23,9 +23,9 @@ module.exports = class TareaRepository extends BaseRepository{
         //console.log(resi);
         return {status:0,message:"en pruebas"};
     }*/
-    async mongoGetTareasBy(parametro, nombreParam, pageSize = 5, pageNum = 1) {
-        const skips = pageSize * (pageNum - 1);
-        const tar = await _tarea.findOne({[nombreParam]:parametro});
+    async mongoGetTareasBy(parametro, nombreParam, objDevolver = {_id: true, nombre: true}/*,pageSize = 5, pageNum = 1*/) {
+        //const skips = pageSize * (pageNum - 1);
+        const tar = await _tarea.findOne({[nombreParam]:parametro},objDevolver);
         
         if(!tar){
             return false;
@@ -188,7 +188,7 @@ module.exports = class TareaRepository extends BaseRepository{
 
         if (_id !== undefined){
             if (_id[0] !== undefined){
-                console.log("Parece que la tarea ya está registrado en esta tarea")
+                console.log("Parece que la subtarea ya está registrado en esta tarea")
                 return false;
             }
         }

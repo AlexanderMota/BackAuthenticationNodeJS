@@ -9,7 +9,11 @@ module.exports = class UbicacionService extends BaseService{
         _ubicacionRep = UbicacionRepository;
     }
     async mongoGetUbicacionByIdTarea(idTarea){
-        await _ubicacionRep.mongoGetUbicacionRecogidaByIdTarea(idTarea);
+        //await _ubicacionRep.mongoGetUbicacionRecogidaByIdTarea(idTarea);
         return await _ubicacionRep.mongoGetUbicacionByIdTarea(idTarea);
     }
+    async mongoUpdate(idUbi, ubicacion){
+        return await _ubicacionRep.mongoUpdate(idUbi, ubicacion);
+    }
+    
 }

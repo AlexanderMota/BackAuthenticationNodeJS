@@ -6,8 +6,7 @@ const VehiculoSchema = new Schema({
   propietario: { type: String, required: true },
   plazas: { type: Number, required: true },
   descripcion: { type: String, required: true },
-  lugarRecogida : { type: String },
+  puntosDestinoRecogida : { type: [] }, //id de la ubicación a la que se dirige y las paradas
   fechaRegistro: { type: String, required: true , default: new Date(Date.now()).toISOString() }
 });
-
 module.exports = mongoose.model("vehiculo", VehiculoSchema);

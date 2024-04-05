@@ -6,18 +6,26 @@ let _vehiculo = null;
 module.exports = class VehiculoRepository extends BaseRepository{
     constructor({Vehiculo}){
         super(Vehiculo);
-        this._vehiculo = Vehiculo;
+        _vehiculo = Vehiculo;
     }
 
     async mongoGetVehiculoByIdPropietario(idPropietario/*, pageSize = 5, pageNum = 1*/) {
         //const skips = pageSize * (pageNum - 1);
-        const ubi  = await _vehiculo.find({propietario:idPropietario});
+        const vehi  = await _vehiculo.find({propietario:idPropietario});
         
-        console.log("ids vehi: "+ubi);
-        if(!ubi){
-            return false;
+        if(!vehi){
+            return {status:402,message:"Algo ha ido mal"};
         }
-        return ubi;
+        return vehi;
+    }
+    async mongoGetVehiculoByMatricula(matricula/*, pageSize = 5, pageNum = 1*/) {
+        //const skips = pageSize * (pageNum - 1);
+        const vehi  = await _vehiculo.find({matricula:matricula});
+        
+        if(!vehi){
+            return {status:402,message:"Algo ha ido mal"};
+        }
+        return vehi;
     }
 }
 

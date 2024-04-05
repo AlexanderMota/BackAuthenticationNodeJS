@@ -10,9 +10,9 @@ module.exports = ({ UbicacionController }) => {
   router.get("/tarea/:idTarea", [AuthMiddleware, ParseIntMiddleware], UbicacionController.mongoGetUbicacionByIdTarea);
   /*router.get("/local", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mysqlGetAll);
   router.get("/tarea/:idTarea", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoGetEmpleadosByIdTarea);
-  
-  router.patch("/:idEmpleado", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoUpdate);
   */
+  router.patch("/byid/:id", [AuthMiddleware, ParseIntMiddleware], UbicacionController.mongoUpdate);
+  
   router.post("/", [AuthMiddleware, ParseIntMiddleware], UbicacionController.mongoCreate);
   router.post("/tarea/:idTarea", [AuthMiddleware, ParseIntMiddleware], UbicacionController.mongoCreateByIdTarea);
   

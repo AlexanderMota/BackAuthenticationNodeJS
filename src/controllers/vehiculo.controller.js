@@ -12,7 +12,6 @@ module.exports = class UbicacionController {
   }
   async mongoCreate(req, res){
     const {body} = req;
-    console.log(_vehiculoService);
     if(await _vehiculoService.mongoCreate(body)){
       return res.send({status:201,message:"Vehículo guardado correctamente"});
     }else{
@@ -21,14 +20,19 @@ module.exports = class UbicacionController {
   }
   async mongoGetAll(req, res){
     const {pageSize, pageNum} = req.query;
-    const ubicaciones = await _vehiculoService.mongoGetAll(pageSize, pageNum);
+    const vehiculos = await _vehiculoService.mongoGetAll(pageSize, pageNum);
     
-    return res.send(ubicaciones);
+    return res.send(vehiculos);
   }
   async mongoGetVehiculoByIdPropietario(req, res){
     const { idPropietario } = req.params;
-    const ubicaciones = await _vehiculoService.mongoGetVehiculoByIdPropietario(idPropietario);
-    return res.send(ubicaciones);
+    const vehiculo = await _vehiculoService.mongoGetVehiculoByIdPropietario(idPropietario);
+    return res.send(vehiculo);
+  }
+  async mongoGetVehiculoByMatricula(req, res){
+    const { matricula } = req.params;
+    const vehiculo = await _vehiculoService.mongoGetVehiculoByMatricula(matricula);
+    return res.send(vehiculo);
   }
 }
 
