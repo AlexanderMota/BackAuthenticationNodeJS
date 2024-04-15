@@ -214,9 +214,9 @@ module.exports = class TareaRepository extends BaseRepository{
         const _id = await _supertarea.find({$and:[
             {"idTarea":idTarea}
         ]},{"_id":1});
-        console.log(_id);
+        //console.log(_id);
         if(_id.length > 1){
-            console.log("la super ya existe");
+            //console.log("la super ya existe");
             return false;
         }
 

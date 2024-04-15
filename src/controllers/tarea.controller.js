@@ -22,7 +22,7 @@ module.exports = class TareaController {
     const { idTarea } = req.params;
     console.log(idTarea);
     const tarea = await _tareaService.mongoGetTareaByIdTarea(idTarea);
-    console.log(tarea);
+    //console.log(tarea);
     return res.send(tarea);
   }
   async mongoGetSupertareas(req, res){
@@ -128,9 +128,9 @@ module.exports = class TareaController {
   
   async mongoCreate(req, res){
     const {body} = req;
-    console.log(body);
+    //console.log(body);
     const {idSuper} = req.query
-    console.log("idSuper: "+idSuper);
+    //console.log("idSuper: "+idSuper);
     if(body._id){
       const tar = await _tareaService.mongoGetTareasBy(body._id,"_id",{_id: true});
       if(tar){

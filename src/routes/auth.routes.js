@@ -4,6 +4,7 @@ const { AuthMiddleware, ParseIntMiddleware,CacheMiddleware } = require("../middl
 module.exports = function({ AuthController }) {
   const router = Router();
 
+  router.get("/miid", [AuthMiddleware, ParseIntMiddleware], AuthController.getIdPerfil);
   
   router.post("/", AuthController.compruebaToken);
   router.post("/signup", [AuthMiddleware, ParseIntMiddleware], AuthController.signUp);

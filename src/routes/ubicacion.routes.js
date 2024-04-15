@@ -8,15 +8,14 @@ module.exports = ({ UbicacionController }) => {
   router.get("/byid/:id", [AuthMiddleware, ParseIntMiddleware], UbicacionController.mongoGet);
   router.get("/", [AuthMiddleware, ParseIntMiddleware], UbicacionController.mongoGetAll);
   router.get("/tarea/:idTarea", [AuthMiddleware, ParseIntMiddleware], UbicacionController.mongoGetUbicacionByIdTarea);
-  /*router.get("/local", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mysqlGetAll);
-  router.get("/tarea/:idTarea", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoGetEmpleadosByIdTarea);
-  */
+  router.get("/paradas/:idSuper", [AuthMiddleware, ParseIntMiddleware], UbicacionController.mongoGetParada);
+  
   router.patch("/byid/:id", [AuthMiddleware, ParseIntMiddleware], UbicacionController.mongoUpdate);
+  //router.patch("/paradas/:id", [AuthMiddleware, ParseIntMiddleware], UbicacionController.mongoPatchParada);
   
   router.post("/", [AuthMiddleware, ParseIntMiddleware], UbicacionController.mongoCreate);
   router.post("/tarea/:idTarea", [AuthMiddleware, ParseIntMiddleware], UbicacionController.mongoCreateByIdTarea);
-  
-  //router.delete("/:idEmpleado", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoDelete);
+  router.post("/paradas/", [AuthMiddleware, ParseIntMiddleware], UbicacionController.mongoCreateParada);
 
   return router;
 };

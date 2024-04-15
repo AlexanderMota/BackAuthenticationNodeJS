@@ -27,5 +27,15 @@ module.exports = class VehiculoRepository extends BaseRepository{
         }
         return vehi;
     }
+    async mongoGetVehiculoByIdParada(idParada){
+        console.log(idParada);
+        const vehi  = await _vehiculo.find({
+            puntosDestinoRecogida: { $in: [idParada] }
+        });
+        if(!vehi){
+            return {status:402,message:"Algo ha ido mal"};
+        }
+        return vehi;
+    }
 }
 

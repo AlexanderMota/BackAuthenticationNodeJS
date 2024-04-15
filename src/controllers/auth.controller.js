@@ -48,4 +48,10 @@ module.exports = class AuthController {
     const creds = await _authService.updatePerfil(body);
     return res.send(creds);
   }
+  async getIdPerfil(req, res){
+    const {mail} = req.query;
+    //console.log(body);
+    const miId = await _authService.getIdPerfil(mail);
+    return res.send(miId);
+  }
 }

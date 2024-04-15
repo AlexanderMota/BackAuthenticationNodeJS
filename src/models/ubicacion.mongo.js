@@ -7,7 +7,7 @@ const UbicacionSchema = new Schema({
   descripcion: { type: String, required: true },
   longitud: { type: Number, required: true },
   latitud: { type: Number, required: true },
-  fechasRecogida: { type: [] }, // la ubi no debe tener idTarea si es una parada. la parada la guarda el vehiculo
+  fechasRecogida: { type: [] }, // la ubi no debe tener idTarea si es una parada
   //limiteSupDer: { type: Number, required: false },
   //limiteInfIzq: { type: Number, required: false },
   //zoom: {type: Number, required: false},

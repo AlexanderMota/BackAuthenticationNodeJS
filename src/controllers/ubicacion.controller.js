@@ -1,13 +1,15 @@
 let _ubicacionService = null;
+let _vehiculoService = null;
 
 module.exports = class UbicacionController {
-  constructor({ UbicacionService }) {
+  constructor({ UbicacionService, VehiculoService }) {
     _ubicacionService = UbicacionService;
+    _vehiculoService = VehiculoService;
   }
 
   async mongoCreate(req, res){
     const {body} = req;
-    console.log(body);
+    //console.log(body);
     if(await _ubicacionService.mongoCreate(body)){
       return res.send({status:201,message:"ubicación guardada correctamente."});
     }else{
@@ -40,6 +42,33 @@ module.exports = class UbicacionController {
     const ubicaciones = await _ubicacionService.mongoGetUbicacionByIdTarea(idTarea);
     //console.log(ubicaciones);
     return res.send(ubicaciones);
+  }
+  async mongoGetParada(req, res){
+    const { idSuper } = req.params;
+    const ubicaciones = await _ubicacionService.mongoGetParada(idSuper);
+    //console.log(ubicaciones);
+    return res.send(ubicaciones);
+  }
+  async mongoCreateParada(req, res){
+    const {body} = req;
+    const vehi = await _vehiculoService.mongoGetVehiculoByMatricula(body.fechasRecogida[0].vehiculo);
+    
+    if(vehi[0]){
+      const resUbi = await _ubicacionService.mongoCreate(body);
+
+      if(resUbi){
+        vehi[0].puntosDestinoRecogida.push(resUbi._id.toString());
+        
+        if(await _vehiculoService.mongoUpdate(vehi[0]._id/*idvehi*/,vehi[0])){
+          return res.send({status:201,message:"Parada guardada correctamente."});
+        }else{
+          return res.send({status: 400, message:"problema al guardar la parada en el vehiculo."});
+        }
+      }else{
+        return res.send({status: 400, message:"parametro incorrecto."});
+      }
+    }
+    
   }
   async mongoUpdate(req, res){
 

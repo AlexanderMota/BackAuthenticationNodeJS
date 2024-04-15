@@ -126,6 +126,44 @@
         }
       }
     },
+    "/auth/miid": {
+      "get": {
+        "tags": ["Autenticación"],
+        "summary": "Accede al id del usuario. Pensado para acceder al propio id.",
+        "description": "Accede al id del usuario. Pensado para acceder al propio id.",
+        "produces": ["application/json"],
+        
+        "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "mail",
+            "type": "string",
+            "in": "query",
+            "description": "Cadena con el mail del usuario.",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Empleado"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
 
     "/empleados": {
       "get": {
@@ -1359,6 +1397,95 @@
         }
       }
     },
+    "/ubicacion/paradas/{idSuper}": {
+      "get": {
+        "tags": ["Ubicación"],
+        "summary": "Muestra todas las ubicaciones guardadas que sirven como parada de recogida para un centro de trabajo",
+        "description": "Muestra todas las ubicaciones guardadas que sirven como parada de recogida para un centro de trabajo",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "idSuper",
+            "type": "string",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "pageNum",
+            "type": "number",
+            "in": "query",
+            "description": "Número de la pagina de registros a mostrar. Por defecto 1.",
+            "required": false
+          },
+          {
+            "name": "pageSize",
+            "type": "number",
+            "in": "query",
+            "description": "Tamaño de la pagina de registros a mostrar. Por defecto 5.",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/ubicacion/paradas/": {
+      "post": {
+        "tags": ["Ubicación"],
+        "summary": "Guarda una nueva ubicación que servirá como parada",
+        "description": "Guarda una nueva ubicación que servirá como parada",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "UbicacionJson",
+            "in": "body",
+            "description": "Objeto ubicacion en formato json para registrarlo en la bd.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Ubicacion"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
 
     "/vehiculo": {
       "get": {
@@ -1551,8 +1678,46 @@
           }
         }
       }
+    },
+    "/vehiculo/parada/{idParada}": {
+      "get": {
+        "tags": ["Vehículo"],
+        "summary": "Busca un vehículo guardado",
+        "description": "Muestra todos los vehículos que pasan por una determinada parada",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "type": "string",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "IdParada",
+            "in": "path",
+            "type": "string",
+            "description": "Id de la parada en la bd.",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
     }
   },
+
   "definitions": {
     "Usuario": {
       "type" : "object",

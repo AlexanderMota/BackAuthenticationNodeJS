@@ -26,13 +26,40 @@ module.exports = class UbicacionController {
   }
   async mongoGetVehiculoByIdPropietario(req, res){
     const { idPropietario } = req.params;
+    console.log(req.params);
     const vehiculo = await _vehiculoService.mongoGetVehiculoByIdPropietario(idPropietario);
     return res.send(vehiculo);
   }
   async mongoGetVehiculoByMatricula(req, res){
     const { matricula } = req.params;
+    console.log(req.params);    console.log(req.params);
     const vehiculo = await _vehiculoService.mongoGetVehiculoByMatricula(matricula);
     return res.send(vehiculo);
+  }
+  async mongoGetVehiculoByIdParada(req, res){
+    const { idParada } = req.params;
+    console.log(req.params);
+    const vehiculo = await _vehiculoService.mongoGetVehiculoByIdParada(idParada);
+    return res.send(vehiculo);
+  }
+  async mongoUpdate(req, res){
+    const { body } = req;
+    console.log("body: ");
+    console.log(body);
+    const vehi = await _vehiculoService.mongoGetVehiculoByMatricula(body.matricula);
+    console.log("vehi:");
+    console.log(vehi);
+    if(vehi){
+      const vehiculo = await _vehiculoService.mongoUpdate(vehi[0]._id,body);
+      console.log("vehiculo:");
+      console.log(vehiculo);
+      if(vehiculo){
+        return res.send(vehiculo);
+      }else{
+        return res.send({status:502,message:"problema al actualizar el vehiculo encontrado."});
+      }
+    }
+    return res.send({status:502,message:"no se encontró vehiculo con la matricula especificada."});
   }
 }
 

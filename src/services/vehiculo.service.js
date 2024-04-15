@@ -15,4 +15,7 @@ module.exports = class VehiculoService extends BaseService{
     async mongoGetVehiculoByMatricula(matricula){
         return await _vehiculoRep.mongoGetVehiculoByMatricula(matricula);
     }
+    async mongoGetVehiculoByIdParada(idParada){
+        return await _vehiculoRep.mongoGetVehiculoByIdParada(idParada);
+    }
 }
