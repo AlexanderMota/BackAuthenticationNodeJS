@@ -12,5 +12,6 @@ module.exports = function({ VehiculoController }) {
   router.post("/", [AuthMiddleware,ParseIntMiddleware], VehiculoController.mongoCreate);
   
   router.patch("/", [AuthMiddleware,ParseIntMiddleware], VehiculoController.mongoUpdate);
+  router.patch("/pasajero/:matricula", [AuthMiddleware,ParseIntMiddleware], VehiculoController.mongoUpdatePasajero);
   return router;
 };

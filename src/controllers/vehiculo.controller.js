@@ -32,7 +32,6 @@ module.exports = class UbicacionController {
   }
   async mongoGetVehiculoByMatricula(req, res){
     const { matricula } = req.params;
-    console.log(req.params);    console.log(req.params);
     const vehiculo = await _vehiculoService.mongoGetVehiculoByMatricula(matricula);
     return res.send(vehiculo);
   }
@@ -44,22 +43,59 @@ module.exports = class UbicacionController {
   }
   async mongoUpdate(req, res){
     const { body } = req;
-    console.log("body: ");
-    console.log(body);
+    //console.log("body: ");
+    //console.log(body);
     const vehi = await _vehiculoService.mongoGetVehiculoByMatricula(body.matricula);
-    console.log("vehi:");
-    console.log(vehi);
+    //console.log("vehi:");
+    //console.log(vehi);
     if(vehi){
       const vehiculo = await _vehiculoService.mongoUpdate(vehi[0]._id,body);
-      console.log("vehiculo:");
-      console.log(vehiculo);
+      //console.log("vehiculo:");
+      //console.log(vehiculo);
       if(vehiculo){
-        return res.send(vehiculo);
+        return res.send({status:200,message:"vehiculo actualizado correctamente"});
       }else{
         return res.send({status:502,message:"problema al actualizar el vehiculo encontrado."});
       }
     }
     return res.send({status:502,message:"no se encontró vehiculo con la matricula especificada."});
+  }
+  async mongoUpdatePasajero(req, res){
+    const { matricula } = req.params;
+    //console.log("matricula: ");
+    //console.log(matricula);
+    const { pasajero } = req.query;
+    //console.log("pasajero: ");
+    //console.log(pasajero);
+    
+    const vehi = await _vehiculoService.mongoGetVehiculoByMatricula(matricula);
+    //console.log("vehi:");
+    //console.log(vehi);
+
+    if(vehi[0].ocupantes){
+      if (vehi[0].ocupantes.includes(pasajero)) {
+        return res.send({status : 405, message :'El pasajero ya esta registrado en el vehículo.'});
+      }else if(vehi[0].ocupantes.length >= vehi[0].plazas) {
+        return res.send({status : 406, message :'El vehículo no cuenta con plazas disponibles.'});
+      }else if(vehi[0].propietario == pasajero){
+        return res.send({status : 407, message :'El propietario del vehículo no necesita registrarse como pasajero.'});
+      }else{
+        vehi[0].ocupantes.push(pasajero);
+      }
+    }
+    const id = vehi[0]._id;
+    /*console.log("vehiculo:");
+    console.log(id);*/
+    delete vehi[0]._id;
+
+
+    const vehiculo = await _vehiculoService.mongoUpdate(id,vehi[0]);
+
+    if(vehiculo){
+      return res.send({status:200,message:"pasajero registrado con exito."});
+    }else{
+      return res.send({status:502,message:"problema al actualizar el vehiculo encontrado."});
+    }
   }
 }
 
