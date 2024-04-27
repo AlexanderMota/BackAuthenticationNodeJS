@@ -8,7 +8,7 @@ class BaseService {
       const error = new Error();
       error.status = 400;
       error.message = "id must be sent";
-      throw error;
+      return error;
     }
 
     const currentEntity = await this.repository.mongoGet(id);
@@ -17,7 +17,7 @@ class BaseService {
       const error = new Error();
       error.status = 404;
       error.message = "entity does not found";
-      throw error;
+      return error;
     }
 
     return currentEntity;
@@ -38,7 +38,7 @@ class BaseService {
       const error = new Error();
       error.status = 400;
       error.message = "id must be sent";
-      throw error;
+      return error;
     }
 
     const {_id} = await this.repository.mongoGet(id);
@@ -48,7 +48,7 @@ class BaseService {
       const error = new Error();
       error.status = 404;
       error.message = "entity does not found";
-      throw error;
+      return error;
     }
 
     return await this.repository.mongoUpdate(id, entity);
@@ -59,7 +59,7 @@ class BaseService {
       const error = new Error();
       error.status = 400;
       error.message = "id must be sent";
-      throw error;
+      return error;
     }
 
     return await this.repository.mongoDelete(id);

@@ -37,5 +37,27 @@ module.exports = class VehiculoRepository extends BaseRepository{
         }
         return vehi;
     }
+    async mongoDeleteParada(idVehi, idParada){
+        
+        const val = await _vehiculo.updateOne(
+            { _id: ObjectId(idVehi) }, // Filtro para encontrar el documento
+            { $pull: { puntosDestinoRecogida: idParada } } // Eliminar el elemento del array
+        );
+        if(val){
+            if(!val.acknowledged){
+                return {status:403, message:"Operacion no reconocida por MongoDB."};
+            }else if(val.matchedCount > 0){
+                if(val.modifiedCount > 0){
+                    return {status:202, message:"Se ha modificado el documento."};
+                }else{
+                    return {status:202, message:"Se encontraron coincidencias pero no se ha modificado el documento."};
+                }
+            }else if(!val.matchedCount < 1){
+                return {status:203, message:"Operacion realizada correctamente. No se encontraron coincidencias con el id de la parada."};
+            }
+        }else{
+            return {status:408, message:"Error desconocido."};
+        }
+    }
 }
 

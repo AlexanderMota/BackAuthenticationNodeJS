@@ -13,5 +13,7 @@ module.exports = function({ VehiculoController }) {
   
   router.patch("/", [AuthMiddleware,ParseIntMiddleware], VehiculoController.mongoUpdate);
   router.patch("/pasajero/:matricula", [AuthMiddleware,ParseIntMiddleware], VehiculoController.mongoUpdatePasajero);
+
+  router.delete("/:idVehiculo", [AuthMiddleware,ParseIntMiddleware], VehiculoController.mongoDeleteVehiculo)
   return router;
 };

@@ -44,11 +44,10 @@ module.exports = class AuthService{
         }
 
         const empleadoToEncode = {
-            idEmpleado:empleadoExists.idEmpleado,
-            nombre:empleadoExists.nombre,
-            rol:empleadoExists.rol.nombre
+            id:empleadoExists._id.toString(),
+            centro:empleadoExists.centroTrabajo,
+            rol:empleadoExists.rol.valor
         };
-
         const token = JwtHelper.generateToken(empleadoToEncode);
 
         return { status: 201, message: token };

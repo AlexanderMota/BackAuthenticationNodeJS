@@ -11,6 +11,7 @@ module.exports = function(req, res, next) {
   }
 
   jwt.verify(token, JWT_SECRET, function(err, decodedToken) {
+    //console.log(decodedToken.empleado);
     if (err) {
       const error = new Error();
       error.message = "Invalid token";

@@ -1757,6 +1757,9 @@
         },
         "_id": {
           "type": "string"
+        },
+        "centroTrabajo": {
+          "type": "string"
         }
       }
     },
