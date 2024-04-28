@@ -1,7 +1,7 @@
 
 module.exports = {
   roles : [
-    { nombre:"ADMIN", valor:1 }, //tipo especial con todos los permisos
+    { nombre:"ADMIN", valor:0 }, //tipo especial con todos los permisos
     { nombre:"Director", valor:1 }, //cargos maximos de cada departamento
     { nombre:"RRHH", valor: 2 }, //encargados de la selección, contratación, formación y desarrollo del personal de la empresa.
     { nombre:"Gerente", valor: 2 }, //responsables de planificar, organizar, dirigir y controlar los procesos de producción agrícola.

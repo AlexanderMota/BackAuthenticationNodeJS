@@ -10,19 +10,33 @@ module.exports = class EmpleadoController {
     _tareaService = TareaService;
   }
   async mongoGetEmpleadoByIdEmpleado(req, res) {
+    const { idEmpleado } = req.params;
     if(req.empleado.rol <= 2){
-      const { idEmpleado } = req.params;
       const empleado = await _empleadoService.mongoGet(idEmpleado);
       const empleadoProcesado = {
-        _id:empleado._id,
+        _id:empleado._id.toString(),
         nombre:empleado.nombre,
         apellidos:empleado.apellidos,
         telefono:empleado.telefono,
         email:empleado.email,
         rol:empleado.rol.nombre,
-        centroTrabajo:        empleado.centroTrabajo
+        centroTrabajo:empleado.centroTrabajo
       }
       return res.send(empleadoProcesado);
+    }else if(req.empleado.rol <= 4){
+      const empleado = await _empleadoService.mongoGet(idEmpleado);
+      if(req.empleado.id == empleado._id.toString()){
+        const empleadoProcesado = {
+          _id:empleado._id.toString(),
+          nombre:empleado.nombre,
+          apellidos:empleado.apellidos,
+          telefono:empleado.telefono,
+          email:empleado.email,
+          rol:empleado.rol.nombre,
+          centroTrabajo:empleado.centroTrabajo
+        }
+        return res.send(empleadoProcesado);
+      }
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
@@ -41,7 +55,7 @@ module.exports = class EmpleadoController {
           telefono:empleado.telefono,
           email:empleado.email,
           rol:empleado.rol.nombre,
-          centroTrabajo:        empleado.centroTrabajo
+          centroTrabajo:empleado.centroTrabajo
         }
       });
       return res.send(empleadosProcesados);
@@ -63,7 +77,7 @@ module.exports = class EmpleadoController {
           telefono:empleado.telefono,
           email:empleado.email,
           rol:empleado.rol.nombre,
-          centroTrabajo:        empleado.centroTrabajo
+          centroTrabajo:empleado.centroTrabajo
         }
       });
       return res.send(empleadosProcesados);
@@ -86,10 +100,24 @@ module.exports = class EmpleadoController {
           telefono:empleado.telefono,
           email:empleado.email,
           rol:empleado.rol.nombre,
-          centroTrabajo:        empleado.centroTrabajo
+          centroTrabajo:empleado.centroTrabajo
         }
       });
       return res.send(empleadosProcesados);
+    }else if(req.empleado.rol <= 4){
+      const empleado = await _empleadoService.mongoGet(req.empleado.id);
+
+      const empleadoProcesado=[];
+      empleadoProcesado[0] = {
+        _id:empleado._id,
+        nombre:empleado.nombre,
+        apellidos:empleado.apellidos,
+        telefono:empleado.telefono,
+        email:empleado.email,
+        rol:empleado.rol.nombre,
+        centroTrabajo:empleado.centroTrabajo
+      }
+      return res.send(empleadoProcesado);
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }

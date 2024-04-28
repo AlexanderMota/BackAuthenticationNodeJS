@@ -7,6 +7,18 @@ module.exports = class UbicacionController {
     _ubicacionService = UbicacionService;
   }
 
+  async mongoCreate(req, res){
+      const {body} = req;
+      console.log(body);
+    if(req.empleado.rol <= 4){
+      if(await _vehiculoService.mongoCreate(body)){
+        return res.send({status:201,message:"Vehículo guardado correctamente"});
+      }else{
+        return res.send({status: 400, message:"parametro incorrecto"});
+      }
+    }
+    return res.send({status:407,message:"Usuario no autorizado."});
+  }
   async mongoGet(req, res) {
     if(req.empleado.rol <= 4){
       const { id } = req.params;
@@ -14,17 +26,6 @@ module.exports = class UbicacionController {
       return res.send(ubicacion);
     }
     
-    return res.send({status:407,message:"Usuario no autorizado."});
-  }
-  async mongoCreate(req, res){
-    if(req.empleado.rol <= 4){
-      const {body} = req;
-      if(await _vehiculoService.mongoCreate(body)){
-        return res.send({status:201,message:"Vehículo guardado correctamente"});
-      }else{
-        return res.send({status: 400, message:"parametro incorrecto"});
-      }
-    }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
   async mongoGetAll(req, res){

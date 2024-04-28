@@ -1,9 +1,11 @@
 const {roles} = require('../utils/listasEstaticas');
 let _authService = null;
+let _empServ = null;
 
 module.exports = class AuthController {
-  constructor({ AuthService }) {
+  constructor({ AuthService, EmpleadoService }) {
     _authService = AuthService;
+    _empServ = EmpleadoService;
   }
 
   async compruebaToken(req, res){
@@ -42,16 +44,30 @@ module.exports = class AuthController {
     const creds = await _authService.signIn(body);
     return res.send(creds);
   }
+  async getMiPerfil(req, res){
+    //console.log(req.empleado);
+    const {mail} = req.params;
+    const perfil = await _empServ.mongoGetEmpleadoByEmail(mail);
+    //console.log(req.empleado.rol <= 2 || perfil._id.toString() == req.empleado.id);
+    if(req.empleado.rol <= 2 || perfil._id.toString() == req.empleado.id){
+      const empleadoProcesado = {
+        _id:perfil._id.toString(),
+        nombre:perfil.nombre,
+        apellidos:perfil.apellidos,
+        telefono:perfil.telefono,
+        email:perfil.email,
+        rol:perfil.rol.nombre,
+        centroTrabajo:perfil.centroTrabajo
+      }
+      //console.log(empleadoProcesado);
+      return res.send(empleadoProcesado);
+    }
+    return res.send({status:407,message:"Usuario no autorizado."});
+  }
   async updatePerfil(req, res){
     const {body} = req;
     //console.log(body);
     const creds = await _authService.updatePerfil(body);
     return res.send(creds);
-  }
-  async getIdPerfil(req, res){
-    const {mail} = req.query;
-    //console.log(body);
-    const miId = await _authService.getIdPerfil(mail);
-    return res.send(miId);
   }
 }
