@@ -40,9 +40,19 @@ module.exports = class SolicitudRepository extends BaseRepository{
         await _solicitud.create({
             idTarea:idTarea,
             idEmpleado:idEmpleado,
+            aprobada:false,
             fechaSolicitud: new Date(Date.now()).toISOString()
         });
         //console.log(resifff);
         return true;
+    }
+    async mongoGetSolicitudesByEmpleado(idEmpleado){
+
+        const _solicitudes = await _solicitud.find({idEmpleado:idEmpleado});
+        if (_solicitudes.length < 1){
+            return {status:403,message:"Sin solicitudes."};
+        }
+
+        return _solicitudes;
     }
 }

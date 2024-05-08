@@ -8,11 +8,14 @@ const TareaSchema = new Schema({
   departamento: { type: String, required: true },
   descripcion: { type: String, required: true },
   importancia: { type: String, required: true },
-  fechainicio: { type: String, required: true },
-  fechafin: { type: String, required: false },
-  fechaRegistro: { type: String , default: new Date(Date.now()).toISOString() },
+  fechainicio: { type: Date, required: true },
+  fechafin: { type: Date, required: false },
+  fechaRegistro: { type: Date, default: () => new Date(), required: true },
   terminada: { type: Boolean, required: true },
-  numeroTrabajadores: { type: Number, required: true },
+  plantilla: { type: [{
+    rol: {type:String, required: true},
+    cantidad: {type:Number, required: true}
+  }], required: true},
   precioHora: { type: Number, required: false }
 });
 

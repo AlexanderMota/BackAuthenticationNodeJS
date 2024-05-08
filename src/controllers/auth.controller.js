@@ -23,9 +23,9 @@ module.exports = class AuthController {
       //console.log("dentro rol true ");
       const rol = roles.find(obj => obj.nombre === body.rol.nombre)
       if(rol){
-        //console.log("dentro > ");
-        //console.log(ro);
-        body.rol = rol;
+        /*console.log("dentro > ");
+        console.log(ro);
+        body.rol = rol;*/
       }else{
         return res.status(401).send({ status: 401, message: 'El rol no es correcto.' });
       }

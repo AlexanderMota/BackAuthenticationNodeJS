@@ -10,7 +10,7 @@ module.exports = class UbicacionController {
   async mongoCreate(req, res){
       const {body} = req;
       console.log(body);
-    if(req.empleado.rol <= 4){
+    if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       if(await _vehiculoService.mongoCreate(body)){
         return res.send({status:201,message:"Vehículo guardado correctamente"});
       }else{
@@ -20,7 +20,7 @@ module.exports = class UbicacionController {
     return res.send({status:407,message:"Usuario no autorizado."});
   }
   async mongoGet(req, res) {
-    if(req.empleado.rol <= 4){
+    if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const { id } = req.params;
       const ubicacion = await _vehiculoService.mongoGet(id);
       return res.send(ubicacion);
@@ -29,7 +29,7 @@ module.exports = class UbicacionController {
     return res.send({status:407,message:"Usuario no autorizado."});
   }
   async mongoGetAll(req, res){
-    if(req.empleado.rol <= 2){
+    if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const {pageSize, pageNum} = req.query;
       const vehiculos = await _vehiculoService.mongoGetAll(pageSize, pageNum);
       
@@ -45,7 +45,7 @@ module.exports = class UbicacionController {
     return res.send({status:407,message:"Usuario no autorizado."});
   }
   async mongoGetVehiculoByMatricula(req, res){
-    if(req.empleado.rol <= 4){
+    if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const { matricula } = req.params;
       const vehiculo = await _vehiculoService.mongoGetVehiculoByMatricula(matricula);
       return res.send(vehiculo);
@@ -53,7 +53,7 @@ module.exports = class UbicacionController {
     return res.send({status:407,message:"Usuario no autorizado."});
   }
   async mongoGetVehiculoByIdParada(req, res){
-    if(req.empleado.rol <= 4){
+    if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const { idParada } = req.params;
       console.log(req.params);
       const vehiculo = await _vehiculoService.mongoGetVehiculoByIdParada(idParada);
@@ -62,7 +62,7 @@ module.exports = class UbicacionController {
     return res.send({status:407,message:"Usuario no autorizado."});
   }
   async mongoUpdate(req, res){
-    if(req.empleado.rol <= 4){
+    if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const { body } = req;
       
       const vehi = await _vehiculoService.mongoGetVehiculoByMatricula(body.matricula);
@@ -80,7 +80,7 @@ module.exports = class UbicacionController {
     return res.send({status:407,message:"Usuario no autorizado."});
   }
   async mongoUpdatePasajero(req, res){
-    if(req.empleado.rol <= 4){
+    if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const { matricula } = req.params;
       const { pasajero } = req.query;
       
@@ -113,7 +113,7 @@ module.exports = class UbicacionController {
     return res.send({status:407,message:"Usuario no autorizado."});
   }
   async mongoDeleteVehiculo(req, res){
-    if(req.empleado.rol <= 4){
+    if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const { idVehiculo } = req.params;
       
       const vehiculo = await _vehiculoService.mongoGet(idVehiculo);

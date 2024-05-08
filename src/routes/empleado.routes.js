@@ -7,8 +7,8 @@ module.exports = ({ EmpleadoController }) => {
 
   router.get("/", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoGetAll);
   router.get("/local", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mysqlGetAll);
-  //router.get("/roles", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.getRoles);
-  //router.get("/departamentos", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.getDepartamentos);
+  router.get("/roles", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.getRoles);
+  router.get("/departamentos", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.getDepartamentos);
   router.get("/centro/:idCentro", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.getEmpleadosByCentro);
   router.get("/byid/:idEmpleado", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoGetEmpleadoByIdEmpleado);
   router.get("/tarea/:idTarea", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoGetEmpleadosByIdTarea);

@@ -32,8 +32,9 @@ module.exports = {
     { dep:"Recursos humanos", roles:["RRHH","Gerente","Supervisor"] },
     { dep:"Mantenimiento", roles:["Supervisor","Mantenimiento","Limpieza"] },
     { dep:"Producción y cultivo", roles:["RRHH","Gerente","Supervisor","Coordinador","Temporero"] },
+    { dep:"Ventas y publicidad", roles:["Gerente","Comercial"] },
     { dep:"Almacén y logística", roles:["Gerente","Supervisor","Maquinista","Operario de almacén"] },
     { dep:"Investigación y desarrollo", roles:[] },
-    { dep:"Sostenibilidad y responsabilidad social", roles:["Comercial"] }
+    { dep:"Sostenibilidad y responsabilidad social", roles:["Gerente", "Supervisor"] }
   ]
 };

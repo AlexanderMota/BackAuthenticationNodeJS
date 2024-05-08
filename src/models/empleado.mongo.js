@@ -10,7 +10,7 @@ const EmpleadoSchema = new Schema({
   telefono: { type: String },
   email: { type: String },
   rol: { nombre : String, valor : Number },
-  fechaContrato : { type: String , default: new Date(Date.now()).toISOString() },
+  fechaContrato : { type: Date, default: () => new Date(), required: true },
   password: { type: String, required: true }
 });
 

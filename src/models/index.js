@@ -7,5 +7,6 @@ module.exports = {
   Solicitud : require('./solicitud.mongo'),
   Comentario : require('./comentario.mongo'),
   Ubicacion : require('./ubicacion.mongo'),
-  Vehiculo : require('./vehiculo.mongo')
+  Vehiculo : require('./vehiculo.mongo'),
+  Notificacion : require('./notificacion.mongo')
 };

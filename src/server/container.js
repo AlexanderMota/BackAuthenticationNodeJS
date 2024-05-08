@@ -10,6 +10,7 @@ const {
   TareaService,
   AuthService,
   UbicacionService,
+  SolicitudService,
   VehiculoService
 } = require("../services");
 
@@ -20,7 +21,8 @@ const {
   AuthController,
   FileManagerController,
   UbicacionController,
-  VehiculoController
+  VehiculoController,
+  SolicitudController
 } = require("../controllers");
 
 // routes
@@ -30,6 +32,7 @@ const {
   AuthRoutes,
   FileManagerRoutes,
   UbicacionRoutes,
+  SolicitudRoutes,
   VehiculoRoutes
 } = require("../routes/index.routes");
 const Routes = require("../routes");
@@ -69,6 +72,7 @@ container
     TareaService: asClass(TareaService).singleton(),
     AuthService: asClass(AuthService).singleton(),
     UbicacionService: asClass(UbicacionService).singleton(),
+    SolicitudService: asClass(SolicitudService).singleton(),
     VehiculoService: asClass(VehiculoService).singleton()
   })
   .register({
@@ -77,6 +81,7 @@ container
     TareaController: asClass(TareaController.bind(TareaController)).singleton(),
     FileManagerController: asClass(FileManagerController.bind(FileManagerController)).singleton(),
     UbicacionController: asClass(UbicacionController.bind(UbicacionController)).singleton(),
+    SolicitudController: asClass(SolicitudController.bind(SolicitudController)).singleton(),
     VehiculoController: asClass(VehiculoController.bind(VehiculoController)).singleton()
   })
   .register({
@@ -85,6 +90,7 @@ container
     AuthRoutes: asFunction(AuthRoutes).singleton(),
     FileManagerRoutes: asFunction(FileManagerRoutes).singleton(),
     UbicacionRoutes: asFunction(UbicacionRoutes).singleton(),
+    SolicitudRoutes: asFunction(SolicitudRoutes).singleton(),
     VehiculoRoutes: asFunction(VehiculoRoutes).singleton()
   })
   .register({

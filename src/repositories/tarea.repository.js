@@ -154,7 +154,7 @@ module.exports = class TareaRepository extends BaseRepository{
 
         if (empleadosActuales >= numeroTrabajadores){
             console.log("La tarea no admite más empleados.")
-            return false;
+            return {status: 406, message:"La tarea no admite más empleados."};
         }
         
         //console.log(empleadosActuales);
@@ -168,7 +168,7 @@ module.exports = class TareaRepository extends BaseRepository{
         if (_id !== undefined){
             if (_id[0] !== undefined){
                 console.log("Parece que el trabajador ya esta registrado en esta tarea")
-                return false;
+                return {status: 407, message:"Parece que el trabajador ya esta registrado en esta tarea."};
             }
         }
         
@@ -177,7 +177,7 @@ module.exports = class TareaRepository extends BaseRepository{
             idEmpleado:idEmpleado,
             fechacreacion:new Date(Date.now()).toISOString()
         });
-        return true;
+        return {status: 201, message:"Trabajador registrado en la tarea."};
     }
     async mongoAddSubtarea(idTarea, idSubtarea){
         const _id = await _tareaHasSubtareas.find({$and:[

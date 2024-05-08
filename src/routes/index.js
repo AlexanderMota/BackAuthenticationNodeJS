@@ -14,6 +14,7 @@ module.exports = function({
   AuthRoutes,
   FileManagerRoutes,
   UbicacionRoutes,
+  SolicitudRoutes,
   VehiculoRoutes
 }) {
   const router = express.Router();
@@ -30,6 +31,7 @@ module.exports = function({
   apiRoutes.use("/auth", AuthRoutes);;
   apiRoutes.use("/files", FileManagerRoutes);
   apiRoutes.use("/ubicacion", UbicacionRoutes);
+  apiRoutes.use("/solicitud", SolicitudRoutes);
   apiRoutes.use("/vehiculo", VehiculoRoutes);
 
   router.use("/api", apiRoutes);

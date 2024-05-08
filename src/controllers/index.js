@@ -4,5 +4,6 @@ module.exports = {
   AuthController : require("./auth.controller"),
   FileManagerController : require("./fileManager.controller"),
   UbicacionController : require("./ubicacion.controller"),
-  VehiculoController : require("./vehiculo.controller")
+  VehiculoController : require("./vehiculo.controller"),
+  SolicitudController : require("./solicitud.controller")
 }

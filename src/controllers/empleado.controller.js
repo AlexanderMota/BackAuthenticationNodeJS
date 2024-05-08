@@ -11,7 +11,7 @@ module.exports = class EmpleadoController {
   }
   async mongoGetEmpleadoByIdEmpleado(req, res) {
     const { idEmpleado } = req.params;
-    if(req.empleado.rol <= 2){
+    if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const empleado = await _empleadoService.mongoGet(idEmpleado);
       const empleadoProcesado = {
         _id:empleado._id.toString(),
@@ -23,7 +23,7 @@ module.exports = class EmpleadoController {
         centroTrabajo:empleado.centroTrabajo
       }
       return res.send(empleadoProcesado);
-    }else if(req.empleado.rol <= 4){
+    }else if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const empleado = await _empleadoService.mongoGet(idEmpleado);
       if(req.empleado.id == empleado._id.toString()){
         const empleadoProcesado = {
@@ -41,7 +41,7 @@ module.exports = class EmpleadoController {
     return res.send({status:407,message:"Usuario no autorizado."});
   }
   async mongoGetEmpleadosByIdTarea(req, res) {
-    if(req.empleado.rol <= 2){
+    if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const {pageSize, pageNum} = req.query;
       const { idTarea } = req.params;
       //console.log(idTarea);
@@ -59,11 +59,17 @@ module.exports = class EmpleadoController {
         }
       });
       return res.send(empleadosProcesados);
+    }else if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
+      const {pageSize, pageNum} = req.query;
+      const { idTarea } = req.params;
+      //console.log(idTarea);
+      const empleados = await _empleadoService.mongoGetEmpleadosByIdTarea(idTarea, pageSize, pageNum);
+      return res.send({status: 201, message:empleados.length});
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
   async mongoGetEmpleadosByIdTareaDist(req, res) {
-    if(req.empleado.rol <= 2){
+    if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const {pageSize, pageNum} = req.query;
       const { idTarea } = req.params;
       //console.log(idTarea);
@@ -85,7 +91,7 @@ module.exports = class EmpleadoController {
     return res.send({status:407,message:"Usuario no autorizado."});
   }
   async mongoGetAll(req, res){
-    if(req.empleado.rol <= 2){
+    if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const {pageSize, pageNum} = req.query;
       //console.log(pageSize);
       const empleados = await _empleadoService.mongoGetAll(pageSize, pageNum);
@@ -104,7 +110,7 @@ module.exports = class EmpleadoController {
         }
       });
       return res.send(empleadosProcesados);
-    }else if(req.empleado.rol <= 4){
+    }else if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const empleado = await _empleadoService.mongoGet(req.empleado.id);
 
       const empleadoProcesado=[];
@@ -121,48 +127,66 @@ module.exports = class EmpleadoController {
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
+  // ////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
   async getEmpleadosByCentro(req, res){
     console.log("getEmpleadosByCentro por implementar");
     console.log(req.empleado);
     console.log(req.params);
-
   }
+  // ////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////////
   async getRoles(req, res){
-    if(req.empleado.rol <= 2){
-      //console.log("---Original: ");
-      //console.log(roles);
+    if(req.empleado.rol <= 3 && req.empleado.rol >= 0){
       const ro2 = JSON.parse(JSON.stringify(roles));
       ro2.shift();
-      //console.log("---sin admin: ");
-      //console.log(ro2);
-  
-      ro2.forEach(obj => delete obj.valor);
-      /*const newArray = originalArray.map(objeto => {
-        const { atributoNoDeseado, ...restoAtributos } = objeto;
-        return restoAtributos;
-      });*/
-      //console.log("---sin value: ");
-      //console.log(ro2);
-      return res.send(ro2);
+      
+      const ro = [];
+      ro2.forEach(obj => {
+        if(obj.valor >= req.empleado.rol){
+          ro.push(obj.nombre);
+        }
+      });
+      return res.send(ro);
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
   async getDepartamentos(req, res){
-    if(req.empleado.rol <= 2){
+    if(req.empleado.rol <= 3 && req.empleado.rol >= 0){
       return res.send(departamentos);
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
-
   async mysqlGetAll(req, res){
-    if(req.empleado.rol <= 2){
+    if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const empleados = await _empleadoService.mysqlGetAll();
       return res.send(empleados);
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
   async mongoAddTarea(req, res){
-    if(req.empleado.rol <= 2){
+    if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const { idTarea, idEmpleado } = req.query;
       const flag = await _tareaService.mongoAddEmpleado( idTarea, idEmpleado);
       if(flag){ 
@@ -174,7 +198,7 @@ module.exports = class EmpleadoController {
   }
 
   async mongoUpdate(req, res){
-    if(req.empleado.rol <= 2){
+    if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const { body } = req;
       const { idEmpleado } = req.params;
   
@@ -185,7 +209,7 @@ module.exports = class EmpleadoController {
   }
 
   async mongoDelete(req,res){
-    if(req.empleado.rol <= 2){
+    if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const {idEmpleado} = req.params;
       const deletedEmpleado = await _empleadoService.mongoDelete( idEmpleado );
       return res.send(deletedEmpleado);

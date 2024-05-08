@@ -12,6 +12,6 @@ const VehiculoSchema = new Schema({
   //plazasDisponibles: { type: Number, required: true },
   ocupantes : { type: [] },
   puntosDestinoRecogida : { type: [] },
-  fechaRegistro: { type: String, required: true , default: new Date(Date.now()).toISOString() }
+  fechaRegistro: { type: Date, default: () => new Date(), required: true }
 });
 module.exports = mongoose.model("vehiculo", VehiculoSchema);

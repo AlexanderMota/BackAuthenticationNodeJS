@@ -4,14 +4,14 @@ var mongoose = require('mongoose');
 
 let _tareaRep = null;
 let _empleadoRep = null;
-//let _solicitudRep = null;
+let _solicitudRep = null;
 
-module.exports = class TareaService extends BaseService{
-    constructor({TareaRepository, EmpleadoRepository, SolicitudRepository,}){
-        super(TareaRepository);
+module.exports = class SolicitudService extends BaseService{
+    constructor({TareaRepository, EmpleadoRepository, SolicitudRepository}){
+        super(SolicitudRepository);
         _tareaRep = TareaRepository;
         _empleadoRep = EmpleadoRepository;
-        //_solicitudRep = SolicitudRepository;
+        _solicitudRep = SolicitudRepository;
 
     }
     /*async mongopruebas(){
@@ -22,7 +22,7 @@ module.exports = class TareaService extends BaseService{
     }
 */
 
-
+/*
     async mongoGetTareasBy(parametro, nombreParam,pageSize , pageNum ) {
         return await _tareaRep.mongoGetTareasBy(parametro, nombreParam,pageSize, pageNum)
     }
@@ -58,14 +58,16 @@ module.exports = class TareaService extends BaseService{
     async mongoAddComentario(idTarea, idAutor, nombre, descripcion){
         return await _tareaRep.mongoAddComentario(idTarea, idAutor, nombre, descripcion);
     }
+*/
 
-
-
-
+    async mongoGetSolicitudesByEmpleado(idEmpleado){
+        return await _solicitudRep.mongoGetSolicitudesByEmpleado(idEmpleado);
+    }
     //hace falta que este metodo genere una notificacion para administrar la solicitud
-    /*async mongoSolicitarTarea(idTarea, idEmpleado){
+    async mongoSolicitarTarea(idTarea, idEmpleado){
         return await _solicitudRep.mongoSolicitarTarea(idTarea, idEmpleado);
     }
+    
     async mongoGetAllSolicitudes(pageSize, pageNum,campo={$query: {}, $orderby: { fechasolicitud : 1 }}){
         const sols = await _solicitudRep.mongoGetAll(pageSize, pageNum,campo);
         //console.log(sols);
@@ -103,7 +105,7 @@ module.exports = class TareaService extends BaseService{
             return {status:401,message:"delete solicitud error"};
         };
          
-    }*/
+    }/*
     async mongoQuitaEmpledeTarea(id){
         const resi = await _tareaRep.mongoQuitaEmpledeTarea(id);
         if(resi){
@@ -112,5 +114,5 @@ module.exports = class TareaService extends BaseService{
             return {status:401,message:"delete solicitud error"};
         };
          
-    }
+    }*/
 }

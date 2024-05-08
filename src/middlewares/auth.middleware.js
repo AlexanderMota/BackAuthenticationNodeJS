@@ -6,7 +6,7 @@ module.exports = function(req, res, next) {
   if (!token) {
     const error = new Error();
     error.message = "Token must be sent";
-    error.status = 402;
+    error.status = 419;
     throw error;
   }
 
@@ -15,7 +15,7 @@ module.exports = function(req, res, next) {
     if (err) {
       const error = new Error();
       error.message = "Invalid token";
-      error.status = 401;
+      error.status = 420;
       throw error;
     }
 

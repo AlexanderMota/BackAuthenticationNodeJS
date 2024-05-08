@@ -11,7 +11,7 @@ const UbicacionSchema = new Schema({
   //limiteSupDer: { type: Number, required: false },
   //limiteInfIzq: { type: Number, required: false },
   //zoom: {type: Number, required: false},
-  fechaRegistro: { type: String, required: true , default: new Date(Date.now()).toISOString() }
+  fechaRegistro: { type: Date, default: () => new Date(), required: true }
 });
 
 module.exports = mongoose.model("ubicacion", UbicacionSchema);

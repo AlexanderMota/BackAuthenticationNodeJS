@@ -6,7 +6,7 @@ const ComentarioSchema = new Schema({
   idAutor: { type: String, required: true },
   nombre: { type: String, required: true },
   descripcion: { type: String, required: true },
-  fecha: { type: String , default: new Date(Date.now()).toISOString() }
+  fecha: { type: Date, default: () => new Date(), required: true }
 });
 
 module.exports = mongoose.model("comentario", ComentarioSchema);
