@@ -10,9 +10,8 @@ module.exports = class TareaController {
   async mongoGet(req, res) {
     if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const { id } = req.params;
-      console.log(id);
       const tarea = await _tareaService.mongoGet(id);
-      console.log(tarea.fechafin.getMonth());
+      //console.log(tarea);
       return res.send(tarea);
     }
     return res.send({status:407,message:"Usuario no autorizado."});
@@ -26,7 +25,7 @@ module.exports = class TareaController {
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
-  async mongoGetTareaByIdTarea(req, res) {
+  /*async mongoGetTareaByIdTarea(req, res) {
     if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const { idTarea } = req.params;
       
@@ -34,7 +33,7 @@ module.exports = class TareaController {
       return res.send(tarea);
     }
     return res.send({status:407,message:"Usuario no autorizado."});
-  }
+  }*/
   async mongoGetSupertareas(req, res){
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const tarea = await _tareaService.mongoGetSupertareas();
@@ -237,15 +236,13 @@ module.exports = class TareaController {
   async mongoUpdate(req, res){
     if(req.empleado.rol <= 3 && req.empleado.rol >= 0){
       const {body} = req;
-      console.log(body);
+      //console.log(body);
       const {id} = req.params;
       
       const updateTarea = await _tareaService.mongoUpdate(id,body);
-      console.log(updateTarea);
+      //console.log(updateTarea);
       
       return res.send({status:202,message:"tarea actualizada correctamente"});
-      
-      
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
@@ -259,15 +256,6 @@ module.exports = class TareaController {
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
-  /*async mongoDeteleSolicitud(req,res){
-    if(req.empleado.rol <= 4){
-      const {id} = req.params;
-      const deleteSolicitud = await _tareaService.mongoDeteleSolicitud(id);
-      return res.send(deleteSolicitud);
-      
-    }
-    return res.send({status:407,message:"Usuario no autorizado."});
-  }*/
   async mongoDeteleContrato(req,res){
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const {id} = req.params;

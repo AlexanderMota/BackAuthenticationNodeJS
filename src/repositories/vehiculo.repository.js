@@ -40,15 +40,16 @@ module.exports = class VehiculoRepository extends BaseRepository{
     async mongoDeleteParada(idVehi, idParada){
         
         const val = await _vehiculo.updateOne(
-            { _id: ObjectId(idVehi) }, // Filtro para encontrar el documento
+            { matricula: idVehi }, // Filtro para encontrar el documento
             { $pull: { puntosDestinoRecogida: idParada } } // Eliminar el elemento del array
         );
+        console.log(val);
         if(val){
             if(!val.acknowledged){
                 return {status:403, message:"Operacion no reconocida por MongoDB."};
             }else if(val.matchedCount > 0){
                 if(val.modifiedCount > 0){
-                    return {status:202, message:"Se ha modificado el documento."};
+                    return {status:201, message:"Se ha modificado la parada."};
                 }else{
                     return {status:202, message:"Se encontraron coincidencias pero no se ha modificado el documento."};
                 }
