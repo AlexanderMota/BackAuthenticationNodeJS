@@ -55,4 +55,25 @@ module.exports = class SolicitudRepository extends BaseRepository{
 
         return _solicitudes;
     }
+    
+    async mongoGetSolicitudByEmpleadoTarea(idTar,idEmp){
+
+        const _solicitudes = await _solicitud.find({$and:[
+            {idTarea:idTar},
+            {idEmpleado:idEmp}
+        ]},{"_id":1});
+
+        if(Array.isArray(_solicitudes)){
+            if(_solicitudes.length > 1){
+                return {status:405,message:"Se han encontrado varias solicitudes con los mismos datos."};
+            }else if (_solicitudes.length < 1){
+                return {status:403,message:"Sin solicitudes."};
+            }else{
+                await _solicitud.findByIdAndDelete(_solicitudes[0]._id);
+                return {status:203,message:"Solicitudes eliminadas correctamente."};
+            }
+        }
+
+        return {status:406,message:"Error inesperado."};
+    }
 }

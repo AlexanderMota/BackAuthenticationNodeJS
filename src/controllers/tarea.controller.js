@@ -256,12 +256,16 @@ module.exports = class TareaController {
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
-  async mongoDeteleContrato(req,res){
+  async mongoQuitaEmpleadoTarea(req,res){
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const {id} = req.params;
-      const deleteSolicitud = await _tareaService.mongoQuitaEmpledeTarea(id);
-      return res.send(deleteSolicitud);
-      
+      const ids = id.split("_");
+      if(Array.isArray(ids)){
+        const deleteSolicitud = await _tareaService.mongoQuitaEmpleadoTarea(ids[0],ids[1]);
+        //console.log(deleteSolicitud);
+        return res.send(deleteSolicitud);
+      }
+      return res.send({status:408,message:"Faltan parámetros."});
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }

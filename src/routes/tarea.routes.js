@@ -25,7 +25,7 @@ module.exports = function({ TareaController }) {
   router.patch("/:id", [AuthMiddleware, ParseIntMiddleware], TareaController.mongoUpdate);
 
   router.delete("/:id", [AuthMiddleware, ParseIntMiddleware], TareaController.mongoDelete);
-  //router.delete("/solicitud/:id", [AuthMiddleware, ParseIntMiddleware], TareaController.mongoDeteleSolicitud);
+  router.delete("/empleado/:id", [AuthMiddleware, ParseIntMiddleware], TareaController.mongoQuitaEmpleadoTarea);
   
   return router;
 };

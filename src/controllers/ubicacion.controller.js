@@ -140,19 +140,27 @@ module.exports = class UbicacionController {
                  elemento.vehiculo !== req.body.vehiculo;
         });
       }
-      //if(viejasFechas.length > ubicacion.fechasRecogida.length){
+      if(viejasFechas.length > ubicacion.fechasRecogida.length){
         //console.log(ubicacion);
         //console.log(req.params);
-        const vehi = await _vehiculoService.mongoDeleteParada(req.body.vehiculo,req.params.idParada);
+        const resvehi = await _vehiculoService.mongoDeleteParada(req.body.vehiculo,req.params.idParada);
         //console.log(vehi);
         const idUbi = ubicacion._id;
         delete ubicacion._id;
         const val = await _ubicacionService.mongoUpdate(idUbi, ubicacion);
         console.log(val);
-        return res.send(vehi);
+        return res.send(resvehi);
 
-      //}
-        //return res.send({status:410,message:"No se eliminó ninguna parada."});
+      }else if(ubicacion.fechasRecogida.length < 1){
+        const vehi = await _vehiculoService.mongoDeleteParada(req.body.vehiculo,req.params.idParada);
+
+        console.log(vehi);
+        const val = await _ubicacionService.mongoDelete(ubicacion._id);
+
+        console.log(val);
+        return res.send({status:210,message:"Se eliminó la ubicación por no tener paradas."});
+      }
+      return res.send({status:410,message:"No se eliminó ninguna parada."});
       
     }
 

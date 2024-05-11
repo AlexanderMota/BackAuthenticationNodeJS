@@ -7,7 +7,7 @@ let _empleadoRep = null;
 //let _solicitudRep = null;
 
 module.exports = class TareaService extends BaseService{
-    constructor({TareaRepository, EmpleadoRepository, SolicitudRepository,}){
+    constructor({TareaRepository, EmpleadoRepository/*, SolicitudRepository,*/}){
         super(TareaRepository);
         _tareaRep = TareaRepository;
         _empleadoRep = EmpleadoRepository;
@@ -104,13 +104,7 @@ module.exports = class TareaService extends BaseService{
         };
          
     }*/
-    async mongoQuitaEmpledeTarea(id){
-        const resi = await _tareaRep.mongoQuitaEmpledeTarea(id);
-        if(resi){
-            return {status:201,message:"delete solicitud correct"};
-        }else{
-            return {status:401,message:"delete solicitud error"};
-        };
-         
+    async mongoQuitaEmpleadoTarea(idTar,idEmp){
+        return await _tareaRep.mongoQuitaEmpleadoTarea(idTar,idEmp);
     }
 }

@@ -3,20 +3,22 @@ const { ObjectId } = require('mongodb');
 
 let _tarea = null;
 let _supertarea = null;
-let _empleado = null;
+//let _empleado = null;
 let _comentario = null;
 let _tareaHasEmpleados = null;
 let _tareaHasSubtareas = null;
+let _solicitudRep = null;
 
 module.exports = class TareaRepository extends BaseRepository{
-    constructor({Tarea, Supertarea, TareaHasEmpleados, TareaHasSubtareas, Empleado, Comentario}){
+    constructor({Tarea, Supertarea, TareaHasEmpleados, TareaHasSubtareas/*, Empleado*/, Comentario, SolicitudRepository}){
         super(Tarea);
         _tarea = Tarea;
         _supertarea = Supertarea;
-        _empleado = Empleado;
+        //_empleado = Empleado;
         _tareaHasEmpleados = TareaHasEmpleados;
         _tareaHasSubtareas = TareaHasSubtareas;
         _comentario = Comentario;
+        _solicitudRep = SolicitudRepository;
     }
     /*async mongopruebas() {
         const resi = await _tarea.find();
@@ -229,19 +231,40 @@ module.exports = class TareaRepository extends BaseRepository{
         return false;
     }
 
-    async mongoQuitaEmpledeTarea(id){
-        const resi = await _tareaHasEmpleados.mongoDelete(id);
-        if(resi){
-            return {status:201,message:"delete contrato correct"};
+    async mongoQuitaEmpleadoTarea(idTar,idEmp){
+        //const resi = await _tareaHasEmpleados.mongoDelete(id);
+        const resi = await _tareaHasEmpleados.find({$and:[
+            {idTarea:idTar},
+            {idEmpleado:idEmp}
+        ]},{"_id":1});
+
+        //console.log(resi);
+        if(resi.length < 1){
+            return {status:405,message:"No se ha encontrado el contrato solicitado."};
+        }else if(resi.length > 1){
+            return {status:403,message:"Se encuentran varias solicitudes con los mismos datos."};
+        }else if(resi[0]._id){
+            //console.log("res3:");
+            const res3 = await _solicitudRep.mongoGetSolicitudByEmpleadoTarea(idTar,idEmp);
+            const res2 = await _tareaHasEmpleados.findByIdAndDelete(resi[0]._id);
+            //console.log(res3);
+            if(res2){
+                return {status:201,message:"La relación se ha eliminado correctamente. "+res3.message};
+            }else{
+                return {status:401,message:"delete contrato error. "+res3.message};
+            };
         }else{
-            return {status:401,message:"delete contrato error"};
-        };
+            return {status:402,message:"No se ha encontrado el contrato solicitado."};
+        }
          
     }
     async mongoDelete(idTarea) {
-        await _comentario.deleteMany({idTarea:idTarea});
-        await _tareaHasEmpleados.deleteMany({idTarea:idTarea});
-        await _tareaHasSubtareas.deleteMany({ idSubtarea: idTarea });
+        const res1 = await _comentario.deleteMany({idTarea:idTarea});
+        console.log(res1);
+        const res2 = await _tareaHasEmpleados.deleteMany({idTarea:idTarea});
+        console.log(res2);
+        const res3 = await _tareaHasSubtareas.deleteMany({ idSubtarea: idTarea });
+        console.log(res3);
         return await _tarea.findByIdAndDelete(idTarea);
       }
 }
