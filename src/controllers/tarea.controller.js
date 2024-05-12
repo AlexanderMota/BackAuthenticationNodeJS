@@ -250,8 +250,14 @@ module.exports = class TareaController {
   async mongoDelete(req,res){
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const {id} = req.params;
-      const deleteTarea = await _tareaService.mongoDelete(id);
-      return res.send(deleteTarea);
+      const ids = id.split("_");
+      if(Array.isArray(ids)){
+        const deleteTarea = await _tareaService.mongoDelete(ids[0],ids[1]);
+        console.log(deleteTarea);
+        return res.send(deleteTarea);
+
+      }
+      return res.send({status:408,message:"Faltan parámetros."});
       
     }
     return res.send({status:407,message:"Usuario no autorizado."});

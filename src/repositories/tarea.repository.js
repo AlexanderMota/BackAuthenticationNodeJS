@@ -258,14 +258,71 @@ module.exports = class TareaRepository extends BaseRepository{
         }
          
     }
-    async mongoDelete(idTarea) {
-        const res1 = await _comentario.deleteMany({idTarea:idTarea});
-        console.log(res1);
-        const res2 = await _tareaHasEmpleados.deleteMany({idTarea:idTarea});
-        console.log(res2);
-        const res3 = await _tareaHasSubtareas.deleteMany({ idSubtarea: idTarea });
-        console.log(res3);
-        return await _tarea.findByIdAndDelete(idTarea);
-      }
+    async mongoDelete(idTarea,conservaSubs) {
+        //644ef69d4a5f2975a196155c
+        console.log(idTarea,"_",conservaSubs);
+        const superOriginaria = await _tareaHasSubtareas.find({ idSubtarea: idTarea });
+        console.log("superOriginaria: ");
+        console.log(superOriginaria);
+        if(superOriginaria.length > 1){
+            return {status: 405,message:"Problema al determinar la tarea de la que deriba la tarea que intenta elmininar."}
+        }else if(superOriginaria.length < 1){
+            return {status: 406,message:"Intenta eliminar una supertarea. Falta implemntar la eliminacion del dato Supertarea."}
+        }else if(superOriginaria.length == 1){
+            ////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////
+            await _tareaHasSubtareas.findByIdAndDelete(superOriginaria[0]._id);
+            const res1 = await _comentario.deleteMany({idTarea:idTarea});
+            console.log(res1);
+            const res2 = await _tareaHasEmpleados.deleteMany({idTarea:idTarea});
+            console.log(res2);
+            const res4 = await _tarea.findByIdAndDelete(idTarea);
+            console.log(res4);
+
+            if(conservaSubs == 1){
+                const subtareasHuerfanas = await _tareaHasSubtareas.find({ idTarea: idTarea });
+                console.log("subtareasHuerfanas:");
+                console.log(subtareasHuerfanas);
+                if(subtareasHuerfanas.length < 1){
+                    return {status: 202,message:"Tarea eliminada (Sin subtareas)."};
+                }else {
+                    subtareasHuerfanas.forEach(async val=>{
+                        val.idTarea=superOriginaria[0].idTarea;
+                        const iddd = val._id;
+                        delete val._id;
+                        await _tareaHasSubtareas.findByIdAndUpdate(iddd, val);
+                    });
+
+            ////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////
+            // se debe gestionar el borrado de una posible ubicacion especifica para la tarea, teniendo en cuenta el metodo que busca la super ams proxima con ubi
+            ////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////
+
+                    return {status: 203,message:"Tarea eliminada y subtareas ("+subtareasHuerfanas.length+") reubicadas ("+superOriginaria[0].idTarea+")."};
+                }
+
+            }else if(conservaSubs == 0){
+                const res1 = await _comentario.deleteMany({idTarea:idTarea});
+                console.log(res1);
+                const res2 = await _tareaHasEmpleados.deleteMany({idTarea:idTarea});
+                console.log(res2);
+                const res3 = await _tareaHasSubtareas.deleteMany({ idSubtarea: idTarea });
+                console.log(res3);
+                const res4 = await _tarea.findByIdAndDelete(idTarea);
+                console.log(res4);
+
+            }
+            ////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////
+        }
+    }
+        /**/
+      
+    
 }
 

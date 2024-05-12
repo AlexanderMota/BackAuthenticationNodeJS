@@ -104,7 +104,10 @@ module.exports = class TareaService extends BaseService{
         };
          
     }*/
-    async mongoQuitaEmpleadoTarea(idTar,idEmp){
-        return await _tareaRep.mongoQuitaEmpleadoTarea(idTar,idEmp);
+    async mongoDelete(idTar,conservaSubs){
+        return await _tareaRep.mongoDelete(idTar,conservaSubs);
+    }
+    async mongoQuitaEmpleadoTarea(idTar){
+        return await _tareaRep.mongoQuitaEmpleadoTarea(idTar);
     }
 }

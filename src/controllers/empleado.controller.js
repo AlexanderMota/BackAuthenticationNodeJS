@@ -11,7 +11,7 @@ module.exports = class EmpleadoController {
   }
   async mongoGetEmpleadoByIdEmpleado(req, res) {
     const { idEmpleado } = req.params;
-    if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
+    if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const empleado = await _empleadoService.mongoGet(idEmpleado);
       const empleadoProcesado = {
         _id:empleado._id.toString(),
@@ -23,7 +23,7 @@ module.exports = class EmpleadoController {
         centroTrabajo:empleado.centroTrabajo
       }
       return res.send(empleadoProcesado);
-    }else if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
+    }/*else if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const empleado = await _empleadoService.mongoGet(idEmpleado);
       if(req.empleado.id == empleado._id.toString()){
         const empleadoProcesado = {
@@ -37,7 +37,7 @@ module.exports = class EmpleadoController {
         }
         return res.send(empleadoProcesado);
       }
-    }
+    }*/
     return res.send({status:407,message:"Usuario no autorizado."});
   }
   async mongoGetEmpleadosByIdTarea(req, res) {
