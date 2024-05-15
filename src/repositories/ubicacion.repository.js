@@ -39,10 +39,10 @@ module.exports = class UbicacionRepository extends BaseRepository{
       */
       //console.log("/////////////////////////////////   WHILE   /////////////////////////////////");
       while (ubi.length < 1 && idt != null) {
-        //console.log("\n\n\nBUSCANDO TAREA: ",idt.idTarea);
-        idt = await _tareaHasSubtareas.findOne({idSubtarea:idt.idTarea},{_id:0,idTarea:1});
         //console.log("ES SUBTAREA DE: ",idt.idTarea);
         ubi  = await _ubicacion.find({idTarea:idt.idTarea});
+        //console.log("\n\n\nBUSCANDO TAREA: ",idt.idTarea);
+        idt = await _tareaHasSubtareas.findOne({idSubtarea:idt.idTarea},{_id:0,idTarea:1});
         //console.log("UBICACIÓN: ",ubi,"\n\n\n");
       }
       if(ubi.length < 1){

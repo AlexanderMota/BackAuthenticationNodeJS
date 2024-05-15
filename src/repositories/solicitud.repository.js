@@ -56,7 +56,7 @@ module.exports = class SolicitudRepository extends BaseRepository{
         return _solicitudes;
     }
     
-    async mongoGetSolicitudByEmpleadoTarea(idTar,idEmp){
+    async mongoDeleteSolicitudByEmpleadoTarea(idTar,idEmp){
 
         const _solicitudes = await _solicitud.find({$and:[
             {idTarea:idTar},
@@ -75,5 +75,11 @@ module.exports = class SolicitudRepository extends BaseRepository{
         }
 
         return {status:406,message:"Error inesperado."};
+    }
+    async findByIdAndDelete(id){
+        return await _solicitud.findByIdAndDelete(id);
+    }
+    async deleteManyByIdTarea(idTar){
+        return await _solicitud.deleteMany({idTarea:idTar});
     }
 }

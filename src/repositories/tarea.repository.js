@@ -8,17 +8,19 @@ let _comentario = null;
 let _tareaHasEmpleados = null;
 let _tareaHasSubtareas = null;
 let _solicitudRep = null;
+let _ubicacion = null;
 
 module.exports = class TareaRepository extends BaseRepository{
-    constructor({Tarea, Supertarea, TareaHasEmpleados, TareaHasSubtareas/*, Empleado*/, Comentario, SolicitudRepository}){
+    constructor({Tarea, Supertarea, TareaHasEmpleados, TareaHasSubtareas/*, Empleado*/, Comentario, SolicitudRepository, Ubicacion}){
         super(Tarea);
         _tarea = Tarea;
         _supertarea = Supertarea;
         //_empleado = Empleado;
         _tareaHasEmpleados = TareaHasEmpleados;
         _tareaHasSubtareas = TareaHasSubtareas;
-        _comentario = Comentario;
         _solicitudRep = SolicitudRepository;
+        _comentario = Comentario;
+        _ubicacion = Ubicacion;
     }
     /*async mongopruebas() {
         const resi = await _tarea.find();
@@ -246,6 +248,7 @@ module.exports = class TareaRepository extends BaseRepository{
         }else if(resi[0]._id){
             //console.log("res3:");
             const res3 = await _solicitudRep.mongoGetSolicitudByEmpleadoTarea(idTar,idEmp);
+            await _solicitudRep.findByIdAndDelete(res3[0]._id);
             const res2 = await _tareaHasEmpleados.findByIdAndDelete(resi[0]._id);
             //console.log(res3);
             if(res2){
@@ -272,18 +275,31 @@ module.exports = class TareaRepository extends BaseRepository{
             ////////////////////////////////////////////////////////////////////
             ////////////////////////////////////////////////////////////////////
             ////////////////////////////////////////////////////////////////////
-            await _tareaHasSubtareas.findByIdAndDelete(superOriginaria[0]._id);
+
+            const res3 = await _tarea.findByIdAndDelete(idTarea);
+            console.log("res3-tar");
+            console.log(res3);
+            /*const subs = */await _tareaHasSubtareas.findByIdAndDelete(superOriginaria[0]._id);
+            /*console.log("subs");
+            console.log(subs);*/
             const res1 = await _comentario.deleteMany({idTarea:idTarea});
+            console.log("res1-comen");
             console.log(res1);
             const res2 = await _tareaHasEmpleados.deleteMany({idTarea:idTarea});
+            console.log("res2-emp");
             console.log(res2);
-            const res4 = await _tarea.findByIdAndDelete(idTarea);
+            const res4 = await _ubicacion.deleteMany({idTarea:idTarea});
+            console.log("res4-ubi");
             console.log(res4);
+            const res5 = await _solicitudRep.deleteManyByIdTarea(idTarea);
+            console.log("res5-soli");
+            console.log(res5);
+
+            const subtareasHuerfanas = await _tareaHasSubtareas.find({ idTarea: idTarea });
+            console.log("subtareasHuerfanas:");
+            console.log(subtareasHuerfanas);
 
             if(conservaSubs == 1){
-                const subtareasHuerfanas = await _tareaHasSubtareas.find({ idTarea: idTarea });
-                console.log("subtareasHuerfanas:");
-                console.log(subtareasHuerfanas);
                 if(subtareasHuerfanas.length < 1){
                     return {status: 202,message:"Tarea eliminada (Sin subtareas)."};
                 }else {
@@ -294,26 +310,28 @@ module.exports = class TareaRepository extends BaseRepository{
                         await _tareaHasSubtareas.findByIdAndUpdate(iddd, val);
                     });
 
-            ////////////////////////////////////////////////////////////////////
-            ////////////////////////////////////////////////////////////////////
-            ////////////////////////////////////////////////////////////////////
-            // se debe gestionar el borrado de una posible ubicacion especifica para la tarea, teniendo en cuenta el metodo que busca la super ams proxima con ubi
-            ////////////////////////////////////////////////////////////////////
-            ////////////////////////////////////////////////////////////////////
-            ////////////////////////////////////////////////////////////////////
-
                     return {status: 203,message:"Tarea eliminada y subtareas ("+subtareasHuerfanas.length+") reubicadas ("+superOriginaria[0].idTarea+")."};
                 }
 
             }else if(conservaSubs == 0){
-                const res1 = await _comentario.deleteMany({idTarea:idTarea});
-                console.log(res1);
-                const res2 = await _tareaHasEmpleados.deleteMany({idTarea:idTarea});
-                console.log(res2);
-                const res3 = await _tareaHasSubtareas.deleteMany({ idSubtarea: idTarea });
-                console.log(res3);
-                const res4 = await _tarea.findByIdAndDelete(idTarea);
-                console.log(res4);
+                const res33 = await _tareaHasSubtareas.deleteMany({ idTarea: idTarea });
+                console.log(res33);
+
+                if(subtareasHuerfanas.length < 1){
+                    return {status: 202,message:"Tarea eliminada (Sin subtareas)."};
+                }else {
+                    subtareasHuerfanas.forEach(async val=>{
+                        val.idTarea=superOriginaria[0].idTarea;
+                        const iddd = val._id;
+                        delete val._id;
+                        const res35 = await _tareaHasSubtareas.findByIdAndDelete(val._id);
+                        console.log(res35);
+                        const res34 = await _tarea.findByIdAndDelete(val.idSubtarea);
+                        console.log(res34);
+                    });
+
+                    return {status: 203,message:"Tarea y subtareas ("+subtareasHuerfanas.length+") eliminadas."};
+                }
 
             }
             ////////////////////////////////////////////////////////////////////

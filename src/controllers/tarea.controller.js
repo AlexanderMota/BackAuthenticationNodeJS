@@ -46,8 +46,8 @@ module.exports = class TareaController {
   async mongoGetSubtareasByIdTarea(req, res){
     if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const {idTarea} = req.params;
-      //console.log("mongoGetSubtareasByIdTarea: " + idTarea);
-      const tareas = await _tareaService.mongoGetSubtareasByIdTarea(idTarea);
+      const {pageSize, pageNum} = req.query;
+      const tareas = await _tareaService.mongoGetSubtareasByIdTarea(idTarea,pageSize, pageNum);
       
       return res.send(tareas);
       
@@ -205,22 +205,23 @@ module.exports = class TareaController {
       const {idSuper} = req.query
 
       if(body._id){
-        const tar = await _tareaService.mongoGetTareasBy(body._id,"_id",{_id: true});
+        const tar = await _tareaService.mongoGetTareasBy(body._id,"_id",{_id: 1});
         if(tar){
           return res.send({status:405,message:"La tarea ya existe en la base de datos",id:resp._id});
         }
       }
       
-      const supertarea = await _tareaService.mongoGetTareasBy(idSuper,"_id",{_id: true});
+      const supertarea = await _tareaService.mongoGetTareasBy(idSuper,"_id",{_id: 1});
       
       if(supertarea){
         const resp =  await _tareaService.mongoCreate(body);
-        
+        console.log(supertarea);
+        console.log(resp);
         if(resp?._id){
 
           await _tareaService.addSubtarea(supertarea._id.toString(),resp._id.toString());
 
-          return res.send({status:201,message:"tarea creada correctamente",id:resp._id});
+          return res.send({status:201,message:"Tarea creada correctamente._"+resp._id});
         }
       }else if(idSuper == "0b"){
         const resp2 =  await _tareaService.mongoCreate(body);

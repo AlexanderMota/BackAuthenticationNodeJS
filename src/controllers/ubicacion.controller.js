@@ -11,7 +11,7 @@ module.exports = class UbicacionController {
     
     if(req.empleado.rol <= 3 && req.empleado.rol >= 0){
       const {body} = req;
-      //console.log(body);
+      console.log(body);
       if(await _ubicacionService.mongoCreate(body)){
         return res.send({status:201,message:"ubicación guardada correctamente."});
       }else{
@@ -20,7 +20,7 @@ module.exports = class UbicacionController {
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
-  async mongoCreateByIdTarea(req, res){
+  /*async mongoCreateByIdTarea(req, res){
     if(req.empleado.rol <= 3 && req.empleado.rol >= 0){
       const { idTarea } = req.params;
       const {body} = req;
@@ -32,7 +32,7 @@ module.exports = class UbicacionController {
       }
     }
     return res.send({status:407,message:"Usuario no autorizado."});
-  }
+  }*/
   async mongoGet(req, res) {
     if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const { id } = req.params;

@@ -15,7 +15,7 @@ module.exports = ({ UbicacionController }) => {
   //router.patch("/paradas/:id", [AuthMiddleware, ParseIntMiddleware], UbicacionController.mongoPatchParada);
   
   router.post("/", [AuthMiddleware, ParseIntMiddleware], UbicacionController.mongoCreate);
-  router.post("/tarea/:idTarea", [AuthMiddleware, ParseIntMiddleware], UbicacionController.mongoCreateByIdTarea);
+  //router.post("/tarea/:idTarea", [AuthMiddleware, ParseIntMiddleware], UbicacionController.mongoCreateByIdTarea);
   router.post("/paradas/", [AuthMiddleware, ParseIntMiddleware], UbicacionController.mongoCreateParada);
 
   router.patch("/paradas/delete/:idParada", [AuthMiddleware, ParseIntMiddleware], UbicacionController.mongoDeleteParada);

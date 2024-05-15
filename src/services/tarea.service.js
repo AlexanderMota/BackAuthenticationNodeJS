@@ -33,8 +33,8 @@ module.exports = class TareaService extends BaseService{
     async mongoGetSupertareas(){
         return await _tareaRep.mongoGetSupertareas();
     }
-    async mongoGetSubtareasByIdTarea(idTarea){
-        return await _tareaRep.mongoGetSubtareasByIdTarea(idTarea);
+    async mongoGetSubtareasByIdTarea(idTarea, pageSize, pageNum){
+        return await _tareaRep.mongoGetSubtareasByIdTarea(idTarea, pageSize, pageNum);
     }
     async mongoGetComentariosByIdTarea(idTarea, pageSize , pageNum ){
         return await _tareaRep.mongoGetComentariosByIdTarea(idTarea , pageSize , pageNum );
