@@ -10,12 +10,8 @@ const VehiculoSchema = new Schema({
   descripcion: { type: String, required: true },
   plazas: { type: Number, required: true },
   //plazasDisponibles: { type: Number, required: true },
-  puntosDestinoRecogida: { type: [{
-    vehiculo: {type:String, required: true},
-    fechaInicio: {type:Date, required: true},
-    fechaFin: {type:Date, required: true}
-  }], required: false},
-  ocupantes : { type: [] },
+  puntosDestinoRecogida: { type: [], required: false},
+  ocupantes : { type: [], required: false },
   puntosDestinoRecogida : { type: [] },
   fechaRegistro: { type: Date, default: () => new Date(), required: true }
 });
