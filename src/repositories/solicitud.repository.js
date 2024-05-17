@@ -20,7 +20,6 @@ module.exports = class SolicitudRepository extends BaseRepository{
         ]},{"_id":1});
         if (_idAsignacion !== undefined){
             if (_idAsignacion[0] !== undefined){
-                //console.log("el trabajador ya esta registrado en esta tarea")
                 return false;
             }
         }
@@ -31,33 +30,25 @@ module.exports = class SolicitudRepository extends BaseRepository{
         ]},{"_id":1});
         if (_idSolicitud !== undefined){
             if (_idSolicitud[0] !== undefined){
-                //console.log("el trabajador ya ha solicitado esta tarea")
                 return false;
             }
         }
 
-        //console.log("llegando");
         await _solicitud.create({
             idTarea:idTarea,
             idEmpleado:idEmpleado,
             aprobada:false,
             fechaSolicitud: new Date(Date.now()).toISOString()
         });
-        //console.log(resifff);
         return true;
     }
     async mongoGetSolicitudesByEmpleado(idEmpleado){
-
         const _solicitudes = await _solicitud.find({idEmpleado:idEmpleado});
-        if (_solicitudes.length < 1){
-            return {status:403,message:"Sin solicitudes."};
-        }
-
+        if (_solicitudes.length < 1) return {status:403,message:"Sin solicitudes."};
         return _solicitudes;
     }
     
     async mongoDeleteSolicitudByEmpleadoTarea(idTar,idEmp){
-
         const _solicitudes = await _solicitud.find({$and:[
             {idTarea:idTar},
             {idEmpleado:idEmp}
@@ -73,7 +64,6 @@ module.exports = class SolicitudRepository extends BaseRepository{
                 return {status:203,message:"Solicitudes eliminadas correctamente."};
             }
         }
-
         return {status:406,message:"Error inesperado."};
     }
     async findByIdAndDelete(id){

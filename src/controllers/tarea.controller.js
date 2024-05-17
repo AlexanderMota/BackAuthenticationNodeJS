@@ -11,7 +11,6 @@ module.exports = class TareaController {
     if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const { id } = req.params;
       const tarea = await _tareaService.mongoGet(id);
-      //console.log(tarea);
       return res.send(tarea);
     }
     return res.send({status:407,message:"Usuario no autorizado."});
@@ -25,21 +24,11 @@ module.exports = class TareaController {
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
-  /*async mongoGetTareaByIdTarea(req, res) {
-    if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
-      const { idTarea } = req.params;
-      
-      const tarea = await _tareaService.mongoGetTareaByIdTarea(idTarea);
-      return res.send(tarea);
-    }
-    return res.send({status:407,message:"Usuario no autorizado."});
-  }*/
   async mongoGetSupertareas(req, res){
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const tarea = await _tareaService.mongoGetSupertareas();
       
       return res.send(tarea);
-      
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
@@ -50,7 +39,6 @@ module.exports = class TareaController {
       const tareas = await _tareaService.mongoGetSubtareasByIdTarea(idTarea,pageSize, pageNum);
       
       return res.send(tareas);
-      
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
@@ -59,11 +47,9 @@ module.exports = class TareaController {
     if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const { idTarea } = req.params;
       const {pageSize, pageNum} = req.query;
-      
       const comentarios = await _tareaService.mongoGetComentariosByIdTarea(idTarea, pageSize, pageNum);
       
       return res.send(comentarios);
-      
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
@@ -72,7 +58,6 @@ module.exports = class TareaController {
       const {pageSize, pageNum} = req.query;
       const tarea = await _tareaService.mongoGetAll(pageSize, pageNum,{ $query: {}, $orderby: { nombre : -1 } });
       return res.send(tarea);
-      
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
@@ -81,7 +66,6 @@ module.exports = class TareaController {
       const {pageSize, pageNum} = req.query;
       const tarea = await _tareaService.mongoGetOrderBy(pageSize, pageNum);
       return res.send(tarea);
-      
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
@@ -93,7 +77,6 @@ module.exports = class TareaController {
       
       const tarea = await _tareaService.mongoGetTareasByIdEmpleado(idEmpleado, pageSize, pageNum);
       return res.send(tarea);
-      
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
@@ -115,35 +98,27 @@ module.exports = class TareaController {
         return res.send({status:201,message:"Tarea asignada a empleado con exito"});
       }
       return res.send(flag);
-      
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
   async addSupertarea(req, res){
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const { idTarea } = req.query;
-      
       const flag = await _tareaService.addSupertarea(idTarea);
       
-      if(flag){
-        return res.send({status:201,message:"Supertarea creada con exito"});
-      }
-      return res.send({status:403,message:"Algo fue mal"});
+      if(flag) return res.send({status:201,message:"Supertarea creada con exito"});
       
+      return res.send({status:403,message:"Algo fue mal"});
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
   async addSubtarea(req, res){
     if(req.empleado.rol <= 3 && req.empleado.rol >= 0){
       const { idTarea, idSubtarea } = req.quey;
-      
       const flag = await _tareaService.addSubtarea(idTarea, idSubtarea);
       
-      if(flag){
-        return res.send({status:201,message:"Tarea asignada a supertarea con exito"});
-      }
+      if(flag) return res.send({status:201,message:"Tarea asignada a supertarea con exito"});
       return res.send({status:403,message:"Algo fue mal"});
-      
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
@@ -151,52 +126,11 @@ module.exports = class TareaController {
     if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const  {idTarea, idAutor, nombre, descripcion}= req.body;
       const flag = await _tareaService.mongoAddComentario( idTarea, idAutor, nombre, descripcion );
-      if(flag){
-        return res.send({status:201,message:"Comentario asignado a la tarea con exito"});
-      }
+      if(flag) return res.send({status:201,message:"Comentario asignado a la tarea con exito"});
       return res.send({status:403,message:"Algo fue mal"});
-      
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
-
-  /*async solicitarTarea(req, res){
-    if(req.empleado.rol <= 4){
-      const { idTarea, idEmpleado } = req.query;
-
-
-
-
-
-      const flag = await _tareaService.mongoSolicitarTarea(idTarea, idEmpleado);
-      if(flag){
-        return res.send({status:201,message:"Solicitud realizada con exito"});
-      } return res.send({status:400,message:"Algo fue mal"});
-    }
-    return res.send({status:407,message:"Usuario no autorizado."});
-  }
-
-  async mongoGetAllSolicitudes(req, res){
-    if(req.empleado.rol <= 4){
-      const { pageSize, pageNum } = req.query;
-      return res.send(await _tareaService.mongoGetAllSolicitudes(pageSize, pageNum));
-      
-    }
-    return res.send({status:407,message:"Usuario no autorizado."});
-  }
-  async mongoGetSolicitud(req, res){
-    if(req.empleado.rol <= 4){
-      const { id } = req.params;
-      return res.send(await _tareaService.mongoGetSolicitud(id));
-      
-    }
-    return res.send({status:407,message:"Usuario no autorizado."});
-  }*/
-
-  /*async mysqlGetAll(req, res){
-    const tarea = await _tareaService.mysqlGetAll();
-    return res.send(tarea);
-  }*/
   
   async mongoCreate(req, res){
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
@@ -206,19 +140,15 @@ module.exports = class TareaController {
 
       if(body._id){
         const tar = await _tareaService.mongoGetTareasBy(body._id,"_id",{_id: 1});
-        if(tar){
-          return res.send({status:405,message:"La tarea ya existe en la base de datos",id:resp._id});
-        }
+        if(tar) return res.send({status:405,message:"La tarea ya existe en la base de datos",id:resp._id});
       }
-      
       const supertarea = await _tareaService.mongoGetTareasBy(idSuper,"_id",{_id: 1});
       
       if(supertarea){
         const resp =  await _tareaService.mongoCreate(body);
-        console.log(supertarea);
-        console.log(resp);
+        /*console.log(supertarea);
+        console.log(resp);*/
         if(resp?._id){
-
           await _tareaService.addSubtarea(supertarea._id.toString(),resp._id.toString());
 
           return res.send({status:201,message:"Tarea creada correctamente._"+resp._id});
@@ -226,11 +156,8 @@ module.exports = class TareaController {
       }else if(idSuper == "0b"){
         const resp2 =  await _tareaService.mongoCreate(body);
         return res.send({status: 201, message:"supertarea creada correctamente",id:resp2._id.toString()});
-      }else{
-        return res.send({status: 400, message:"parametro incorrecto"});
-      }
+      }else return res.send({status: 400, message:"parametro incorrecto"});
     }
-     
     return res.send({status:407,message:"Usuario no autorizado."});
   }
 
@@ -240,7 +167,7 @@ module.exports = class TareaController {
       //console.log(body);
       const {id} = req.params;
       
-      const updateTarea = await _tareaService.mongoUpdate(id,body);
+      /*const updateTarea = */await _tareaService.mongoUpdate(id,body);
       //console.log(updateTarea);
       
       return res.send({status:202,message:"tarea actualizada correctamente"});
@@ -256,7 +183,6 @@ module.exports = class TareaController {
         const deleteTarea = await _tareaService.mongoDelete(ids[0],ids[1]);
         console.log(deleteTarea);
         return res.send(deleteTarea);
-
       }
       return res.send({status:408,message:"Faltan parámetros."});
       

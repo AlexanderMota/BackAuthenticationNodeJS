@@ -44,7 +44,6 @@ module.exports = class EmpleadoController {
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const {pageSize, pageNum} = req.query;
       const { idTarea } = req.params;
-      //console.log(idTarea);
       const empleados = await _empleadoService.mongoGetEmpleadosByIdTarea(idTarea, pageSize, pageNum);
       const empleadosProcesados = [];
       empleados.forEach(empleado => {

@@ -3,7 +3,6 @@ const comentarioMongo = require("./comentario.mongo");
 const { Schema } = mongoose;
 
 const TareaSchema = new Schema({
-  idTarea: { type: Number, required: false },
   nombre: { type: String, required: true },
   departamento: { type: String, required: true },
   descripcion: { type: String, required: true },

@@ -31,7 +31,6 @@ module.exports = class EmpleadoRepository extends BaseRepository{
         const skips = pageSize * (pageNum - 1);
         const idEmpleados  = await _tareaHasEmpleados.find({idTarea:idTarea});
         
-        //console.log("ids empleados: "+idEmpleados);
         if(!idEmpleados){
             return false;
         }
@@ -39,20 +38,13 @@ module.exports = class EmpleadoRepository extends BaseRepository{
 
 
         for (var i = 0; i < idEmpleados.length; i++) {
-            //console.log(idEmpleados[i].idEmpleado);
             let emp = await _empleado.find({_id:idEmpleados[i].idEmpleado});
-            //console.log(emp);
             empleados.push(emp[0]);
         }
-        //console.log(empleados);
         return empleados;
     }
     async mongoGetEmpleadosByIdTareaDist(idTarea, pageSize = 5, pageNum = 1) {
-        //const skips = pageSize * (pageNum - 1);
-        //const idEmpleados  = await _tareaHasEmpleados.find({idTarea: {$ne: idTarea}}/*{idTarea:idTarea}*/);
         const idEmpleados  = await _tareaHasEmpleados.find({idTarea:idTarea});
-
-        //console.log("ids empleados: "+idEmpleados);
 
         
         if(!idEmpleados){
@@ -64,36 +56,11 @@ module.exports = class EmpleadoRepository extends BaseRepository{
             objIdEmpleados.push(new ObjectId(idEmpleados[i].idEmpleado));
         }
 
-        //console.log("objIdEmpleados: "+objIdEmpleados);
-        //const empleados = [];
-
-        //let arrayOriginal = [{id: 1, nombre: 'Juan'}, {id: 2, nombre: 'Maria'}, {id: 1, nombre: 'Juan'}];
-
-        /*let arrayUnico = idEmpleados.filter((elem, index, self) => {
-            return index === self.findIndex((t) => {
-                return t.idTarea === elem.idTarea;
-            });
-        });
-        
-        console.log("ids empleados unicos: "+arrayUnico); // [{id: 1, nombre: 'Juan'}, {id: 2, nombre: 'Maria'}]
-*/
-
-
         let emp = await _empleado.find({_id: { $nin: objIdEmpleados }});
-        //console.log(emp);
-
-        /*for (var i = 0; i < idEmpleados.length; i++) {
-            //console.log(idEmpleados[i].idEmpleado);
-            let emp = await _empleado.find({_id:idEmpleados[i].idEmpleado});
-            //console.log(emp);
-            empleados.push(emp[0]);
-        }
-        //console.log(empleados);*/
         return emp;
     }
     async mongoGetAllSolicitudes(pageSize, pageNum,campo={$query: {}, $orderby: { fechasolicitud : 1 }}){
         const sols = await _solicitudRep.mongoGetAll(pageSize, pageNum,campo);
-        //console.log(sols);
         let listaRes = [];
         for (var i = 0; i < sols.length; i++) {
             let tar = await _tareaRep.mongoGet(sols[i].idTarea);

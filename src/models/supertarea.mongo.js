@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const Supertarea = new Schema({
-  idTarea: { type: String, required: true },
+  idTarea: { type: Schema.Types.ObjectId, ref: 'Tareas', required: true },
   fechacreacion: { type: Date, default: () => new Date(), required: true }
 });
 

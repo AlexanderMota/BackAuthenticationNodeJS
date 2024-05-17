@@ -2,9 +2,8 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const SolicitudSchema = new Schema({
-  idSolicitud: { type: Number, required: false },
-  idEmpleado: { type: String, required: true },
-  idTarea: { type: String, required: true },
+  idEmpleado: { type: Schema.Types.ObjectId, ref: 'Empleados', required: true },
+  idTarea: { type: Schema.Types.ObjectId, ref: 'Tareas', required: true },
   fechaSolicitud: { type: Date, default: () => new Date(), required: true },
   aprobada: { type: Boolean, required: true  }
 });

@@ -100,8 +100,7 @@ module.exports = class UbicacionController {
       const id = vehi[0]._id;
       
       delete vehi[0]._id;
-  
-  
+      
       const vehiculo = await _vehiculoService.mongoUpdate(id,vehi[0]);
   
       if(vehiculo){
@@ -118,10 +117,8 @@ module.exports = class UbicacionController {
       
       const vehiculo = await _vehiculoService.mongoGet(idVehiculo);
       if(vehiculo.puntosDestinoRecogida){
+
         vehiculo.puntosDestinoRecogida.forEach(async idpdr => {
-  
-          //console.log(vehiculo.matricula);
-          //const val =  _ubicacionService.mongoGet(idpdr);
           const responseUbiUpd = await _ubicacionService.mongoDeleteParadaByMatricula(idpdr, vehiculo.matricula);//.subscribe(val =>{
   
           console.log("mongoDeleteVehiculo responseUbiUpd: "+responseUbiUpd);
@@ -132,8 +129,6 @@ module.exports = class UbicacionController {
             }else{
               return res.send({status:203,message:"No se eliminó ningún vehículo."});
             }
-          //});
-          //console.log(val);
         });
       }
     }

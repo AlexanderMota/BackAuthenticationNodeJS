@@ -2,65 +2,32 @@ const BaseRepository = require('./base.repository');
 const { ObjectId } = require('mongodb');
 
 let _ubicacion = null;
-let _tarea = null;
+//let _tarea = null;
 let _tareaHasSubtareas = null;
 let _empleado = null;
-let _vehiculo = null;
+let _vehiculoRep = null;
 
 
 module.exports = class UbicacionRepository extends BaseRepository{
-  constructor({Ubicacion, Tarea, TareaHasSubtareas, Empleado, Vehiculo}){
+  constructor({Ubicacion, /*Tarea,*/ TareaHasSubtareas, Empleado, VehiculoRepository}){
       super(Ubicacion);
       _ubicacion = Ubicacion;
-      _tarea = Tarea;
+      //_tarea = Tarea;
       _tareaHasSubtareas = TareaHasSubtareas;
       _empleado = Empleado;
-      _vehiculo = Vehiculo;
+      _vehiculoRep = VehiculoRepository;
   }
   async mongoGetUbicacionByIdTarea(idTar/*, pageSize = 5, pageNum = 1*/) {
       //const skips = pageSize * (pageNum - 1);
       let idt = {idTarea:idTar};
       let ubi = [];
-      /*
-      const ubi  = await _ubicacion.find({idTarea:idTarea});
-      console.log(ubi);
-      const res = await _tareaHasSubtareas.findOne({idSubtarea:idTarea},{_id:0,idTarea:1});
-      console.log(res);
-      const ubi2  = await _ubicacion.find({idTarea:res.idTarea});
-      console.log(ubi2);
-      const res2 = await _tareaHasSubtareas.findOne({idSubtarea:res.idTarea},{_id:0,idTarea:1});
-      console.log(res2);
-      const ubi3  = await _ubicacion.find({idTarea:res2.idTarea});
-      console.log(ubi3);
-      const res3 = await _tareaHasSubtareas.findOne({idSubtarea:res2.idTarea},{_id:0,idTarea:1});
-      console.log(res3);
-      const ubi4  = await _ubicacion.find({idTarea:res3.idTarea});
-      console.log(ubi4);
-      */
-      //console.log("/////////////////////////////////   WHILE   /////////////////////////////////");
       while (ubi.length < 1 && idt != null) {
-        //console.log("ES SUBTAREA DE: ",idt.idTarea);
         ubi  = await _ubicacion.find({idTarea:idt.idTarea});
-        //console.log("\n\n\nBUSCANDO TAREA: ",idt.idTarea);
-        idt = await _tareaHasSubtareas.findOne({idSubtarea:idt.idTarea},{_id:0,idTarea:1});
-        //console.log("UBICACIÓN: ",ubi,"\n\n\n");
-      }
-      if(ubi.length < 1){
-        return {status:402,message:"No se encontró ubicación para esta tarea ni para sus tareas principales."};
-      }
-      return ubi;
-      //console.log("/////////////////////////////////   WHILE   /////////////////////////////////");
-      /*
-      console.log(idt);
-      console.log(ubi);
-      if(!ubi.length){
-          console.log("sin ubi: "+ubi);
-          const res = await _tareaHasSubtareas.findOne({idSubtarea:idTarea},{_id:0,idTarea:1});
 
-          return await _ubicacion.find({idTarea:res.idTarea});
+        idt = await _tareaHasSubtareas.findOne({idSubtarea:idt.idTarea},{_id:0,idTarea:1});
       }
-      return await _ubicacion.find({idTarea:idTarea});
-      */
+      if(ubi.length < 1) return {status:402,message:"No se encontró ubicación para esta tarea ni para sus tareas principales."};
+      return ubi;
   }
   async mongoGetUbicacionByIdTarea2(idTarea/*, pageSize = 5, pageNum = 1*/) {
       //const skips = pageSize * (pageNum - 1);
@@ -69,248 +36,40 @@ module.exports = class UbicacionRepository extends BaseRepository{
       if(!ubi.length){
           console.log("sin ubi: "+ubi);
           const res = await _tareaHasSubtareas.findOne({idSubtarea:idTarea},{_id:0,idTarea:1});
-          /*console.log("resSub: "+res);
-          const idSuper = res.idTarea;
-          console.log("idSuper: "+idSuper);*/
 
           return await _ubicacion.find({idTarea:res.idTarea});
       }
       return ubi;
   }
-  async mongoGetUbicacionRecogidaByIdTarea(idTarea/*, pageSize = 5, pageNum = 1*/) {
-      //const skips = pageSize * (pageNum - 1);
-      /*
-      // Filtro para encontrar documentos con un atributo de tipo array que tenga al menos un elemento
-      const filtro = { tuAtributoArray: { $exists: true, $size: { $gt: 0 } } };
+  async mongoGetParada(idUbi, pageSize=5, pageNum=1) {
+    //console.log("ubiRep.mongoGetParada: "+idTar);
+    //console.log(idUbi);
+    /*const objectId = new ObjectId(idUbi);*/
+    /*const ubi = await _ubicacion.findOne(objectId);
+    console.log(idUbi);*/
 
-      // Realizar la consulta
-      collection.find(filtro).toArray((err, documentos) => {
-          if (err) {
-          console.error('Error al realizar la consulta:', err);
-          client.close();
-          return;
-          }*/ 
-
-      //const filtro = { horasRecogida: { $exists: true, $size: { $gt: 0 } } };
-
-      
-      const ubi  = await _ubicacion.find({ horasRecogida: { $ne: [] } });
-
-      //console.log("ubiRep.mongoGetUbicacionRecogidaByIdTarea: " + ubi);
-      //console.log("mongoGetUbicacionRecogidaByIdTarea:\n" + ubi);
-      
-      /*if(!ubi.length){
-          //console.log("sin ubi: "+ubi);
-          const res = await _tareaHasSubtareas.findOne({idSubtarea:idTarea},{_id:0,idTarea:1});
-          //console.log("resSub: "+res);
-          //const idSuper = res.idTarea;
-          //console.log("idSuper: "+idSuper);
-
-          return await _ubicacion.find({idTarea:res.idTarea});
-      }
-      return ubi;*/
-  }
-  /*async mongoGetParadaAdmi(idSuper, pageSize, pageNum) {
-    //console.log("ubiRep.mongoGetParada: "+idSuper);
-
-    const empleados = await _empleado.find({ centroTrabajo:idSuper },{_id:1});
-
-    const idsEmpleados = empleados.map(empleado => empleado._id.toString());
-
-    //const vehiculos = await _vehiculo.find({ propietario:empleados._id });
-    const vehiculosConPlazas = await _vehiculo.find({
-      propietario: { $in: idsEmpleados }, // Filtrar por propietarios que sean empleados del centro de trabajo
-      //plazasDisponibles: { $gt: 0 }, // Filtrar vehículos con al menos una plaza disponible
-      puntosDestinoRecogida: { $exists: true, $ne: [] }, // Filtra los arrays que no estén vacíos
-      $expr: {
-        $lt: [{ $size: "$ocupantes" }, "$plazas"]
-      }
-    },{puntosDestinoRecogida:1,_id:0});
-    //console.log(vehiculosConPlazas);
+    ////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////
+    // probar esta funcion con un vehiculo lleno, no deberia devolverlo
+    ////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////
+    const vehiculosConPlazas = await _vehiculoRep.mongoGetVehiculoByIdDestinoConPlazasDisponibles(idUbi);
     
-    const idsUbiParadas = vehiculosConPlazas.reduce((ids, vehiculo) => {
+    const idsUbiParadas = vehiculosConPlazas.reduce((ids = [], vehiculo) => {
       vehiculo.puntosDestinoRecogida.forEach(id => {
-        ids.add(id); // Usamos un Set para asegurarnos de obtener solo IDs únicos
+        if(id.idDestino == idUbi) ids.add(id.idParada); // Usamos un Set para asegurarnos de obtener solo IDs únicos
       });
       return ids;
     }, new Set());
     
-    //console.log(vehiculosConPlazas);
-    //console.log([...idsUbiParadas]); // Convertimos el Set a un array para mostrarlo
-
     const ubiParadas = await _ubicacion.find({
       _id: { $in: [...idsUbiParadas] }
-    })
-
-    //console.log(ubiParadas);
-    return ubiParadas;
-  } */
-  async mongoGetParada(idSuper, pageSize, pageNum) {
-    //console.log("ubiRep.mongoGetParada: "+idSuper);
-
-    const empleados = await _empleado.find({ centroTrabajo:idSuper },{_id:1});
-    //console.log();
-    const idsEmpleados = empleados.map(empleado => empleado._id.toString());
-
-    //const vehiculos = await _vehiculo.find({ propietario:empleados._id });
-    const vehiculosConPlazas = await _vehiculo.find({
-      propietario: { $in: idsEmpleados }, // Filtrar por propietarios que sean empleados del centro de trabajo
-      //plazasDisponibles: { $gt: 0 }, // Filtrar vehículos con al menos una plaza disponible
-      puntosDestinoRecogida: { $exists: true, $ne: [] }, // Filtra los arrays que no estén vacíos
-      $expr: {
-        $lt: [{ $size: "$ocupantes" }, "$plazas"]
-      }
-    },{puntosDestinoRecogida:1,_id:0});
-    //console.log(vehiculosConPlazas);
-    
-    const idsUbiParadas = vehiculosConPlazas.reduce((ids, vehiculo) => {
-      vehiculo.puntosDestinoRecogida.forEach(id => {
-        ids.add(id); // Usamos un Set para asegurarnos de obtener solo IDs únicos
-      });
-      return ids;
-    }, new Set());
-    
-    //console.log(vehiculosConPlazas);
-    //console.log([...idsUbiParadas]); // Convertimos el Set a un array para mostrarlo
-
-    const ubiParadas = await _ubicacion.find({
-      _id: { $in: [...idsUbiParadas] }
-    })
-
-    //console.log(ubiParadas);
-
+    });
+    console.log(ubiParadas);
 
     return ubiParadas;
-  /*const paradasDisponibles = await _empleado.aggregate([
-    // Filtrar empleados por el centro de trabajo específico
-    { $match: { centroTrabajo: idSuper } },
-  
-    // Unir con la colección de vehículos
-    {
-      $lookup: {
-        from: "vehiculos",
-        localField: "_id",
-        foreignField: "propietario",
-        as: "vehiculos"
-      }
-    },
-  
-    // Filtrar vehículos con al menos una plaza disponible
-    { $match: { "vehiculos.plazasDisponibles": { $gt: 0 } } },
-  
-    // Desplegar los arrays de vehículos en documentos separados
-    { $unwind: "$vehiculos" },
-  
-    // Convertir los puntosDestinoRecogida de cadenas a ObjectIds
-    {
-      $addFields: {
-        puntosDestinoRecogida: {
-          $map: {
-            input: "$vehiculos.puntosDestinoRecogida",
-            as: "id",
-            in: { $toObjectId: "$$id" }
-          }
-        }
-      }
-    },
-  
-    // Unir con la colección de ubicaciones para obtener los detalles de las paradas
-    {
-      $lookup: {
-        from: "ubicacion",
-        localField: "puntosDestinoRecogida",
-        foreignField: "_id",
-        as: "paradas"
-      }
-    },
-  
-    // Desplegar los arrays de paradas en documentos separados
-    { $unwind: "$paradas" },
-  
-    // Proyectar solo los detalles de las paradas
-    { $replaceRoot: { newRoot: "$paradas" } }
-  ]);
-  
-  console.log(paradasDisponibles);*/
-
-
-  /*const dat = await _empleado.aggregate([
-    // Filtrar empleados por centro de trabajo
-    { $match: { centroTrabajo: idSuper } },
-    // Realizar un join con la colección de vehículos para obtener los empleados con vehículo
-    {
-      $lookup: {
-        from: "vehiculos",
-        localField: "_id",
-        foreignField: "propietario",
-        as: "vehiculos"
-      }
-    },
-    // Filtrar empleados que tienen vehículo
-    { $match: { vehiculos: { $exists: true, $ne: [] } } },
-    // Deshacer el array de vehículos
-    { $unwind: "$vehiculos" },
-    // Filtrar vehículos con plazas disponibles
-    { $match: { "vehiculos.plazasDisponibles": { $gt: 0 } } },
-    // Realizar un join con la colección de ubicaciones para obtener las ubicaciones de recogida
-    {
-      $lookup: {
-        from: "ubicaciones",
-        localField: "vehiculos.puntosDestinoRecogida",
-        foreignField: "_id",
-        as: "ubicacionesRecogida"
-      }
-    },
-    // Agrupar las ubicaciones de recogida en un solo array por empleado
-    {
-      $group: {
-        _id: "$_id",
-        nombre: { $first: "$nombre" },
-        apellidos: { $first: "$apellidos" },
-        ubicacionesRecogida: { $push: "$ubicacionesRecogida" }
-      }
-    }
-  ]);
-  console.log(dat);*/
-
-
-  /*_empleado.aggregate([
-    // Filtrar empleados por centro de trabajo
-    { $match: { centroTrabajo: idSuper } },
-    // Realizar un join con la colección de vehículos para obtener los empleados con vehículo
-    {
-      $lookup: {
-        from: "vehiculos",
-        localField: "propietario",
-        foreignField: "_id",
-        as: "vehiculos"
-      }
-    },
-    // Filtrar empleados que tienen vehículo
-    { $match: { vehiculos: { $exists: true, $ne: [] } } },
-    // Deshacer el array de vehículos
-    { $unwind: "$vehiculos" },
-    // Filtrar vehículos con plazas disponibles
-    { $match: { "vehiculos.plazasDisponibles": { $gt: 0 } } },
-    // Realizar un join con la colección de ubicaciones para obtener las ubicaciones de recogida
-    {
-      $lookup: {
-        from: "ubicaciones",
-        localField: "vehiculos.puntosDestinoRecogida",
-        foreignField: "_id",
-        as: "ubicacionesRecogida"
-      }
-    },
-    // Agrupar las ubicaciones de recogida en un solo array por empleado
-    {
-      $group: {
-        _id: "$_id",
-        nombre: { $first: "$nombre" },
-        apellidos: { $first: "$apellidos" },
-        ubicacionesRecogida: { $push: "$ubicacionesRecogida" }
-      }
-    }
-  ]);*/
   } 
   async mongoDeleteParadaByMatricula(idUbi, matricula){
     const val = await _ubicacion.updateOne(

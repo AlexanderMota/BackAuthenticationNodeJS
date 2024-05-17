@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const ComentarioSchema = new Schema({
-  idTarea: { type: String, required: true },
-  idAutor: { type: String, required: true },
+  idTarea: { type: Schema.Types.ObjectId, ref: 'Tareas', required: true },
+  idAutor: { type: Schema.Types.ObjectId, ref: 'Empleados', required: true },
   nombre: { type: String, required: true },
   descripcion: { type: String, required: true },
   fecha: { type: Date, default: () => new Date(), required: true }

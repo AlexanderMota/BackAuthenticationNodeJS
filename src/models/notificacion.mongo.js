@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const NotificacionSchema = new Schema({
-  idEmpleado: { type: String, required: true },
+  idEmpleado: { type: Schema.Types.ObjectId, ref: 'Empleados', required: true },
   leido: { type: Boolean, required: true, default:false },
   mensaje: { type: String, required: true },
   fechaRegistro: { type: Date, default: () => new Date(), required: true }

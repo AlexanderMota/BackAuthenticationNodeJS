@@ -1,4 +1,5 @@
 const BaseRepository = require('./base.repository');
+const { ObjectId } = require('mongodb');
 
 let _vehiculo = null;
 
@@ -11,7 +12,8 @@ module.exports = class VehiculoRepository extends BaseRepository{
 
     async mongoGetVehiculoByIdPropietario(idPropietario/*, pageSize = 5, pageNum = 1*/) {
         //const skips = pageSize * (pageNum - 1);
-        const vehi  = await _vehiculo.find({propietario:idPropietario});
+        const objectId = new ObjectId(idPropietario);
+        const vehi  = await _vehiculo.find({propietario:objectId});
         
         if(!vehi){
             return {status:402,message:"Algo ha ido mal"};
@@ -28,14 +30,38 @@ module.exports = class VehiculoRepository extends BaseRepository{
         return vehi;
     }
     async mongoGetVehiculoByIdParada(idParada){
-        console.log(idParada);
-        const vehi  = await _vehiculo.find({
+        /*const vehi  = await _vehiculo.find({
             puntosDestinoRecogida: { $in: [idParada] }
+        });*/
+        console.log("idParada: "+idParada);
+        const vehi  = await _vehiculo.find({ 
+            puntosDestinoRecogida: {
+              $elemMatch: { idParada: idParada }
+            }
         });
+        console.log(vehi);
         if(!vehi){
             return {status:402,message:"Algo ha ido mal"};
         }
         return vehi;
+    }
+    async mongoGetVehiculoByIdDestinoConPlazasDisponibles(idDestino){
+        /*const vehi  = await _vehiculo.find({
+            puntosDestinoRecogida: { $in: [idParada] }
+        });*/
+        const vehiculosConPlazas = await _vehiculo.find({ 
+            puntosDestinoRecogida: {
+              $elemMatch: { idDestino: idDestino }
+            },
+            $expr: {
+              $lt: [{ $size: "$ocupantes" }, "$plazas"]
+            }
+          },{_id:0});
+        console.log("vehiculosConPlazas: "+vehiculosConPlazas);
+        if(!vehiculosConPlazas){
+            return {status:402,message:"Algo ha ido mal"};
+        }
+        return vehiculosConPlazas;
     }
     async mongoDeleteParada(idVehi, idParada){
         

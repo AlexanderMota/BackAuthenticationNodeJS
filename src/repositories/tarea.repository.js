@@ -22,11 +22,6 @@ module.exports = class TareaRepository extends BaseRepository{
         _comentario = Comentario;
         _ubicacion = Ubicacion;
     }
-    /*async mongopruebas() {
-        const resi = await _tarea.find();
-        //console.log(resi);
-        return {status:0,message:"en pruebas"};
-    }*/
     async mongoGetTareasBy(parametro, nombreParam, objDevolver = {_id: true, nombre: true}/*,pageSize = 5, pageNum = 1*/) {
         //const skips = pageSize * (pageNum - 1);
         const tar = await _tarea.findOne({[nombreParam]:parametro},objDevolver);
@@ -35,10 +30,6 @@ module.exports = class TareaRepository extends BaseRepository{
             return false;
         }
         return tar;
-        /*return await _tarea
-            .find({ _id:{ $in: ids}})
-            .skip(skips)
-            .limit(pageSize);*/
     }
     async mongoGetTareasByIdEmpleado(idEmpleado, pageSize = 5, pageNum = 1) {
         const skips = pageSize * (pageNum - 1);
@@ -61,46 +52,27 @@ module.exports = class TareaRepository extends BaseRepository{
     }
     async mongoGetComentariosByIdTarea(idTarea, pageSize = 5, pageNum = 1) {
         const skips = pageSize * (pageNum - 1);
-
-        //console.log('tareaRepository < mongoGetComentariosByIdTarea < ' + idTarea + ' - pageSize(' + pageSize + ') - pageNum(' + pageNum + ')');
         
         const idComentarios = await _comentario.find({idTarea : idTarea }/*,{_id:0,idComentario:1}*/);
-        
-        //console.log('tareaRepository > mongoGetComentariosByIdTarea > ' + idComentarios);
 
         if(!idComentarios){
             return false;
         }else{
             return idComentarios;
         }
-        
-        /*const ids = [];
-        idComentarios.forEach(async (value) => {
-                ids.push(value.idTarea);
-            }
-        );
-
-        console.log(ids);
-        
-
-        return await _tarea
-            .find({ _id:{ $in: ids}})
-            .skip(skips)
-            .limit(pageSize);*/
     }
     async mongoGetSubtareasByIdTarea(idTarea, pageSize = 5, pageNum = 1) {
         const skips = pageSize * (pageNum - 1);
         
         const relSubtareas = await _tareaHasSubtareas.find({idTarea : idTarea },{_id:0,idSubtarea:1});
-        //console.log("res tareaRep.SubTByIdT(): "+ relSubtareas);
-
+        
         if(!relSubtareas){
             return false;
         }
         
         const ids = [];
         relSubtareas.forEach(async (value) => {
-                ids.push(value.idSubtarea);
+                ids.push(new ObjectId(value.idSubtarea));
             }
         );
 
@@ -108,18 +80,6 @@ module.exports = class TareaRepository extends BaseRepository{
             .find({ _id:{ $in: ids}})
             .skip(skips)
             .limit(pageSize);
-        /*const idsSubtareas = [];
-        for(var i = 0; i < relSubtareas.length ;i++){
-            idsSubtareas.push(relSubtareas[i].idSubtarea);
-        }
-
-        const subtareas = await _tarea.find({ _id: { $in: idsSubtareas } });
-        
-        if(!subtareas){
-            return false;
-        }else{
-            return subtareas;
-        }*/
     }
     async mongoGetSupertareas( pageSize = 5, pageNum = 1) {
         const skips = pageSize * (pageNum - 1);
@@ -150,7 +110,6 @@ module.exports = class TareaRepository extends BaseRepository{
     }
 
     async mongoAddEmpleado(idTarea, idEmpleado){
-        //console.log(idTarea, idEmpleado);
         const { numeroTrabajadores } = await _tarea.findOne({_id:idTarea},{_id:0, numeroTrabajadores:1});
         
         const empleadosActuales = await _tareaHasEmpleados.countDocuments({idTarea:idTarea});
@@ -160,8 +119,6 @@ module.exports = class TareaRepository extends BaseRepository{
             console.log("La tarea no admite más empleados.")
             return {status: 406, message:"La tarea no admite más empleados."};
         }
-        
-        //console.log(empleadosActuales);
 
         const _id = await _tareaHasEmpleados.find({$and:[
             {"idTarea":idTarea},
@@ -218,39 +175,27 @@ module.exports = class TareaRepository extends BaseRepository{
         const _id = await _supertarea.find({$and:[
             {"idTarea":idTarea}
         ]},{"_id":1});
-        //console.log(_id);
-        if(_id.length > 1){
-            //console.log("la super ya existe");
-            return false;
-        }
+        if(_id.length > 1) return false;
 
-        const res = await _supertarea.create({
-            idTarea:idTarea
-        });
-        if(res){
-            return true;
-        }
+        const res = await _supertarea.create({idTarea:idTarea});
+        if(res) return true;
         return false;
     }
 
     async mongoQuitaEmpleadoTarea(idTar,idEmp){
-        //const resi = await _tareaHasEmpleados.mongoDelete(id);
         const resi = await _tareaHasEmpleados.find({$and:[
             {idTarea:idTar},
             {idEmpleado:idEmp}
         ]},{"_id":1});
 
-        //console.log(resi);
         if(resi.length < 1){
             return {status:405,message:"No se ha encontrado el contrato solicitado."};
         }else if(resi.length > 1){
             return {status:403,message:"Se encuentran varias solicitudes con los mismos datos."};
         }else if(resi[0]._id){
-            //console.log("res3:");
             const res3 = await _solicitudRep.mongoGetSolicitudByEmpleadoTarea(idTar,idEmp);
             await _solicitudRep.findByIdAndDelete(res3[0]._id);
             const res2 = await _tareaHasEmpleados.findByIdAndDelete(resi[0]._id);
-            //console.log(res3);
             if(res2){
                 return {status:201,message:"La relación se ha eliminado correctamente. "+res3.message};
             }else{
@@ -262,11 +207,7 @@ module.exports = class TareaRepository extends BaseRepository{
          
     }
     async mongoDelete(idTarea,conservaSubs) {
-        //644ef69d4a5f2975a196155c
-        console.log(idTarea,"_",conservaSubs);
         const superOriginaria = await _tareaHasSubtareas.find({ idSubtarea: idTarea });
-        console.log("superOriginaria: ");
-        console.log(superOriginaria);
         if(superOriginaria.length > 1){
             return {status: 405,message:"Problema al determinar la tarea de la que deriba la tarea que intenta elmininar."}
         }else if(superOriginaria.length < 1){
@@ -277,27 +218,15 @@ module.exports = class TareaRepository extends BaseRepository{
             ////////////////////////////////////////////////////////////////////
 
             const res3 = await _tarea.findByIdAndDelete(idTarea);
-            console.log("res3-tar");
-            console.log(res3);
             /*const subs = */await _tareaHasSubtareas.findByIdAndDelete(superOriginaria[0]._id);
             /*console.log("subs");
             console.log(subs);*/
-            const res1 = await _comentario.deleteMany({idTarea:idTarea});
-            console.log("res1-comen");
-            console.log(res1);
-            const res2 = await _tareaHasEmpleados.deleteMany({idTarea:idTarea});
-            console.log("res2-emp");
-            console.log(res2);
-            const res4 = await _ubicacion.deleteMany({idTarea:idTarea});
-            console.log("res4-ubi");
-            console.log(res4);
-            const res5 = await _solicitudRep.deleteManyByIdTarea(idTarea);
-            console.log("res5-soli");
-            console.log(res5);
+            /*const res1 = */await _comentario.deleteMany({idTarea:idTarea});
+            /*const res2 = */await _tareaHasEmpleados.deleteMany({idTarea:idTarea});
+            /*const res4 = */await _ubicacion.deleteMany({idTarea:idTarea});
+            /*const res5 = */await _solicitudRep.deleteManyByIdTarea(idTarea);
 
             const subtareasHuerfanas = await _tareaHasSubtareas.find({ idTarea: idTarea });
-            console.log("subtareasHuerfanas:");
-            console.log(subtareasHuerfanas);
 
             if(conservaSubs == 1){
                 if(subtareasHuerfanas.length < 1){
@@ -315,19 +244,18 @@ module.exports = class TareaRepository extends BaseRepository{
 
             }else if(conservaSubs == 0){
                 const res33 = await _tareaHasSubtareas.deleteMany({ idTarea: idTarea });
-                console.log(res33);
 
                 if(subtareasHuerfanas.length < 1){
                     return {status: 202,message:"Tarea eliminada (Sin subtareas)."};
                 }else {
                     subtareasHuerfanas.forEach(async val=>{
                         val.idTarea=superOriginaria[0].idTarea;
-                        const iddd = val._id;
-                        delete val._id;
-                        const res35 = await _tareaHasSubtareas.findByIdAndDelete(val._id);
-                        console.log(res35);
-                        const res34 = await _tarea.findByIdAndDelete(val.idSubtarea);
-                        console.log(res34);
+                        /*const iddd = val._id;
+                        delete val._id;*/
+                        /*const res35 = */await _tareaHasSubtareas.findByIdAndDelete(val._id);
+                        //console.log(res35);
+                        /*const res34 = */await _tarea.findByIdAndDelete(val.idSubtarea);
+                        //console.log(res34);
                     });
 
                     return {status: 203,message:"Tarea y subtareas ("+subtareasHuerfanas.length+") eliminadas."};
@@ -339,8 +267,5 @@ module.exports = class TareaRepository extends BaseRepository{
             ////////////////////////////////////////////////////////////////////
         }
     }
-        /**/
-      
-    
 }
 

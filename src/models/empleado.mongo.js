@@ -4,7 +4,7 @@ const { compareSync, hashSync, genSaltSync } = require("bcryptjs");
 
 const EmpleadoSchema = new Schema({
   //idEmpleado: { type: Number, required: true },
-  centroTrabajo: { type: String, required: true },
+  centroTrabajo: { type: Schema.Types.ObjectId, ref: 'Tareas', required: true },
   nombre: { type: String, required: true },
   apellidos: { type: String, required: true },
   telefono: { type: String },

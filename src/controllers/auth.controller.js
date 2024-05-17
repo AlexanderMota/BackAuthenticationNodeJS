@@ -57,9 +57,9 @@ module.exports = class AuthController {
         telefono:perfil.telefono,
         email:perfil.email,
         rol:perfil.rol.nombre,
-        centroTrabajo:perfil.centroTrabajo
+        centroTrabajo:perfil.centroTrabajo.toString()
       }
-      //console.log(empleadoProcesado);
+      console.log(empleadoProcesado);
       return res.send(empleadoProcesado);
     }
     return res.send({status:407,message:"Usuario no autorizado."});

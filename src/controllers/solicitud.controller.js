@@ -13,7 +13,6 @@ module.exports = class SolicitudController {
     if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const { id } = req.params;
       const tarea = await _solicitudService.mongoGet(id);
-      //console.log(tarea);
       return res.send(tarea);
     }
     return res.send({status:407,message:"Usuario no autorizado."});
@@ -35,7 +34,6 @@ module.exports = class SolicitudController {
       const { pageSize, pageNum } = req.query;
       return res.send(await _solicitudService.mongoGetAll(pageSize, pageNum));
     }else if(req.empleado.rol <= 4){
-      //const { pageSize, pageNum } = req.query;
       const solis = await _solicitudService.mongoGetSolicitudesByEmpleado(req.empleado.id);
       console.log(solis);
       return res.send(solis);

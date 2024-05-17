@@ -4,10 +4,6 @@ module.exports = class AuthController {
   }
 
   async postProfilePic(req, res){
- /*   console.log("entrando petición post...");
-    console.log(req.files);
-    return res.status(201).send({mensaje:"petición recibida"});
-*/
     if (!req.files || Object.keys(req.files).length === 0 || !req.files.archivo) {
       return res.status(405).json({status:405,msg:"No files were uploaded."});
     }
