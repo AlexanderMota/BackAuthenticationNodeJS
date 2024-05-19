@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const Tarea_has_empleadosSchema = new Schema({
   idTarea: { type: String, required: true },
   idEmpleado: { type: String, required: true },
-  fechacreacion: { type: Date, default: () => new Date(), required: true }
+  fechaRegistro: { type: Date, default: () => new Date(), required: true }
 
 });
 

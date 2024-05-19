@@ -6,7 +6,7 @@ const ComentarioSchema = new Schema({
   idAutor: { type: Schema.Types.ObjectId, ref: 'Empleados', required: true },
   nombre: { type: String, required: true },
   descripcion: { type: String, required: true },
-  fecha: { type: Date, default: () => new Date(), required: true }
+  fechaRegistro: { type: Date, default: () => new Date(), required: true }
 });
 
 module.exports = mongoose.model("comentario", ComentarioSchema);

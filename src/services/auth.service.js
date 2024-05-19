@@ -28,7 +28,7 @@ module.exports = class AuthService{
     async signIn(empleado){
         const {email,password} = empleado;
         const empleadoExists = await _empleadoService.mongoGetEmpleadoByEmail(email);
-        console.log(empleadoExists);
+        //console.log(empleadoExists);
         if(!empleadoExists){
             const error = new Error();
             error.status = 404;
@@ -46,7 +46,7 @@ module.exports = class AuthService{
 
         const empleadoToEncode = {
             id:empleadoExists._id.toString(),
-            centro:empleadoExists.centroTrabajo,
+            centro:empleadoExists.centroTrabajo.toString(),
             rol:empleadoExists.rol.valor
         };
         const token = JwtHelper.generateToken(empleadoToEncode);

@@ -140,6 +140,7 @@ module.exports = class UbicacionController {
   }
   async mongoUpdate(req, res){
     if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
+      delete req.body.fechaRegistro;
       const val = await _ubicacionService.mongoUpdate(req.params, req.body);
       if(val){
         if(!val.acknowledged){

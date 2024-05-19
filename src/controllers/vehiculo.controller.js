@@ -68,6 +68,9 @@ module.exports = class UbicacionController {
       const vehi = await _vehiculoService.mongoGetVehiculoByMatricula(body.matricula);
       
       if(vehi){
+        if(vehi[0].fechaRegistro){
+          delete vehi[0].fechaRegistro;
+        }
         const vehiculo = await _vehiculoService.mongoUpdate(vehi[0]._id,body);
         if(vehiculo){
           return res.send({status:200,message:"vehiculo actualizado correctamente"});
@@ -100,6 +103,7 @@ module.exports = class UbicacionController {
       const id = vehi[0]._id;
       
       delete vehi[0]._id;
+      delete vehi[0].fechaRegistro;
       
       const vehiculo = await _vehiculoService.mongoUpdate(id,vehi[0]);
   

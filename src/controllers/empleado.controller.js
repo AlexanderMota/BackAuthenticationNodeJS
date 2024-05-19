@@ -200,7 +200,7 @@ module.exports = class EmpleadoController {
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const { body } = req;
       const { idEmpleado } = req.params;
-  
+      delete body.fechaRegistro;
       const updateEmpleado = await _empleadoService.mongoUpdate( idEmpleado, body );
       return res.send( updateEmpleado );
     }

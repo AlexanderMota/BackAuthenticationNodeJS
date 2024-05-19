@@ -57,6 +57,7 @@ module.exports = class TareaController {
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const {pageSize, pageNum} = req.query;
       const tarea = await _tareaService.mongoGetAll(pageSize, pageNum,{ $query: {}, $orderby: { nombre : -1 } });
+      console.log(tarea);
       return res.send(tarea);
     }
     return res.send({status:407,message:"Usuario no autorizado."});
@@ -166,7 +167,7 @@ module.exports = class TareaController {
       const {body} = req;
       //console.log(body);
       const {id} = req.params;
-      
+      delete body.fechaRegistro;
       /*const updateTarea = */await _tareaService.mongoUpdate(id,body);
       //console.log(updateTarea);
       

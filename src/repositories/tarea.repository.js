@@ -51,6 +51,24 @@ module.exports = class TareaRepository extends BaseRepository{
             .limit(pageSize);
     }
     async mongoGetComentariosByIdTarea(idTarea, pageSize = 5, pageNum = 1) {
+
+        console.log("mongoGetComentariosByIdTarea");
+        //const query = { fechacreacion: { $type: "string" } };
+        const documents = await _tareaHasSubtareas.find({ fechacreacion: { $exists: true } });
+        console.log(documents);
+
+        documents.forEach(async val=>{
+            if(val.fechacreacion.length > 0){
+            val.fechaRegistro = val.fechacreacion;
+            val.fechacreacion = "";
+            await _tareaHasSubtareas.findByIdAndUpdate(val._id,val);
+            }
+            console.log(val);
+        });
+
+
+
+
         const skips = pageSize * (pageNum - 1);
         
         const idComentarios = await _comentario.find({idTarea : idTarea }/*,{_id:0,idComentario:1}*/);

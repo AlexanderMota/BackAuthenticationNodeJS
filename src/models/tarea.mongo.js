@@ -9,13 +9,13 @@ const TareaSchema = new Schema({
   importancia: { type: String, required: true },
   fechainicio: { type: Date, required: true },
   fechafin: { type: Date, required: false },
-  fechaRegistro: { type: Date, default: () => new Date(), required: true },
   terminada: { type: Boolean, required: true },
   plantilla: { type: [{
     rol: {type:String, required: true},
     cantidad: {type:Number, required: true}
   }], required: true},
-  precioHora: { type: Number, required: false }
+  precioHora: { type: Number, required: false },
+  fechaRegistro: { type: Date, default: () => new Date(), required: true }
 });
 
 module.exports = mongoose.model("tarea", TareaSchema);
