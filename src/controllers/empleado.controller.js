@@ -11,6 +11,7 @@ module.exports = class EmpleadoController {
   }
   async mongoGetEmpleadoByIdEmpleado(req, res) {
     const { idEmpleado } = req.params;
+    console.log(idEmpleado);
     if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const empleado = await _empleadoService.mongoGet(idEmpleado);
       const empleadoProcesado = {
@@ -20,8 +21,9 @@ module.exports = class EmpleadoController {
         telefono:empleado.telefono,
         email:empleado.email,
         rol:empleado.rol.nombre,
-        centroTrabajo:empleado.centroTrabajo
+        centroTrabajo:empleado.centroTrabajo.toString()
       }
+      console.log(empleadoProcesado);
       return res.send(empleadoProcesado);
     }/*else if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const empleado = await _empleadoService.mongoGet(idEmpleado);
@@ -48,7 +50,7 @@ module.exports = class EmpleadoController {
       const empleadosProcesados = [];
       empleados.forEach(empleado => {
         empleadosProcesados[empleadosProcesados.length] = {
-          _id:empleado._id,
+          _id:empleado._id.toString(),
           nombre:empleado.nombre,
           apellidos:empleado.apellidos,
           telefono:empleado.telefono,
@@ -76,7 +78,7 @@ module.exports = class EmpleadoController {
       const empleadosProcesados = [];
       empleados.forEach(empleado => {
         empleadosProcesados[empleadosProcesados.length] = {
-          _id:empleado._id,
+          _id:empleado._id.toString(),
           nombre:empleado.nombre,
           apellidos:empleado.apellidos,
           telefono:empleado.telefono,
@@ -99,7 +101,7 @@ module.exports = class EmpleadoController {
       const empleadosProcesados = [];
       empleados.forEach(empleado => {
         empleadosProcesados[empleadosProcesados.length] = {
-          _id:empleado._id,
+          _id:empleado._id.toString(),
           nombre:empleado.nombre,
           apellidos:empleado.apellidos,
           telefono:empleado.telefono,
@@ -114,7 +116,7 @@ module.exports = class EmpleadoController {
 
       const empleadoProcesado=[];
       empleadoProcesado[0] = {
-        _id:empleado._id,
+        _id:empleado._id.toString(),
         nombre:empleado.nombre,
         apellidos:empleado.apellidos,
         telefono:empleado.telefono,

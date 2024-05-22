@@ -10,6 +10,7 @@ module.exports = class TareaController {
   async mongoGet(req, res) {
     if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const { id } = req.params;
+      console.log("tarCont.mongoGet: ========> "+id);
       const tarea = await _tareaService.mongoGet(id);
       return res.send(tarea);
     }
@@ -26,9 +27,22 @@ module.exports = class TareaController {
   }
   async mongoGetSupertareas(req, res){
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
-      const tarea = await _tareaService.mongoGetSupertareas();
-      
-      return res.send(tarea);
+      const tareas = await _tareaService.mongoGetSupertareas();
+      const tareasProcesados = [];
+      tareas.forEach(tarea => {
+        tareasProcesados[tareasProcesados.length] = {
+          _id:tarea._id.toString(),
+          nombre:tarea.nombre,
+          departamento:tarea.departamento,
+          descripcion:tarea.descripcion,
+          importancia:tarea.importancia,
+          fechainicio:tarea.fechainicio,
+          fechafin:tarea.fechafin,
+          terminada:tarea.terminada,
+          plantilla:tarea.plantilla
+        }
+      });
+      return res.send(tareasProcesados);
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
@@ -37,8 +51,22 @@ module.exports = class TareaController {
       const {idTarea} = req.params;
       const {pageSize, pageNum} = req.query;
       const tareas = await _tareaService.mongoGetSubtareasByIdTarea(idTarea,pageSize, pageNum);
+      const tareasProcesados = [];
+      tareas.forEach(tarea => {
+        tareasProcesados[tareasProcesados.length] = {
+          _id:tarea._id.toString(),
+          nombre:tarea.nombre,
+          departamento:tarea.departamento,
+          descripcion:tarea.descripcion,
+          importancia:tarea.importancia,
+          fechainicio:tarea.fechainicio,
+          fechafin:tarea.fechafin,
+          terminada:tarea.terminada,
+          plantilla:tarea.plantilla
+        }
+      });
       
-      return res.send(tareas);
+      return res.send(tareasProcesados);
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
@@ -49,15 +77,29 @@ module.exports = class TareaController {
       const {pageSize, pageNum} = req.query;
       const comentarios = await _tareaService.mongoGetComentariosByIdTarea(idTarea, pageSize, pageNum);
       
-      return res.send(comentarios);
+      //console.log(comentarios);
+      const comentariosProcesados = [];
+      comentarios.forEach(comentario => {
+        comentariosProcesados[comentariosProcesados.length] = {
+          _id:comentario._id.toString(),
+          idTarea:comentario.idTarea.toString(),
+          idAutor:comentario.idAutor.toString(),
+          nombre:comentario.nombre,
+          descripcion:comentario.descripcion,
+          fechaRegistro:comentario.fechaRegistro
+        }
+      });
+      //console.log(comentariosProcesados);
+      return res.send(comentariosProcesados);
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
   async mongoGetAll(req, res){
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const {pageSize, pageNum} = req.query;
-      const tarea = await _tareaService.mongoGetAll(pageSize, pageNum,{ $query: {}, $orderby: { nombre : -1 } });
-      console.log(tarea);
+      const tareas = await _tareaService.mongoGetAll(pageSize, pageNum,{ $query: {}, $orderby: { nombre : -1 } });
+      //console.log(tareas);
+
       return res.send(tarea);
     }
     return res.send({status:407,message:"Usuario no autorizado."});
@@ -65,8 +107,24 @@ module.exports = class TareaController {
   async mongoGetOrderBy(req, res){
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const {pageSize, pageNum} = req.query;
-      const tarea = await _tareaService.mongoGetOrderBy(pageSize, pageNum);
-      return res.send(tarea);
+      const tareas = await _tareaService.mongoGetOrderBy(pageSize, pageNum);
+      //console.log(tareas);
+      const tareasProcesados = [];
+      tareas.forEach(tarea => {
+        tareasProcesados[tareasProcesados.length] = {
+          _id:tarea._id.toString(),
+          nombre:tarea.nombre,
+          departamento:tarea.departamento,
+          descripcion:tarea.descripcion,
+          importancia:tarea.importancia,
+          fechainicio:tarea.fechainicio,
+          fechafin:tarea.fechafin,
+          terminada:tarea.terminada,
+          plantilla:tarea.plantilla
+        }
+      });
+      //console.log(tareasProcesados);
+      return res.send(tareasProcesados);
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
@@ -76,8 +134,24 @@ module.exports = class TareaController {
       const {pageSize, pageNum} = req.query;
       const { idEmpleado } = req.params;
       
-      const tarea = await _tareaService.mongoGetTareasByIdEmpleado(idEmpleado, pageSize, pageNum);
-      return res.send(tarea);
+      const tareas = await _tareaService.mongoGetTareasByIdEmpleado(idEmpleado, pageSize, pageNum);
+
+      const tareasProcesados = [];
+      tareas.forEach(tarea => {
+        tareasProcesados[tareasProcesados.length] = {
+          _id:tarea._id.toString(),
+          nombre:tarea.nombre,
+          departamento:tarea.departamento,
+          descripcion:tarea.descripcion,
+          importancia:tarea.importancia,
+          fechainicio:tarea.fechainicio,
+          fechafin:tarea.fechafin,
+          terminada:tarea.terminada,
+          plantilla:tarea.plantilla
+        }
+      });
+
+      return res.send(tareasProcesados);
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
@@ -182,7 +256,7 @@ module.exports = class TareaController {
       const ids = id.split("_");
       if(Array.isArray(ids)){
         const deleteTarea = await _tareaService.mongoDelete(ids[0],ids[1]);
-        console.log(deleteTarea);
+        //console.log(deleteTarea);
         return res.send(deleteTarea);
       }
       return res.send({status:408,message:"Faltan parámetros."});

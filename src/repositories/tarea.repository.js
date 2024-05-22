@@ -52,10 +52,10 @@ module.exports = class TareaRepository extends BaseRepository{
     }
     async mongoGetComentariosByIdTarea(idTarea, pageSize = 5, pageNum = 1) {
 
-        console.log("mongoGetComentariosByIdTarea");
+        //console.log("mongoGetComentariosByIdTarea");
         //const query = { fechacreacion: { $type: "string" } };
         const documents = await _tareaHasSubtareas.find({ fechacreacion: { $exists: true } });
-        console.log(documents);
+        //console.log(documents);
 
         documents.forEach(async val=>{
             if(val.fechacreacion.length > 0){
@@ -63,7 +63,7 @@ module.exports = class TareaRepository extends BaseRepository{
             val.fechacreacion = "";
             await _tareaHasSubtareas.findByIdAndUpdate(val._id,val);
             }
-            console.log(val);
+            //console.log(val);
         });
 
 

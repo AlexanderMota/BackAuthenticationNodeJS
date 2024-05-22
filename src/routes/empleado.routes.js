@@ -10,7 +10,7 @@ module.exports = ({ EmpleadoController }) => {
   router.get("/roles", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.getRoles);
   router.get("/departamentos", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.getDepartamentos);
   router.get("/centro/:idCentro", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.getEmpleadosByCentro);
-  router.get("/byid/:idEmpleado", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoGetEmpleadoByIdEmpleado);
+  router.get("/:idEmpleado", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoGetEmpleadoByIdEmpleado);
   router.get("/tarea/:idTarea", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoGetEmpleadosByIdTarea);
   router.get("/disponible/:idTarea", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoGetEmpleadosByIdTareaDist);
   
