@@ -13,13 +13,13 @@ module.exports = class EmpleadoRepository extends BaseRepository{
         _tareaHasEmpleados = TareaHasEmpleados;
     }
 
-    async mongoGetAll(pageSize = 5, pageNum = 1) {
+    /*async mongoGetAll(pageSize = 5, pageNum = 1) {
         const skips = pageSize * (pageNum - 1);
         return await _empleado
           .find({ 'rol.nombre' : { $ne: 'ADMIN' }}, { "rol.valor": 0, "__v":0, })
           .skip(skips)
           .limit(pageSize);
-    }
+    }*/
     async mongoGetEmpleadoByIdEmpleado(idEmpleado) {
         return await _empleado.findOne({idEmpleado:idEmpleado});
     }
@@ -43,23 +43,17 @@ module.exports = class EmpleadoRepository extends BaseRepository{
         }
         return empleados;
     }
-    async mongoGetEmpleadosByIdTareaDist(idTarea, pageSize = 5, pageNum = 1) {
-        const idEmpleados  = await _tareaHasEmpleados.find({idTarea:idTarea});
-
-        
-        if(!idEmpleados){
+    async mongoGetEmpleadosDisponibles(idSuper, rolBuscar){
+        const empleados = await _empleado.find({
+            centroTrabajo: idSuper, 
+            'rol.nombre': rolBuscar 
+        });
+        if(!empleados){
             return false;
         }
-
-        const objIdEmpleados = [];
-        for (var i = 0; i < idEmpleados.length; i++) {
-            objIdEmpleados.push(new ObjectId(idEmpleados[i].idEmpleado));
-        }
-
-        let emp = await _empleado.find({_id: { $nin: objIdEmpleados }});
-        return emp;
+        return empleados;
     }
-    async mongoGetAllSolicitudes(pageSize, pageNum,campo={$query: {}, $orderby: { fechasolicitud : 1 }}){
+    /*async mongoGetAllSolicitudes(pageSize, pageNum,campo={$query: {}, $orderby: { fechasolicitud : 1 }}){
         const sols = await _solicitudRep.mongoGetAll(pageSize, pageNum,campo);
         let listaRes = [];
         for (var i = 0; i < sols.length; i++) {
@@ -70,7 +64,7 @@ module.exports = class EmpleadoRepository extends BaseRepository{
             //console.log(listaRes[i]);
         }
         return listaRes;
-    }
+    }*/
     async mongoDelete(idEmpleado) {
         await _tareaHasEmpleados.deleteMany({idEmpleado:idEmpleado});
         return await _empleado.findByIdAndDelete(idEmpleado);

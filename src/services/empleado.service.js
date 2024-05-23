@@ -14,8 +14,8 @@ module.exports = class EmpleadoService extends BaseService{
     async mongoGetEmpleadosByIdTarea(idEmpleado){
         return await _empleadoRep.mongoGetEmpleadosByIdTarea(idEmpleado);
     }
-    async mongoGetEmpleadosByIdTareaDist(idTarea, pageSize, pageNum){
-        return await _empleadoRep.mongoGetEmpleadosByIdTareaDist(idTarea, pageSize, pageNum);
+    async mongoGetEmpleadosDisponibles(idSuper, rolBuscar){
+        return await _empleadoRep.mongoGetEmpleadosDisponibles(idSuper, rolBuscar);
     }
     async mongoGetEmpleadoByNombre(nombre){
         return await _empleadoRep.mongoGetEmpleadoByNombre(nombre);

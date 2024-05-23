@@ -68,12 +68,16 @@ module.exports = class EmpleadoController {
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
-  async mongoGetEmpleadosByIdTareaDist(req, res) {
-    if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
-      const {pageSize, pageNum} = req.query;
-      const { idTarea } = req.params;
-      
-      const empleados = await _empleadoService.mongoGetEmpleadosByIdTareaDist(idTarea, pageSize, pageNum);
+  async mongoGetEmpleadosDisponibles(req, res) {
+    console.log("mongoGetEmpleadosDisponibles");
+    if(req.empleado.rol <= 3 && req.empleado.rol >= 0){
+      const {rolBuscar} = req.query;
+      const { idSuper } = req.params;
+      console.log(rolBuscar);
+      console.log(idSuper);
+
+      const empleados = await _empleadoService.mongoGetEmpleadosDisponibles(idSuper, rolBuscar);
+
       const empleadosProcesados = [];
       empleados.forEach(empleado => {
         empleadosProcesados[empleadosProcesados.length] = {
@@ -83,7 +87,7 @@ module.exports = class EmpleadoController {
           telefono:empleado.telefono,
           email:empleado.email,
           rol:empleado.rol.nombre,
-          centroTrabajo:empleado.centroTrabajo
+          centroTrabajo:empleado.centroTrabajo.toString()
         }
       });
       return res.send(empleadosProcesados);
