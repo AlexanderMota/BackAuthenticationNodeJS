@@ -206,15 +206,53 @@ module.exports = class TareaRepository extends BaseRepository{
             {idEmpleado:idEmp}
         ]},{"_id":1});
 
+        console.log("tareaRep.mongoQuitaEmpleadoTarea(): ================> " +resi.length);
+            console.log(resi);
         if(resi.length < 1){
+/////////////Este apaño es debido a un error desconocido: no se encuentra la relacion pasando los datos juntos pero si por separado. esto soluciona esos casos////////////////////////////////////////////////////////
+            /*const resi1 = await _tareaHasEmpleados.find({ idTarea: idTar });
+            console.log("Result for idTarea:", resi1);
+
+            if(resi1.length < 1){
+                for (const item of resi1) {
+                    if (item.idEmpleado == idEmp) {
+                        const res3 = await _solicitudRep.mongoGetSolicitudByEmpleadoTarea(idTar,idEmp);
+                        await _solicitudRep.findByIdAndDelete(res3[0]._id);
+                        const res4 = await _tareaHasEmpleados.findByIdAndDelete(resi[0]._id);
+                        if(res4){
+                            return {status:201,message:"La relación se ha eliminado correctamente. "+res3.message};
+                        }else{
+                            return {status:401,message:"delete contrato error. "+res3.message};
+                        };
+                    }
+                }
+            }
+            const resi2 = await _tareaHasEmpleados.find({ idEmpleado: idEmp });
+            console.log("Result for idEmpleado:", resi2);
+            if(resi2.length < 1){
+                for (const item of resi1) {
+                    if (item.idTarea == idTar) {
+                        const res3 = await _solicitudRep.mongoGetSolicitudByEmpleadoTarea(idTar,idEmp);
+                        await _solicitudRep.findByIdAndDelete(res3[0]._id);
+                        const res4 = await _tareaHasEmpleados.findByIdAndDelete(resi[0]._id);
+                        if(res4){
+                            return {status:201,message:"La relación se ha eliminado correctamente. "+res3.message};
+                        }else{
+                            return {status:401,message:"delete contrato error. "+res3.message};
+                        };
+                    }
+                }
+            }*/
+//////////////////////////////////////////////////////////////////////
+
             return {status:405,message:"No se ha encontrado el contrato solicitado."};
         }else if(resi.length > 1){
             return {status:403,message:"Se encuentran varias solicitudes con los mismos datos."};
         }else if(resi[0]._id){
             const res3 = await _solicitudRep.mongoGetSolicitudByEmpleadoTarea(idTar,idEmp);
             await _solicitudRep.findByIdAndDelete(res3[0]._id);
-            const res2 = await _tareaHasEmpleados.findByIdAndDelete(resi[0]._id);
-            if(res2){
+            const res4 = await _tareaHasEmpleados.findByIdAndDelete(resi[0]._id);
+            if(res4){
                 return {status:201,message:"La relación se ha eliminado correctamente. "+res3.message};
             }else{
                 return {status:401,message:"delete contrato error. "+res3.message};
@@ -237,8 +275,6 @@ module.exports = class TareaRepository extends BaseRepository{
 
             const res3 = await _tarea.findByIdAndDelete(idTarea);
             /*const subs = */await _tareaHasSubtareas.findByIdAndDelete(superOriginaria[0]._id);
-            /*console.log("subs");
-            console.log(subs);*/
             /*const res1 = */await _comentario.deleteMany({idTarea:idTarea});
             /*const res2 = */await _tareaHasEmpleados.deleteMany({idTarea:idTarea});
             /*const res4 = */await _ubicacion.deleteMany({idTarea:idTarea});

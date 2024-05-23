@@ -1,7 +1,7 @@
 const path = require('path');
 const {CompruebaExtension} = require('../utils/index')
 
-const fileUpload = (files, alloudExtentions = []) => {
+module.exports.fileUpload = function(files, alloudExtentions = []) {
     return new Promise((resolve, reject) => {
         const sampleFile = files.archivo;
         let uploadPath = "";
@@ -11,7 +11,7 @@ const fileUpload = (files, alloudExtentions = []) => {
             let respon = [];
             for(let i = 0; i < sampleFile.length; i++){
                 if(CompruebaExtension(alloudExtentions,(sampleFile[i].name.split('.')[sampleFile[i].name.split('.').length -1]))){
-                    uploadPath = path.join(__dirname,'../uploads/', sampleFile[i].name);
+                    uploadPath = path.join(__dirname,'../../uploads/', sampleFile[i].name);
         
                     //sacar extension para filtrar tipos de archivo. comprimido
                     //console.log(sampleFile[i].name.split('.')[sampleFile[i].name.split('.').length -1]);
@@ -32,7 +32,7 @@ const fileUpload = (files, alloudExtentions = []) => {
             
             //console.log(sampleFile.name.split('.')[sampleFile.name.split('.').length -1]);
             if(CompruebaExtension(alloudExtentions,(sampleFile.name.split('.')[sampleFile.name.split('.').length -1]))){
-                uploadPath = path.join(__dirname,'../uploads/', sampleFile.name);
+                uploadPath = path.join(__dirname,'../../uploads/', sampleFile.name);
             
                 sampleFile.mv(uploadPath, (err) =>{
                     if(err){
@@ -48,6 +48,3 @@ const fileUpload = (files, alloudExtentions = []) => {
     });
 }
 
-module.exports = {
-    fileUpload
-}

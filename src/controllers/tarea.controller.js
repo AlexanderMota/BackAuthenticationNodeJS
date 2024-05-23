@@ -161,16 +161,16 @@ module.exports = class TareaController {
       const { idTarea, idEmpleado, idSolicitud } = req.body;
       const flag = await _tareaService.mongoAddEmpleado(idTarea, idEmpleado);
       if(flag.status < 220){
-        if(idSolicitud){
+        if(idSolicitud != ""){
           const solpat = await _solicitudService.mongoGet(idSolicitud);
           solpat.aprobada = true;
           const id = solpat._id;
           delete solpat._id;
           /*const solpat2 = */await _solicitudService.mongoUpdate(id.toString(),solpat);
           
-          return res.send({status:202,message:"Solicitud aprobada. Empleado registrado en la tarea."});
+          return res.send({status:202,message:"Solicitud aprobada. " + flag.message});
         }
-        return res.send({status:201,message:"Tarea asignada a empleado con exito"});
+        return res.send({status:201,message:"Tarea asignada a empleado con exito. " + flag.message});
       }
       return res.send(flag);
     }
@@ -268,9 +268,9 @@ module.exports = class TareaController {
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const {id} = req.params;
       const ids = id.split("_");
+      console.log(ids);
       if(Array.isArray(ids)){
         const deleteSolicitud = await _tareaService.mongoQuitaEmpleadoTarea(ids[0],ids[1]);
-        //console.log(deleteSolicitud);
         return res.send(deleteSolicitud);
       }
       return res.send({status:408,message:"Faltan parámetros."});
