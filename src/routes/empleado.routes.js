@@ -16,7 +16,7 @@ module.exports = ({ EmpleadoController }) => {
   
   router.patch("/byid/:idEmpleado", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoUpdate);
   
-  router.post("/addtarea", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoAddTarea);
+  //router.post("/addtarea", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoAddTarea);
   
   router.delete("/byid/:idEmpleado", [AuthMiddleware, ParseIntMiddleware], EmpleadoController.mongoDelete);
 

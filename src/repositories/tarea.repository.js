@@ -3,7 +3,7 @@ const { ObjectId } = require('mongodb');
 
 let _tarea = null;
 let _supertarea = null;
-//let _empleado = null;
+let _empleado = null;
 let _comentario = null;
 let _tareaHasEmpleados = null;
 let _tareaHasSubtareas = null;
@@ -11,11 +11,11 @@ let _solicitudRep = null;
 let _ubicacion = null;
 
 module.exports = class TareaRepository extends BaseRepository{
-    constructor({Tarea, Supertarea, TareaHasEmpleados, TareaHasSubtareas/*, Empleado*/, Comentario, SolicitudRepository, Ubicacion}){
+    constructor({Tarea, Supertarea, TareaHasEmpleados, TareaHasSubtareas, Empleado, Comentario, SolicitudRepository, Ubicacion}){
         super(Tarea);
         _tarea = Tarea;
         _supertarea = Supertarea;
-        //_empleado = Empleado;
+        _empleado = Empleado;
         _tareaHasEmpleados = TareaHasEmpleados;
         _tareaHasSubtareas = TareaHasSubtareas;
         _solicitudRep = SolicitudRepository;
@@ -50,25 +50,14 @@ module.exports = class TareaRepository extends BaseRepository{
             .skip(skips)
             .limit(pageSize);
     }
-    async mongoGetComentariosByIdTarea(idTarea, pageSize = 5, pageNum = 1) {
-
-        //console.log("mongoGetComentariosByIdTarea");
-        //const query = { fechacreacion: { $type: "string" } };
-        const documents = await _tareaHasSubtareas.find({ fechacreacion: { $exists: true } });
-        //console.log(documents);
-
-        documents.forEach(async val=>{
-            if(val.fechacreacion.length > 0){
-            val.fechaRegistro = val.fechacreacion;
-            val.fechacreacion = "";
-            await _tareaHasSubtareas.findByIdAndUpdate(val._id,val);
-            }
-            //console.log(val);
-        });
-
-
-
-
+    async mongoGetComentarioById(id){
+        const comentario = await _comentario.findOne(new ObjectId(id));
+        if(!comentario){
+            return {status: 208, message:"No se encontró ningún comentario con el id especificado."}
+        }
+        return comentario;
+    }
+    async mongoGetComentariosByIdTarea(idTarea, pageSize = 20, pageNum = 1) {
         const skips = pageSize * (pageNum - 1);
         
         const idComentarios = await _comentario.find({idTarea : idTarea }/*,{_id:0,idComentario:1}*/);
@@ -128,35 +117,58 @@ module.exports = class TareaRepository extends BaseRepository{
     }
 
     async mongoAddEmpleado(idTarea, idEmpleado){
-        const { numeroTrabajadores } = await _tarea.findOne({_id:idTarea},{_id:0, numeroTrabajadores:1});
-        
-        const empleadosActuales = await _tareaHasEmpleados.countDocuments({idTarea:idTarea});
-        
 
-        if (empleadosActuales >= numeroTrabajadores){
-            console.log("La tarea no admite más empleados.")
-            return {status: 406, message:"La tarea no admite más empleados."};
+        const { plantilla } = await _tarea.findOne({_id:idTarea},{_id:0, plantilla:1});
+        const { rol } = await _empleado.findOne({_id:idEmpleado},{_id:0, rol:1});
+
+        let flag = false;
+        plantilla.forEach(val => {
+            if(val.rol == rol.nombre){
+                flag = true;
+            }
+        });
+        if (!flag){
+            console.log("El empleado no tiene un rol válido para la tarea especificada.");
+            return {status: 408, message:"El empleado no tiene un rol válido para la tarea especificada."};
         }
+
+
+        const empleadosActuales = await _tareaHasEmpleados.find({idTarea:idTarea},{_id:0,idEmpleado:1});
+        const empAct = [];
+        empleadosActuales.forEach(val => {
+            empAct.push(val.idEmpleado);
+        });
+        const numEmpleadosRol = await _empleado.countDocuments({
+            _id: { $in: empAct }, 'rol.nombre': rol.nombre 
+        });
+        let flag2 = false;
+        plantilla.forEach(val =>{
+            if(val.rol == rol.nombre){
+                if(numEmpleadosRol >= val.cantidad){ flag2 = true; }
+            }
+        });
+        if(flag2){
+            return {status: 409, message:"La tarea no admite mas empleados con este rol: " + rol.nombre};
+        }
+
 
         const _id = await _tareaHasEmpleados.find({$and:[
             {"idTarea":idTarea},
             {"idEmpleado":idEmpleado}
         ]},{"_id":1});
-        
-
         if (_id !== undefined){
             if (_id[0] !== undefined){
-                console.log("Parece que el trabajador ya esta registrado en esta tarea")
                 return {status: 407, message:"Parece que el trabajador ya esta registrado en esta tarea."};
             }
         }
-        
+       
+
         await _tareaHasEmpleados.create({
             idTarea:idTarea,
             idEmpleado:idEmpleado,
             fechacreacion:new Date(Date.now()).toISOString()
         });
-        return {status: 201, message:"Trabajador registrado en la tarea."};
+        return { status: 201, message: "Trabajador registrado en la tarea." };
     }
     async mongoAddSubtarea(idTarea, idSubtarea){
         const _id = await _tareaHasSubtareas.find({$and:[
@@ -185,7 +197,7 @@ module.exports = class TareaRepository extends BaseRepository{
             idAutor:idEmpleado,
             nombre:nombreComentario,
             descripcion:descripcion,
-            fecha:new Date(Date.now()).toISOString()
+            fecha:new Date(Date.now())
         });
         return true;
     }
@@ -206,61 +218,33 @@ module.exports = class TareaRepository extends BaseRepository{
             {idEmpleado:idEmp}
         ]},{"_id":1});
 
-        console.log("tareaRep.mongoQuitaEmpleadoTarea(): ================> " +resi.length);
-            console.log(resi);
         if(resi.length < 1){
-/////////////Este apaño es debido a un error desconocido: no se encuentra la relacion pasando los datos juntos pero si por separado. esto soluciona esos casos////////////////////////////////////////////////////////
-            /*const resi1 = await _tareaHasEmpleados.find({ idTarea: idTar });
-            console.log("Result for idTarea:", resi1);
-
-            if(resi1.length < 1){
-                for (const item of resi1) {
-                    if (item.idEmpleado == idEmp) {
-                        const res3 = await _solicitudRep.mongoGetSolicitudByEmpleadoTarea(idTar,idEmp);
-                        await _solicitudRep.findByIdAndDelete(res3[0]._id);
-                        const res4 = await _tareaHasEmpleados.findByIdAndDelete(resi[0]._id);
-                        if(res4){
-                            return {status:201,message:"La relación se ha eliminado correctamente. "+res3.message};
-                        }else{
-                            return {status:401,message:"delete contrato error. "+res3.message};
-                        };
-                    }
-                }
-            }
-            const resi2 = await _tareaHasEmpleados.find({ idEmpleado: idEmp });
-            console.log("Result for idEmpleado:", resi2);
-            if(resi2.length < 1){
-                for (const item of resi1) {
-                    if (item.idTarea == idTar) {
-                        const res3 = await _solicitudRep.mongoGetSolicitudByEmpleadoTarea(idTar,idEmp);
-                        await _solicitudRep.findByIdAndDelete(res3[0]._id);
-                        const res4 = await _tareaHasEmpleados.findByIdAndDelete(resi[0]._id);
-                        if(res4){
-                            return {status:201,message:"La relación se ha eliminado correctamente. "+res3.message};
-                        }else{
-                            return {status:401,message:"delete contrato error. "+res3.message};
-                        };
-                    }
-                }
-            }*/
-//////////////////////////////////////////////////////////////////////
-
             return {status:405,message:"No se ha encontrado el contrato solicitado."};
         }else if(resi.length > 1){
             return {status:403,message:"Se encuentran varias solicitudes con los mismos datos."};
         }else if(resi[0]._id){
+
             const res3 = await _solicitudRep.mongoGetSolicitudByEmpleadoTarea(idTar,idEmp);
-            await _solicitudRep.findByIdAndDelete(res3[0]._id);
+            let resss;
+            if(res3.length > 0) {
+                resss = await _solicitudRep.findByIdAndDelete(res3[0]._id);
+            }
+            
             const res4 = await _tareaHasEmpleados.findByIdAndDelete(resi[0]._id);
             if(res4){
-                return {status:201,message:"La relación se ha eliminado correctamente. "+res3.message};
+                let mess = "La relación se ha eliminado correctamente."
+                if(resss != undefined) {mess += " Tambien se eliminó una solicitud."}
+                return {status:201,message:mess};
             }else{
-                return {status:401,message:"delete contrato error. "+res3.message};
+                return {status:401,message:"delete contrato error."};
             };
         }else{
-            return {status:402,message:"No se ha encontrado el contrato solicitado."};
+            return {status:402,message:"Se encontró al menos 1 resultado pero este presenta problemas."};
         }
          
+    }
+    async mongoQuitaComentarioTarea(id){
+        return await _comentario.findByIdAndDelete(id);
     }
     async mongoDelete(idTarea,conservaSubs) {
         const superOriginaria = await _tareaHasSubtareas.find({ idSubtarea: idTarea });

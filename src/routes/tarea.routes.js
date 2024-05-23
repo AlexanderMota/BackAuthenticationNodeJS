@@ -23,6 +23,7 @@ module.exports = function({ TareaController }) {
 
   router.delete("/:id", [AuthMiddleware, ParseIntMiddleware], TareaController.mongoDelete);
   router.delete("/empleado/:id", [AuthMiddleware, ParseIntMiddleware], TareaController.mongoQuitaEmpleadoTarea);
+  router.delete("/comentarios/:id", [AuthMiddleware, ParseIntMiddleware], TareaController.mongoQuitaComentarioTarea);
   
   return router;
 };

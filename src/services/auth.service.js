@@ -12,6 +12,7 @@ module.exports = class AuthService{
 
     async signUp(empleado){
         const {email} = empleado;
+        
         const empleadoExists = await _empleadoService.mongoGetEmpleadoByEmail(email);
         if(empleadoExists){
             const error = new Error();
@@ -20,7 +21,7 @@ module.exports = class AuthService{
             throw error;
         }
 
-        empleado.fechaContrato = new Date(Date.now());
+        empleado.fechaRegistro = new Date(Date.now());
         await _empleadoService.mongoCreate(empleado);
         return {status: 201, message:"Empleado registrado con exito"};
     }

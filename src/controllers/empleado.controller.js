@@ -11,7 +11,7 @@ module.exports = class EmpleadoController {
   }
   async mongoGetEmpleadoByIdEmpleado(req, res) {
     const { idEmpleado } = req.params;
-    console.log(idEmpleado);
+
     if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const empleado = await _empleadoService.mongoGet(idEmpleado);
       const empleadoProcesado = {
@@ -23,7 +23,6 @@ module.exports = class EmpleadoController {
         rol:empleado.rol.nombre,
         centroTrabajo:empleado.centroTrabajo.toString()
       }
-      console.log(empleadoProcesado);
       return res.send(empleadoProcesado);
     }/*else if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const empleado = await _empleadoService.mongoGet(idEmpleado);
@@ -63,7 +62,7 @@ module.exports = class EmpleadoController {
     }else if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const {pageSize, pageNum} = req.query;
       const { idTarea } = req.params;
-      //console.log(idTarea);
+      
       const empleados = await _empleadoService.mongoGetEmpleadosByIdTarea(idTarea, pageSize, pageNum);
       return res.send({status: 201, message:empleados.length});
     }
@@ -73,7 +72,7 @@ module.exports = class EmpleadoController {
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const {pageSize, pageNum} = req.query;
       const { idTarea } = req.params;
-      //console.log(idTarea);
+      
       const empleados = await _empleadoService.mongoGetEmpleadosByIdTareaDist(idTarea, pageSize, pageNum);
       const empleadosProcesados = [];
       empleados.forEach(empleado => {
@@ -94,10 +93,9 @@ module.exports = class EmpleadoController {
   async mongoGetAll(req, res){
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const {pageSize, pageNum} = req.query;
-      //console.log(pageSize);
+      
       const empleados = await _empleadoService.mongoGetAll(pageSize, pageNum);
       
-      //console.log("empCont.mongoGetAll: "+empleados);
       const empleadosProcesados = [];
       empleados.forEach(empleado => {
         empleadosProcesados[empleadosProcesados.length] = {
@@ -186,9 +184,10 @@ module.exports = class EmpleadoController {
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
-  async mongoAddTarea(req, res){
+  /*async mongoAddTarea(req, res){
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const { idTarea, idEmpleado } = req.query;
+      console.log(idEmpleado);
       const flag = await _tareaService.mongoAddEmpleado( idTarea, idEmpleado);
       if(flag){ 
         return res.send({200:"",message:"Empleado asignado a tarea con exito"});
@@ -196,7 +195,7 @@ module.exports = class EmpleadoController {
       return res.send({400:"",message:"Algo fue mal"});
     }
     return res.send({status:407,message:"Usuario no autorizado."});
-  }
+  }*/
 
   async mongoUpdate(req, res){
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){

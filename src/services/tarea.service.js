@@ -25,6 +25,9 @@ module.exports = class TareaService extends BaseService{
     async mongoGetSubtareasByIdTarea(idTarea, pageSize, pageNum){
         return await _tareaRep.mongoGetSubtareasByIdTarea(idTarea, pageSize, pageNum);
     }
+    async mongoGetComentarioById(id ){
+        return await _tareaRep.mongoGetComentarioById(id);
+    }
     async mongoGetComentariosByIdTarea(idTarea, pageSize , pageNum ){
         return await _tareaRep.mongoGetComentariosByIdTarea(idTarea , pageSize , pageNum );
     }
@@ -50,7 +53,10 @@ module.exports = class TareaService extends BaseService{
     async mongoDelete(idTar,conservaSubs){
         return await _tareaRep.mongoDelete(idTar,conservaSubs);
     }
-    async mongoQuitaEmpleadoTarea(idTar){
-        return await _tareaRep.mongoQuitaEmpleadoTarea(idTar);
+    async mongoQuitaEmpleadoTarea(idTar, idEmpleado){
+        return await _tareaRep.mongoQuitaEmpleadoTarea(idTar, idEmpleado);
+    }
+    async mongoQuitaComentarioTarea(id){
+        return await _tareaRep.mongoQuitaComentarioTarea(id);
     }
 }

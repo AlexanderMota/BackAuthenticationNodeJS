@@ -47,6 +47,21 @@ module.exports = class SolicitudRepository extends BaseRepository{
         if (_solicitudes.length < 1) return {status:403,message:"Sin solicitudes."};
         return _solicitudes;
     }
+
+    async mongoGetSolicitudByEmpleadoTarea(idTar,idEmp){
+        console.log(idTar);
+        console.log(idEmp);
+        const _solicitudes = await _solicitud.find({$and:[
+            {idTarea:idTar},
+            {idEmpleado:idEmp}
+        ]},{"_id":1});
+
+        console.log("solRep.mongoGetSolicitudByEmpleadoTarea(): ==========> "+_solicitudes.length);
+        console.log(_solicitudes);
+
+        if (_solicitudes.length < 1) return {status:403,message:"Sin solicitudes."};
+        return _solicitudes;
+    }
     
     async mongoDeleteSolicitudByEmpleadoTarea(idTar,idEmp){
         const _solicitudes = await _solicitud.find({$and:[

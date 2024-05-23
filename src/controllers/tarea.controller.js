@@ -10,7 +10,6 @@ module.exports = class TareaController {
   async mongoGet(req, res) {
     if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const { id } = req.params;
-      console.log("tarCont.mongoGet: ========> "+id);
       const tarea = await _tareaService.mongoGet(id);
       return res.send(tarea);
     }
@@ -77,7 +76,6 @@ module.exports = class TareaController {
       const {pageSize, pageNum} = req.query;
       const comentarios = await _tareaService.mongoGetComentariosByIdTarea(idTarea, pageSize, pageNum);
       
-      //console.log(comentarios);
       const comentariosProcesados = [];
       comentarios.forEach(comentario => {
         comentariosProcesados[comentariosProcesados.length] = {
@@ -89,7 +87,6 @@ module.exports = class TareaController {
           fechaRegistro:comentario.fechaRegistro
         }
       });
-      //console.log(comentariosProcesados);
       return res.send(comentariosProcesados);
     }
     return res.send({status:407,message:"Usuario no autorizado."});
@@ -98,8 +95,7 @@ module.exports = class TareaController {
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const {pageSize, pageNum} = req.query;
       const tareas = await _tareaService.mongoGetAll(pageSize, pageNum,{ $query: {}, $orderby: { nombre : -1 } });
-      //console.log(tareas);
-
+     
       return res.send(tarea);
     }
     return res.send({status:407,message:"Usuario no autorizado."});
@@ -108,7 +104,7 @@ module.exports = class TareaController {
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const {pageSize, pageNum} = req.query;
       const tareas = await _tareaService.mongoGetOrderBy(pageSize, pageNum);
-      //console.log(tareas);
+      
       const tareasProcesados = [];
       tareas.forEach(tarea => {
         tareasProcesados[tareasProcesados.length] = {
@@ -123,7 +119,6 @@ module.exports = class TareaController {
           plantilla:tarea.plantilla
         }
       });
-      //console.log(tareasProcesados);
       return res.send(tareasProcesados);
     }
     return res.send({status:407,message:"Usuario no autorizado."});
@@ -157,6 +152,7 @@ module.exports = class TareaController {
   }
 
   async addEmpleado(req, res){
+      console.log(req.body);
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const { idTarea, idEmpleado, idSolicitud } = req.body;
       const flag = await _tareaService.mongoAddEmpleado(idTarea, idEmpleado);
@@ -221,8 +217,7 @@ module.exports = class TareaController {
       
       if(supertarea){
         const resp =  await _tareaService.mongoCreate(body);
-        /*console.log(supertarea);
-        console.log(resp);*/
+        
         if(resp?._id){
           await _tareaService.addSubtarea(supertarea._id.toString(),resp._id.toString());
 
@@ -239,11 +234,10 @@ module.exports = class TareaController {
   async mongoUpdate(req, res){
     if(req.empleado.rol <= 3 && req.empleado.rol >= 0){
       const {body} = req;
-      //console.log(body);
+      
       const {id} = req.params;
       delete body.fechaRegistro;
       /*const updateTarea = */await _tareaService.mongoUpdate(id,body);
-      //console.log(updateTarea);
       
       return res.send({status:202,message:"tarea actualizada correctamente"});
     }
@@ -256,7 +250,6 @@ module.exports = class TareaController {
       const ids = id.split("_");
       if(Array.isArray(ids)){
         const deleteTarea = await _tareaService.mongoDelete(ids[0],ids[1]);
-        //console.log(deleteTarea);
         return res.send(deleteTarea);
       }
       return res.send({status:408,message:"Faltan parámetros."});
@@ -268,6 +261,7 @@ module.exports = class TareaController {
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const {id} = req.params;
       const ids = id.split("_");
+      console.log("tarCont.mongoQuitaEmpleadoTarea(): =============> ");
       console.log(ids);
       if(Array.isArray(ids)){
         const deleteSolicitud = await _tareaService.mongoQuitaEmpleadoTarea(ids[0],ids[1]);
@@ -276,6 +270,19 @@ module.exports = class TareaController {
       return res.send({status:408,message:"Faltan parámetros."});
     }
     return res.send({status:407,message:"Usuario no autorizado."});
+  }
+  async mongoQuitaComentarioTarea(req,res){
+    const {id} = req.params;
+    const comentario = await _tareaService.mongoGetComentarioById(id);
+    if((req.empleado.rol <= 2 && req.empleado.rol >= 0) || (comentario.idAutor.toString == req.empleado.id && req.empleado.rol <= 4 && req.empleado.rol >= 0)){
+      
+      /*const resi = */await _tareaService.mongoQuitaComentarioTarea(comentario._id);
+      
+      return res.send({status:202,message:"Comentario eliminado correctamente."});
+    }
+    return res.send({status:407,message:"Usuario no autorizado."});
+
+
   }
 }
 
