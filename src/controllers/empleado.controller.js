@@ -69,12 +69,9 @@ module.exports = class EmpleadoController {
     return res.send({status:407,message:"Usuario no autorizado."});
   }
   async mongoGetEmpleadosDisponibles(req, res) {
-    console.log("mongoGetEmpleadosDisponibles");
     if(req.empleado.rol <= 3 && req.empleado.rol >= 0){
       const {rolBuscar} = req.query;
       const { idSuper } = req.params;
-      console.log(rolBuscar);
-      console.log(idSuper);
 
       const empleados = await _empleadoService.mongoGetEmpleadosDisponibles(idSuper, rolBuscar);
 
@@ -177,7 +174,11 @@ module.exports = class EmpleadoController {
   }
   async getDepartamentos(req, res){
     if(req.empleado.rol <= 3 && req.empleado.rol >= 0){
-      return res.send(departamentos);
+      const ro = [];
+      departamentos.forEach(obj => {
+          ro.push(obj.nombre);
+      });
+      return res.send(ro);
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
@@ -191,7 +192,6 @@ module.exports = class EmpleadoController {
   /*async mongoAddTarea(req, res){
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const { idTarea, idEmpleado } = req.query;
-      console.log(idEmpleado);
       const flag = await _tareaService.mongoAddEmpleado( idTarea, idEmpleado);
       if(flag){ 
         return res.send({200:"",message:"Empleado asignado a tarea con exito"});

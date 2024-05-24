@@ -152,7 +152,6 @@ module.exports = class TareaController {
   }
 
   async addEmpleado(req, res){
-      console.log(req.body);
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const { idTarea, idEmpleado, idSolicitud } = req.body;
       const flag = await _tareaService.mongoAddEmpleado(idTarea, idEmpleado);
@@ -207,7 +206,9 @@ module.exports = class TareaController {
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
 
       const {body} = req;
-      const {idSuper} = req.query
+      const {idSuper} = req.query;
+      console.log(body);
+      console.log(idSuper);
 
       if(body._id){
         const tar = await _tareaService.mongoGetTareasBy(body._id,"_id",{_id: 1});
@@ -261,8 +262,6 @@ module.exports = class TareaController {
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const {id} = req.params;
       const ids = id.split("_");
-      console.log("tarCont.mongoQuitaEmpleadoTarea(): =============> ");
-      console.log(ids);
       if(Array.isArray(ids)){
         const deleteSolicitud = await _tareaService.mongoQuitaEmpleadoTarea(ids[0],ids[1]);
         return res.send(deleteSolicitud);
