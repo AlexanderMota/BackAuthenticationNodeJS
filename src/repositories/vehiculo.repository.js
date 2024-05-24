@@ -10,8 +10,7 @@ module.exports = class VehiculoRepository extends BaseRepository{
         _vehiculo = Vehiculo;
     }
 
-    async mongoGetVehiculoByIdPropietario(idPropietario/*, pageSize = 5, pageNum = 1*/) {
-        //const skips = pageSize * (pageNum - 1);
+    async mongoGetVehiculoByIdPropietario(idPropietario) {
         const objectId = new ObjectId(idPropietario);
         const vehi  = await _vehiculo.find({propietario:objectId});
         
@@ -20,8 +19,7 @@ module.exports = class VehiculoRepository extends BaseRepository{
         }
         return vehi;
     }
-    async mongoGetVehiculoByMatricula(matricula/*, pageSize = 5, pageNum = 1*/) {
-        //const skips = pageSize * (pageNum - 1);
+    async mongoGetVehiculoByMatricula(matricula) {
         const vehi  = await _vehiculo.find({matricula:matricula});
         
         if(!vehi){
@@ -30,9 +28,6 @@ module.exports = class VehiculoRepository extends BaseRepository{
         return vehi;
     }
     async mongoGetVehiculoByIdParada(idParada){
-        /*const vehi  = await _vehiculo.find({
-            puntosDestinoRecogida: { $in: [idParada] }
-        });*/
         console.log("idParada: "+idParada);
         const vehi  = await _vehiculo.find({ 
             puntosDestinoRecogida: {
@@ -46,9 +41,6 @@ module.exports = class VehiculoRepository extends BaseRepository{
         return vehi;
     }
     async mongoGetVehiculoByIdDestinoConPlazasDisponibles(idDestino){
-        /*const vehi  = await _vehiculo.find({
-            puntosDestinoRecogida: { $in: [idParada] }
-        });*/
         const vehiculosConPlazas = await _vehiculo.find({ 
             puntosDestinoRecogida: {
               $elemMatch: { idDestino: idDestino }
@@ -66,8 +58,8 @@ module.exports = class VehiculoRepository extends BaseRepository{
     async mongoDeleteParada(idVehi, idParada){
         
         const val = await _vehiculo.updateOne(
-            { matricula: idVehi }, // Filtro para encontrar el documento
-            { $pull: { puntosDestinoRecogida: idParada } } // Eliminar el elemento del array
+            { matricula: idVehi }, 
+            { $pull: { puntosDestinoRecogida: idParada } } 
         );
         console.log(val);
         if(val){

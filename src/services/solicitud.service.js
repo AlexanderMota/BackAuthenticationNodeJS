@@ -16,7 +16,6 @@ module.exports = class SolicitudService extends BaseService{
     async mongoGetSolicitudesByEmpleado(idEmpleado){
         return await _solicitudRep.mongoGetSolicitudesByEmpleado(idEmpleado);
     }
-    //hace falta que este metodo genere una notificacion para administrar la solicitud
     async mongoSolicitarTarea(idTarea, idEmpleado){
         return await _solicitudRep.mongoSolicitarTarea(idTarea, idEmpleado);
     }

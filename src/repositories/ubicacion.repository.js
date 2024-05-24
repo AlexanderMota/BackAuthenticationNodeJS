@@ -2,23 +2,20 @@ const BaseRepository = require('./base.repository');
 const { ObjectId } = require('mongodb');
 
 let _ubicacion = null;
-//let _tarea = null;
 let _tareaHasSubtareas = null;
 let _empleado = null;
 let _vehiculoRep = null;
 
 
 module.exports = class UbicacionRepository extends BaseRepository{
-  constructor({Ubicacion, /*Tarea,*/ TareaHasSubtareas, Empleado, VehiculoRepository}){
+  constructor({Ubicacion, TareaHasSubtareas, Empleado, VehiculoRepository}){
       super(Ubicacion);
       _ubicacion = Ubicacion;
-      //_tarea = Tarea;
       _tareaHasSubtareas = TareaHasSubtareas;
       _empleado = Empleado;
       _vehiculoRep = VehiculoRepository;
   }
-  async mongoGetUbicacionByIdTarea(idTar/*, pageSize = 5, pageNum = 1*/) {
-      //const skips = pageSize * (pageNum - 1);
+  async mongoGetUbicacionByIdTarea(idTar) {
       let idt = {idTarea:idTar};
       let ubi = [];
       while (ubi.length < 1 && idt != null) {
@@ -29,8 +26,7 @@ module.exports = class UbicacionRepository extends BaseRepository{
       if(ubi.length < 1) return {status:402,message:"No se encontró ubicación para esta tarea ni para sus tareas principales."};
       return ubi;
   }
-  async mongoGetUbicacionByIdTarea2(idTarea/*, pageSize = 5, pageNum = 1*/) {
-      //const skips = pageSize * (pageNum - 1);
+  async mongoGetUbicacionByIdTarea2(idTarea) {
       const ubi  = await _ubicacion.find({idTarea:idTarea});
       
       if(!ubi.length){
@@ -42,24 +38,16 @@ module.exports = class UbicacionRepository extends BaseRepository{
       return ubi;
   }
   async mongoGetParada(idUbi, pageSize=5, pageNum=1) {
-    //console.log("ubiRep.mongoGetParada: "+idTar);
-    //console.log(idUbi);
-    /*const objectId = new ObjectId(idUbi);*/
-    /*const ubi = await _ubicacion.findOne(objectId);
-    console.log(idUbi);*/
-
-    ////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////
     // probar esta funcion con un vehiculo lleno, no deberia devolverlo
-    ////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////
     const vehiculosConPlazas = await _vehiculoRep.mongoGetVehiculoByIdDestinoConPlazasDisponibles(idUbi);
     
     const idsUbiParadas = vehiculosConPlazas.reduce((ids = [], vehiculo) => {
       vehiculo.puntosDestinoRecogida.forEach(id => {
-        if(id.idDestino == idUbi) ids.add(id.idParada); // Usamos un Set para asegurarnos de obtener solo IDs únicos
+        if(id.idDestino == idUbi) ids.add(id.idParada);
       });
       return ids;
     }, new Set());
@@ -73,8 +61,8 @@ module.exports = class UbicacionRepository extends BaseRepository{
   } 
   async mongoDeleteParadaByMatricula(idUbi, matricula){
     const val = await _ubicacion.updateOne(
-      { _id: ObjectId(idUbi) }, // Filtro para encontrar el documento
-      { $pull: { fechasRecogida: { vehiculo: matricula } } } // Eliminar el elemento del array que tenga el vehículo específico
+      { _id: ObjectId(idUbi) }, 
+      { $pull: { fechasRecogida: { vehiculo: matricula } } } 
     );
     if(val){
       if(!val.acknowledged){

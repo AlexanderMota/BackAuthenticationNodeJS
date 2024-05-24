@@ -123,7 +123,7 @@ module.exports = class UbicacionController {
       if(vehiculo.puntosDestinoRecogida){
 
         vehiculo.puntosDestinoRecogida.forEach(async idpdr => {
-          const responseUbiUpd = await _ubicacionService.mongoDeleteParadaByMatricula(idpdr, vehiculo.matricula);//.subscribe(val =>{
+          const responseUbiUpd = await _ubicacionService.mongoDeleteParadaByMatricula(idpdr, vehiculo.matricula);
   
           console.log("mongoDeleteVehiculo responseUbiUpd: "+responseUbiUpd);
           const delVehi = await _vehiculoService.mongoDelete(vehiculo._id);

@@ -13,13 +13,6 @@ module.exports = class EmpleadoRepository extends BaseRepository{
         _tareaHasEmpleados = TareaHasEmpleados;
     }
 
-    /*async mongoGetAll(pageSize = 5, pageNum = 1) {
-        const skips = pageSize * (pageNum - 1);
-        return await _empleado
-          .find({ 'rol.nombre' : { $ne: 'ADMIN' }}, { "rol.valor": 0, "__v":0, })
-          .skip(skips)
-          .limit(pageSize);
-    }*/
     async mongoGetEmpleadoByIdEmpleado(idEmpleado) {
         return await _empleado.findOne({idEmpleado:idEmpleado});
     }
@@ -53,18 +46,6 @@ module.exports = class EmpleadoRepository extends BaseRepository{
         }
         return empleados;
     }
-    /*async mongoGetAllSolicitudes(pageSize, pageNum,campo={$query: {}, $orderby: { fechasolicitud : 1 }}){
-        const sols = await _solicitudRep.mongoGetAll(pageSize, pageNum,campo);
-        let listaRes = [];
-        for (var i = 0; i < sols.length; i++) {
-            let tar = await _tareaRep.mongoGet(sols[i].idTarea);
-            let emp = await _empleadoRep.mongoGet(sols[i].idEmpleado);
-            
-            listaRes.push({"idSolicitud":sols[i]._id.toString(),"tarea":tar,"empleado":emp,"fechaSolicitud":sols[i].fechaSolicitud})
-            //console.log(listaRes[i]);
-        }
-        return listaRes;
-    }*/
     async mongoDelete(idEmpleado) {
         await _tareaHasEmpleados.deleteMany({idEmpleado:idEmpleado});
         return await _empleado.findByIdAndDelete(idEmpleado);

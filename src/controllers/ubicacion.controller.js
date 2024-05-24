@@ -165,33 +165,24 @@ module.exports = class UbicacionController {
       const ubicacion = await _ubicacionService.mongoGet(req.params.idParada);
       const viejasFechas = ubicacion.fechasRecogida;
       if (Array.isArray(ubicacion.fechasRecogida)) {
-        //console.log("detecta las fechas en la ubi");
-        // Filtra el array "fechasRecogida" para eliminar el elemento que coincida con "elementoAEliminar"
         ubicacion.fechasRecogida = ubicacion.fechasRecogida.filter((elemento) => {
-          // Compara cada propiedad del elemento con las propiedades del elemento a eliminar
           return elemento.fechaInicio !== req.body.fechaInicio &&
                  elemento.fechaFin !== req.body.fechaFin &&
                  elemento.vehiculo !== req.body.vehiculo;
         });
       }
       if(viejasFechas.length > ubicacion.fechasRecogida.length){
-        //console.log(ubicacion);
-        //console.log(req.params);
         const resvehi = await _vehiculoService.mongoDeleteParada(req.body.vehiculo,req.params.idParada);
-        //console.log(vehi);
         const idUbi = ubicacion._id;
         delete ubicacion._id;
         const val = await _ubicacionService.mongoUpdate(idUbi, ubicacion);
-        //console.log(val);
         return res.send(resvehi);
 
       }else if(ubicacion.fechasRecogida.length < 1){
-        const vehi = await _vehiculoService.mongoDeleteParada(req.body.vehiculo,req.params.idParada);
+        await _vehiculoService.mongoDeleteParada(req.body.vehiculo,req.params.idParada);
 
-        //console.log(vehi);
-        const val = await _ubicacionService.mongoDelete(ubicacion._id);
+        await _ubicacionService.mongoDelete(ubicacion._id);
 
-        //console.log(val);
         return res.send({status:210,message:"Se eliminó la ubicación por no tener paradas."});
       }
       return res.send({status:410,message:"No se eliminó ninguna parada."});

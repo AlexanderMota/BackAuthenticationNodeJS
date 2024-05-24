@@ -12,9 +12,6 @@ module.exports.fileUpload = function(files, alloudExtentions = []) {
             for(let i = 0; i < sampleFile.length; i++){
                 if(CompruebaExtension(alloudExtentions,(sampleFile[i].name.split('.')[sampleFile[i].name.split('.').length -1]))){
                     uploadPath = path.join(__dirname,'../../uploads/', sampleFile[i].name);
-        
-                    //sacar extension para filtrar tipos de archivo. comprimido
-                    //console.log(sampleFile[i].name.split('.')[sampleFile[i].name.split('.').length -1]);
     
                     sampleFile[i].mv(uploadPath, (err) =>{
                         if(err){
@@ -30,7 +27,6 @@ module.exports.fileUpload = function(files, alloudExtentions = []) {
             resolve({respuesta_multiple:respon});
         }else{
             
-            //console.log(sampleFile.name.split('.')[sampleFile.name.split('.').length -1]);
             if(CompruebaExtension(alloudExtentions,(sampleFile.name.split('.')[sampleFile.name.split('.').length -1]))){
                 uploadPath = path.join(__dirname,'../../uploads/', sampleFile.name);
             

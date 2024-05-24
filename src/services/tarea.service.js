@@ -4,10 +4,9 @@ var mongoose = require('mongoose');
 
 let _tareaRep = null;
 let _empleadoRep = null;
-//let _solicitudRep = null;
 
 module.exports = class TareaService extends BaseService{
-    constructor({TareaRepository, EmpleadoRepository/*, SolicitudRepository,*/}){
+    constructor({TareaRepository, EmpleadoRepository}){
         super(TareaRepository);
         _tareaRep = TareaRepository;
         _empleadoRep = EmpleadoRepository;
@@ -39,7 +38,6 @@ module.exports = class TareaService extends BaseService{
     }
     async mongoAddEmpleado(idTarea, idEmpleado){
         return await _tareaRep.mongoAddEmpleado(idTarea, idEmpleado);
-        //return await _tareaRep.mongoAddComentario(idTarea, idEmpleado, 'Autor del comentario', 'Cuerpo del comentario');
     }
     async addSupertarea(idTarea){
         return await _tareaRep.mongoAddSupertarea(idTarea);

@@ -275,7 +275,7 @@ module.exports = class TareaController {
     const comentario = await _tareaService.mongoGetComentarioById(id);
     if((req.empleado.rol <= 2 && req.empleado.rol >= 0) || (comentario.idAutor.toString == req.empleado.id && req.empleado.rol <= 4 && req.empleado.rol >= 0)){
       
-      /*const resi = */await _tareaService.mongoQuitaComentarioTarea(comentario._id);
+      await _tareaService.mongoQuitaComentarioTarea(comentario._id);
       
       return res.send({status:202,message:"Comentario eliminado correctamente."});
     }

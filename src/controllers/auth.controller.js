@@ -19,28 +19,15 @@ module.exports = class AuthController {
     
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       if(body.rol){
-        //console.log("dentro rol true ");
         const rol = roles.find(obj => obj.nombre === body.rol)
         body.rol = rol;
         if(rol){
-          /*console.log("dentro > ");
-          console.log(ro);
-          body.rol = rol;*/
         }else{
           return res.status(401).send({ status: 401, message: 'El rol no es correcto.' });
         }
       }
-    
-      /*
-      console.log(">>>>>>>>nuevoEmp: ");
-      console.log(body);
-      */
      
-      console.log("authCont.SighUp(): ============> ");
-      console.log(body);
       const createdEmpleado = await _authService.signUp(body);
-      console.log("authCont.resEmp(): ============> ");
-      console.log(createdEmpleado);
       return res.status(201).send(createdEmpleado);
     }
     return res.send({status:407,message:"Usuario no autorizado."});
@@ -51,10 +38,8 @@ module.exports = class AuthController {
     return res.send(creds);
   }
   async getMiPerfil(req, res){
-    //console.log(req.empleado);
     const {mail} = req.params;
     const perfil = await _empServ.mongoGetEmpleadoByEmail(mail);
-    //console.log(req.empleado.rol <= 2 || perfil._id.toString() == req.empleado.id);
     if(req.empleado.rol <= 2 || perfil._id.toString() == req.empleado.id){
       const empleadoProcesado = {
         _id:perfil._id.toString(),
@@ -71,7 +56,6 @@ module.exports = class AuthController {
   }
   async updatePerfil(req, res){
     const {body} = req;
-    //console.log(body);
     const creds = await _authService.updatePerfil(body);
     return res.send(creds);
   }

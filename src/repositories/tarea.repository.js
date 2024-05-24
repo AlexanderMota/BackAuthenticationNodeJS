@@ -22,8 +22,7 @@ module.exports = class TareaRepository extends BaseRepository{
         _comentario = Comentario;
         _ubicacion = Ubicacion;
     }
-    async mongoGetTareasBy(parametro, nombreParam, objDevolver = {_id: true, nombre: true}/*,pageSize = 5, pageNum = 1*/) {
-        //const skips = pageSize * (pageNum - 1);
+    async mongoGetTareasBy(parametro, nombreParam, objDevolver = {_id: true, nombre: true}) {
         const tar = await _tarea.findOne({[nombreParam]:parametro},objDevolver);
         
         if(!tar){
@@ -60,7 +59,7 @@ module.exports = class TareaRepository extends BaseRepository{
     async mongoGetComentariosByIdTarea(idTarea, pageSize = 20, pageNum = 1) {
         const skips = pageSize * (pageNum - 1);
         
-        const idComentarios = await _comentario.find({idTarea : idTarea }/*,{_id:0,idComentario:1}*/);
+        const idComentarios = await _comentario.find({idTarea : idTarea });
 
         if(!idComentarios){
             return false;
@@ -253,16 +252,13 @@ module.exports = class TareaRepository extends BaseRepository{
         }else if(superOriginaria.length < 1){
             return {status: 406,message:"Intenta eliminar una supertarea. Falta implemntar la eliminacion del dato Supertarea."}
         }else if(superOriginaria.length == 1){
-            ////////////////////////////////////////////////////////////////////
-            ////////////////////////////////////////////////////////////////////
-            ////////////////////////////////////////////////////////////////////
 
             const res3 = await _tarea.findByIdAndDelete(idTarea);
-            /*const subs = */await _tareaHasSubtareas.findByIdAndDelete(superOriginaria[0]._id);
-            /*const res1 = */await _comentario.deleteMany({idTarea:idTarea});
-            /*const res2 = */await _tareaHasEmpleados.deleteMany({idTarea:idTarea});
-            /*const res4 = */await _ubicacion.deleteMany({idTarea:idTarea});
-            /*const res5 = */await _solicitudRep.deleteManyByIdTarea(idTarea);
+            await _tareaHasSubtareas.findByIdAndDelete(superOriginaria[0]._id);
+            await _comentario.deleteMany({idTarea:idTarea});
+            await _tareaHasEmpleados.deleteMany({idTarea:idTarea});
+            await _ubicacion.deleteMany({idTarea:idTarea});
+            await _solicitudRep.deleteManyByIdTarea(idTarea);
 
             const subtareasHuerfanas = await _tareaHasSubtareas.find({ idTarea: idTarea });
 
@@ -288,21 +284,14 @@ module.exports = class TareaRepository extends BaseRepository{
                 }else {
                     subtareasHuerfanas.forEach(async val=>{
                         val.idTarea=superOriginaria[0].idTarea;
-                        /*const iddd = val._id;
-                        delete val._id;*/
-                        /*const res35 = */await _tareaHasSubtareas.findByIdAndDelete(val._id);
-                        //console.log(res35);
-                        /*const res34 = */await _tarea.findByIdAndDelete(val.idSubtarea);
-                        //console.log(res34);
+                        await _tareaHasSubtareas.findByIdAndDelete(val._id);
+                        await _tarea.findByIdAndDelete(val.idSubtarea);
                     });
 
                     return {status: 203,message:"Tarea y subtareas ("+subtareasHuerfanas.length+") eliminadas."};
                 }
 
             }
-            ////////////////////////////////////////////////////////////////////
-            ////////////////////////////////////////////////////////////////////
-            ////////////////////////////////////////////////////////////////////
         }
     }
 }
