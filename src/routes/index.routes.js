@@ -5,6 +5,7 @@ module.exports = {
     FileManagerRoutes: require("./fileManager.routes"),
     UbicacionRoutes: require('./ubicacion.routes'),
     VehiculoRoutes: require('./vehiculo.routes'),
-    SolicitudRoutes: require('./solicitud.routes')
+    SolicitudRoutes: require('./solicitud.routes'),
+    EstadisticasRoutes: require('./estadistica.routes')
   };
   

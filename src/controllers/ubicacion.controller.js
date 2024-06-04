@@ -1,3 +1,6 @@
+
+const { ObjectId } = require('mongodb');
+const Vehiculo = require('../models/vehiculo.mongo');
 let _ubicacionService = null;
 let _vehiculoService = null;
 
@@ -11,7 +14,17 @@ module.exports = class UbicacionController {
     
     if(req.empleado.rol <= 3 && req.empleado.rol >= 0){
       const {body} = req;
-      console.log(body);
+      if(body.idTarea){
+        const ubiTar = await _ubicacionService.mongoGetUbicacionByIdTarea2(body.idTarea);
+        if(ubiTar.length > 0){
+
+          ubiTar.forEach(async val => {
+            /*const ubiDel = */await _ubicacionService.mongoDelete(val._id);
+            //console.log(ubiDel);
+          });
+          //return res.send({status:405,message:"el centro ya cuenta con una ubicacion"});
+        }
+      }
       if(await _ubicacionService.mongoCreate(body)){
         return res.send({status:201,message:"ubicación guardada correctamente."});
       }else{
@@ -53,9 +66,41 @@ module.exports = class UbicacionController {
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
+  
+  async mongoGetParadasByIdPasajero(req, res){
+    console.log("llegamos");
+    if (req.empleado.rol <= 2 || req.empleado.id == req.params.idPasajero) {
+      try {
+        const vehi = await _vehiculoService.mongoGetVehiculoByPasajero(req.params.idPasajero);
+        let vehiPros = [];
+        
+        for (let i = 0; i < vehi.length; i++) {
+          let val = vehi[i];
+          vehiPros[i] = {vehiculo: new Vehiculo({
+            matricula: val.matricula,
+            plazas: val.plazas,
+            descripcion: val.descripcion,
+          }),paradas:[]};
+  
+          for (let val2 of val.puntosDestinoRecogida) {
+            const res = await _ubicacionService.mongoGet(new ObjectId(val2.idParada));
+            vehiPros[i].paradas.push(res);
+          }
+        }
+        console.log(vehiPros);
+        
+        return res.send(vehiPros);
+      } catch (error) {
+        console.error('Error al obtener paradas por idPasajero:', error);
+        return res.send({ status: 500, message: 'Error interno del servidor' });
+      }
+    } 
+    return res.send({ status: 407, message: 'Usuario no autorizado.' });
+    
+  }
   async mongoCreateParada(req, res){
     if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
-      const {body} = req;
+      const { body } = req;
       const { destino } = req.params;
       
       const vehi = await _vehiculoService.mongoGetVehiculoByMatricula(body.fechasRecogida[0].vehiculo);
@@ -141,6 +186,7 @@ module.exports = class UbicacionController {
   async mongoUpdate(req, res){
     if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       delete req.body.fechaRegistro;
+      console.log(req.body);
       const val = await _ubicacionService.mongoUpdate(req.params, req.body);
       if(val){
         if(!val.acknowledged){
@@ -197,4 +243,3 @@ module.exports = class UbicacionController {
     }
   }
 }
-

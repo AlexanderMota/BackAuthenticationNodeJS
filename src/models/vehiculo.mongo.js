@@ -13,7 +13,7 @@ const VehiculoSchema = new Schema({
   descripcion: { type: String },
   fechaRegistro: { type: Date, default: Date.now },
   puntosDestinoRecogida: [PuntoDestinoRecogidaSchema],
-  ocupantes: [{ type: Schema.Types.ObjectId, ref: 'Empleados' }]
+  ocupantes: { type: [Schema.Types.ObjectId], ref: 'Empleados' }
 });
 
 const Vehiculo = mongoose.model('vehiculo', VehiculoSchema);

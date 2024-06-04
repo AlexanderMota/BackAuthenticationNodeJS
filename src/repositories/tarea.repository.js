@@ -22,6 +22,27 @@ module.exports = class TareaRepository extends BaseRepository{
         _comentario = Comentario;
         _ubicacion = Ubicacion;
     }
+    async mongoGetComentariosEst(){
+        const comentario = await _comentario.findAll();
+        if(!comentario){
+            return {status: 208, message:"No se encontró ningún comentario con el id especificado."}
+        }
+        return comentario;
+    } 
+    async mongoCreateSupertarea( idSuper) {
+        const supert = await _supertarea.find({idTarea:idSuper});
+        if(supert.length > 0){
+            return {status:406,message:"La super ya existe."}
+        }
+
+        const supers = await _supertarea.create({idTarea:idSuper});
+
+        if(supers){
+            return {status:202,message:"La super ha sido creada correctamente._"+supers._id.toString()}
+        }else{
+            return {status:407,message:"Error al crear la super."}
+        }
+    }
     async mongoGetTareasBy(parametro, nombreParam, objDevolver = {_id: true, nombre: true}) {
         const tar = await _tarea.findOne({[nombreParam]:parametro},objDevolver);
         

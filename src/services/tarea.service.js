@@ -11,9 +11,14 @@ module.exports = class TareaService extends BaseService{
         _tareaRep = TareaRepository;
         _empleadoRep = EmpleadoRepository;
     }
-
+    async mongoGetComentariosEst(){
+        return await _tareaRep.mongoGetComentariosEst();
+    }
+    async mongoCreateSupertarea(idTarea){
+        return await _tareaRep.mongoCreateSupertarea(idTarea);
+    }
     async mongoGetTareasBy(parametro, nombreParam,pageSize , pageNum ) {
-        return await _tareaRep.mongoGetTareasBy(parametro, nombreParam,pageSize, pageNum)
+        return await _tareaRep.mongoGetTareasBy(parametro, nombreParam,pageSize, pageNum);
     }
     async mongoGetTareaByIdTarea(idTarea){
         return await _tareaRep.mongoGetTareaByIdTarea(idTarea);

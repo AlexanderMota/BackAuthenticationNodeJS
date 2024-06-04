@@ -22,7 +22,8 @@ const {
   FileManagerController,
   UbicacionController,
   VehiculoController,
-  SolicitudController
+  SolicitudController,
+  EstadisticasController
 } = require("../controllers");
 
 // routes
@@ -33,7 +34,8 @@ const {
   FileManagerRoutes,
   UbicacionRoutes,
   SolicitudRoutes,
-  VehiculoRoutes
+  VehiculoRoutes,
+  EstadisticasRoutes
 } = require("../routes/index.routes");
 const Routes = require("../routes");
 
@@ -82,7 +84,8 @@ container
     FileManagerController: asClass(FileManagerController.bind(FileManagerController)).singleton(),
     UbicacionController: asClass(UbicacionController.bind(UbicacionController)).singleton(),
     SolicitudController: asClass(SolicitudController.bind(SolicitudController)).singleton(),
-    VehiculoController: asClass(VehiculoController.bind(VehiculoController)).singleton()
+    VehiculoController: asClass(VehiculoController.bind(VehiculoController)).singleton(),
+    EstadisticasController: asClass(EstadisticasController.bind(EstadisticasController)).singleton()
   })
   .register({
     EmpleadoRoutes: asFunction(EmpleadoRoutes).singleton(),
@@ -91,7 +94,8 @@ container
     FileManagerRoutes: asFunction(FileManagerRoutes).singleton(),
     UbicacionRoutes: asFunction(UbicacionRoutes).singleton(),
     SolicitudRoutes: asFunction(SolicitudRoutes).singleton(),
-    VehiculoRoutes: asFunction(VehiculoRoutes).singleton()
+    VehiculoRoutes: asFunction(VehiculoRoutes).singleton(),
+    EstadisticasRoutes: asFunction(EstadisticasRoutes).singleton()
   })
   .register({
     Empleado: asValue(Empleado),

@@ -214,19 +214,24 @@ module.exports = class TareaController {
         const tar = await _tareaService.mongoGetTareasBy(body._id,"_id",{_id: 1});
         if(tar) return res.send({status:405,message:"La tarea ya existe en la base de datos",id:resp._id});
       }
-      const supertarea = await _tareaService.mongoGetTareasBy(idSuper,"_id",{_id: 1});
-      
-      if(supertarea){
-        const resp =  await _tareaService.mongoCreate(body);
-        
-        if(resp?._id){
-          await _tareaService.addSubtarea(supertarea._id.toString(),resp._id.toString());
-
-          return res.send({status:201,message:"Tarea creada correctamente._"+resp._id});
+      if(idSuper != "b1c"){
+        const supertarea = await _tareaService.mongoGetTareasBy(idSuper,"_id",{_id: 1});
+        console.log(supertarea);
+        if(supertarea){
+          const resp =  await _tareaService.mongoCreate(body);
+          
+          if(resp?._id){
+            await _tareaService.addSubtarea(supertarea._id.toString(),resp._id.toString());
+  
+            return res.send({status:201,message:"Tarea creada correctamente._"+resp._id});
+          }
         }
-      }else if(idSuper == "0b"){
+
+      } else if(idSuper == "b1c"){
         const resp2 =  await _tareaService.mongoCreate(body);
-        return res.send({status: 201, message:"supertarea creada correctamente",id:resp2._id.toString()});
+        const resp3 =  await _tareaService.mongoCreateSupertarea(resp2._id.toString());
+        console.log(resp3);
+        return res.send({status: 201, message:"Tarea creada correctamente._"+resp2._id.toString()});
       }else return res.send({status: 400, message:"parametro incorrecto"});
     }
     return res.send({status:407,message:"Usuario no autorizado."});

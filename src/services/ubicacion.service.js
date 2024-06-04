@@ -8,11 +8,14 @@ module.exports = class UbicacionService extends BaseService{
         super(UbicacionRepository);
         _ubicacionRep = UbicacionRepository;
     }
-    async mongoGetParada(idSuper){
-        return await _ubicacionRep.mongoGetParada(idSuper);
-    }
     async mongoGetUbicacionByIdTarea(idTarea){
         return await _ubicacionRep.mongoGetUbicacionByIdTarea(idTarea);
+    }
+    async mongoGetUbicacionByIdTarea2(idTarea){
+        return await _ubicacionRep.mongoGetUbicacionByIdTarea2(idTarea);
+    }
+    async mongoGetParada(idSuper){
+        return await _ubicacionRep.mongoGetParada(idSuper);
     }
     async mongoDeleteParadaByMatricula(idUbi, matricula){
         return await _ubicacionRep.mongoDeleteParadaByMatricula(idUbi, matricula);

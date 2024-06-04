@@ -8,7 +8,9 @@ module.exports = class VehiculoService extends BaseService{
         super(VehiculoRepository);
         _vehiculoRep = VehiculoRepository;
     }
-
+    async mongoGetVehiculoByPasajero(idPasajero){
+        return await _vehiculoRep.mongoGetVehiculoByPasajero(idPasajero);
+    }
     async mongoGetVehiculoByIdPropietario(idProp){
         return await _vehiculoRep.mongoGetVehiculoByIdPropietario(idProp);
     }

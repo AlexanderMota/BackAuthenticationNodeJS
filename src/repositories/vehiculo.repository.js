@@ -9,10 +9,20 @@ module.exports = class VehiculoRepository extends BaseRepository{
         super(Vehiculo);
         _vehiculo = Vehiculo;
     }
+    async mongoGetVehiculoByPasajero(idPasajero){
 
+        const vehis = await _vehiculo.find({ 
+            ocupantes: new ObjectId(idPasajero) 
+          },{_id:0,ocupantes:0,fechaRegistro:0,propietario:0});
+        //console.log("vehiculosConPlazas: "+vehiculosConPlazas);
+        console.log(vehis);
+        if(!vehis){
+            return {status:402,message:"Algo ha ido mal"};
+        }
+        return vehis;
+    }
     async mongoGetVehiculoByIdPropietario(idPropietario) {
-        const objectId = new ObjectId(idPropietario);
-        const vehi  = await _vehiculo.find({propietario:objectId});
+        const vehi  = await _vehiculo.find({propietario:new ObjectId(idPropietario)});
         
         if(!vehi){
             return {status:402,message:"Algo ha ido mal"};
@@ -28,7 +38,7 @@ module.exports = class VehiculoRepository extends BaseRepository{
         return vehi;
     }
     async mongoGetVehiculoByIdParada(idParada){
-        console.log("idParada: "+idParada);
+        //console.log("idParada: "+idParada);
         const vehi  = await _vehiculo.find({ 
             puntosDestinoRecogida: {
               $elemMatch: { idParada: idParada }
@@ -49,7 +59,7 @@ module.exports = class VehiculoRepository extends BaseRepository{
               $lt: [{ $size: "$ocupantes" }, "$plazas"]
             }
           },{_id:0});
-        console.log("vehiculosConPlazas: "+vehiculosConPlazas);
+        //console.log("vehiculosConPlazas: "+vehiculosConPlazas);
         if(!vehiculosConPlazas){
             return {status:402,message:"Algo ha ido mal"};
         }

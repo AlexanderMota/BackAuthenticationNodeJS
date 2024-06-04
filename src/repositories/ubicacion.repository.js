@@ -29,12 +29,12 @@ module.exports = class UbicacionRepository extends BaseRepository{
   async mongoGetUbicacionByIdTarea2(idTarea) {
       const ubi  = await _ubicacion.find({idTarea:idTarea});
       
-      if(!ubi.length){
+      /*if(!ubi.length){
           console.log("sin ubi: "+ubi);
           const res = await _tareaHasSubtareas.findOne({idSubtarea:idTarea},{_id:0,idTarea:1});
 
           return await _ubicacion.find({idTarea:res.idTarea});
-      }
+      }*/
       return ubi;
   }
   async mongoGetParada(idUbi, pageSize=5, pageNum=1) {

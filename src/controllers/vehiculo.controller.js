@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 let _vehiculoService = null;
 let _ubicacionService = null;
 
@@ -86,18 +87,21 @@ module.exports = class UbicacionController {
     if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const { matricula } = req.params;
       const { pasajero } = req.query;
+      console.log(matricula);
+      console.log(pasajero);
       
       const vehi = await _vehiculoService.mongoGetVehiculoByMatricula(matricula);
+      console.log(vehi);
   
       if(vehi[0].ocupantes){
-        if (vehi[0].ocupantes.includes(pasajero)) {
+        if (vehi[0].ocupantes.includes(new ObjectId(pasajero))) {
           return res.send({status : 405, message :'El pasajero ya esta registrado en el vehículo.'});
         }else if(vehi[0].ocupantes.length >= vehi[0].plazas) {
           return res.send({status : 406, message :'El vehículo no cuenta con plazas disponibles.'});
         }else if(vehi[0].propietario == pasajero){
           return res.send({status : 407, message :'El propietario del vehículo no necesita registrarse como pasajero.'});
         }else{
-          vehi[0].ocupantes.push(pasajero);
+          vehi[0].ocupantes.push(new ObjectId(pasajero));
         }
       }
       const id = vehi[0]._id;

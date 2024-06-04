@@ -15,7 +15,8 @@ module.exports = function({
   FileManagerRoutes,
   UbicacionRoutes,
   SolicitudRoutes,
-  VehiculoRoutes
+  VehiculoRoutes,
+  EstadisticasRoutes
 }) {
   const router = express.Router();
   const apiRoutes = express.Router();
@@ -33,6 +34,7 @@ module.exports = function({
   apiRoutes.use("/ubicacion", UbicacionRoutes);
   apiRoutes.use("/solicitud", SolicitudRoutes);
   apiRoutes.use("/vehiculo", VehiculoRoutes);
+  apiRoutes.use("/estadisticas", EstadisticasRoutes);
 
   router.use("/api", apiRoutes);
   router.use("/", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
