@@ -19,7 +19,6 @@
   },
   "homepage": "https://github.com/AlexanderMota/back-granja#readme",
   "dependencies": {
-    "dotenv": "^16.4.5",
     "awilix": "^7.0.1",
     "bcryptjs": "^2.4.3",
     "compression": "^1.7.4",
