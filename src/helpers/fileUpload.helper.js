@@ -1,46 +1,59 @@
 const path = require('path');
+const fs = require('fs');
 const {CompruebaExtension} = require('../utils/index')
 
-module.exports.fileUpload = function(files, alloudExtentions = []) {
+
+module.exports.fileUpload = function(files, allowedExtensions = [], userId) {
     return new Promise((resolve, reject) => {
-        const sampleFile = files.archivo;
-        let uploadPath = "";
-
-        if(sampleFile.length !== undefined){
-
-            let respon = [];
-            for(let i = 0; i < sampleFile.length; i++){
-                if(CompruebaExtension(alloudExtentions,(sampleFile[i].name.split('.')[sampleFile[i].name.split('.').length -1]))){
-                    uploadPath = path.join(__dirname,'../../uploads/', sampleFile[i].name);
-    
-                    sampleFile[i].mv(uploadPath, (err) =>{
-                        if(err){
-                            respon.push(sampleFile[i].name +" >>> "+err);
-                        }
-                    });
-                    respon.push('File uploaded: '+ sampleFile[i].name);
-                }else{
-                    
-                    respon.push("ERROR >>> Extensión no válida: " + sampleFile[i].name);
-                }
+      const sampleFile = files.archivo;
+      let uploadPath = "";
+  
+      // Función para borrar el archivo existente
+      const deleteExistingFile = (filePath) => {
+        return new Promise((resolve, reject) => {
+          fs.unlink(filePath, (err) => {
+            if (err && err.code !== 'ENOENT') { // ENOENT means file does not exist
+              return reject(err);
             }
-            resolve({respuesta_multiple:respon});
-        }else{
-            
-            if(CompruebaExtension(alloudExtentions,(sampleFile.name.split('.')[sampleFile.name.split('.').length -1]))){
-                uploadPath = path.join(__dirname,'../../uploads/', sampleFile.name);
-            
-                sampleFile.mv(uploadPath, (err) =>{
-                    if(err){
-                        reject({status:500,error:err});
-                    }
-                });
-                resolve({status:201,msg:'File uploaded: '+ sampleFile.name});
-            }else{
-                reject({status:403,msg:'extension no soportada: '+sampleFile.name});
-            }
+            resolve();
+          });
+        });
+      };
+  
+      const handleFileUpload = async (file) => {
+        const extension = file.name.split('.').pop();
+        if (CompruebaExtension(allowedExtensions, extension)) {
+          const uploadPath = path.join(__dirname, `../../uploads/${userId}.${extension}`);
+          
+          try {
+            await deleteExistingFile(uploadPath); // Borrar archivo existente
+          } catch (err) {
+            console.error(`Error deleting existing file: ${err.message}`);
+            return { error: `Error deleting existing file: ${err.message}` };
+          }
+  
+          return new Promise((resolve, reject) => {
+            file.mv(uploadPath, (err) => {
+              if (err) {
+                return reject({ status: 500, error: err });
+              }
+              resolve({ status: 201, msg: 'File uploaded: ' + file.name });
+            });
+          });
+        } else {
+          return { status: 403, msg: 'Extension no soportada: ' + file.name };
         }
-        reject({status:507,msg:"algo salió mal >> linea 47"});
+      };
+  
+      if (Array.isArray(sampleFile)) {
+        let promises = sampleFile.map(file => handleFileUpload(file));
+        Promise.all(promises)
+          .then(results => resolve({ respuesta_multiple: results }))
+          .catch(err => reject(err));
+      } else {
+        handleFileUpload(sampleFile)
+          .then(result => resolve(result))
+          .catch(err => reject(err));
+      }
     });
-}
-
+  }

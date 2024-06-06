@@ -13,6 +13,9 @@ module.exports = class SolicitudService extends BaseService{
         _empleadoRep = EmpleadoRepository;
         _solicitudRep = SolicitudRepository;
     }
+    async mongoGetSolicitudesEst(){
+        return await _solicitudRep.mongoGetSolicitudesEst();
+    }
     async mongoGetSolicitudesByEmpleado(idEmpleado){
         return await _solicitudRep.mongoGetSolicitudesByEmpleado(idEmpleado);
     }

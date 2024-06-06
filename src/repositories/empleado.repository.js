@@ -1,5 +1,6 @@
 const BaseRepository = require('./base.repository');
 const { ObjectId } = require('mongodb');
+const { format } = require('date-fns');
 
 let _empleado = null;
 let _tarea = null;
@@ -19,6 +20,31 @@ module.exports = class EmpleadoRepository extends BaseRepository{
 
     async mongoGetEmpleadoByEmail(email) {
         return await _empleado.findOne({email:email});
+    }
+    async mongoGetEmpleadosEst() {
+        const empleados = await _empleado.find({}, { _id: 0, __v: 0, nombre: 0, apellidos: 0, telefono: 0, email: 0, password: 0}).sort({ fechaRegistro: 1 });
+        if (!empleados || empleados.length === 0) {
+            return { status: 208, message: "No se encontró ningún empleado." };
+        }
+        
+        // Objeto para almacenar las fechas y sus valores sumados
+        const fechaSumaValores = {};
+    
+        empleados.forEach(empleado => {
+            const fecha = format(new Date(empleado.fechaRegistro), 'yyyy-MM-dd');
+            if (!fechaSumaValores[fecha]) {
+                fechaSumaValores[fecha] = 0;
+            }
+            // Sumar 1 al valor para cada fecha
+            fechaSumaValores[fecha] += 1;
+        });
+    
+        // Convertir el objeto en un array de objetos y ordenar por fecha
+        const formattedData = Object.keys(fechaSumaValores)
+            .map(fecha => ({ time: fecha, value: fechaSumaValores[fecha] }))
+            .sort((a, b) => new Date(a.time) - new Date(b.time));
+    
+        return formattedData;
     }
     async mongoGetEmpleadosByIdTarea(idTarea, pageSize = 5, pageNum = 1) {
         const skips = pageSize * (pageNum - 1);

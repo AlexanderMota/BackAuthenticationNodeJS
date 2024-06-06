@@ -207,8 +207,6 @@ module.exports = class TareaController {
 
       const {body} = req;
       const {idSuper} = req.query;
-      console.log(body);
-      console.log(idSuper);
 
       if(body._id){
         const tar = await _tareaService.mongoGetTareasBy(body._id,"_id",{_id: 1});
@@ -216,7 +214,7 @@ module.exports = class TareaController {
       }
       if(idSuper != "b1c"){
         const supertarea = await _tareaService.mongoGetTareasBy(idSuper,"_id",{_id: 1});
-        console.log(supertarea);
+        //console.log(supertarea);
         if(supertarea){
           const resp =  await _tareaService.mongoCreate(body);
           
@@ -230,7 +228,7 @@ module.exports = class TareaController {
       } else if(idSuper == "b1c"){
         const resp2 =  await _tareaService.mongoCreate(body);
         const resp3 =  await _tareaService.mongoCreateSupertarea(resp2._id.toString());
-        console.log(resp3);
+        //console.log(resp3);
         return res.send({status: 201, message:"Tarea creada correctamente._"+resp2._id.toString()});
       }else return res.send({status: 400, message:"parametro incorrecto"});
     }

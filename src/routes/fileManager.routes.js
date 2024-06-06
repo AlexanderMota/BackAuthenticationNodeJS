@@ -5,7 +5,9 @@ const { CACHE_TIME } = require("../helpers");
 module.exports = ({ FileManagerController }) => {
   const router = Router();
 
-  router.post("/fileUp",[AuthMiddleware, ParseIntMiddleware, FilesMiddleware], FileManagerController.postProfilePic);
+  router.get("/fileDown/:userId",[AuthMiddleware, ParseIntMiddleware, FilesMiddleware], FileManagerController.getProfilePic);
+
+  router.post("/fileUp/:userId",[AuthMiddleware, ParseIntMiddleware, FilesMiddleware], FileManagerController.postProfilePic);
 
   return router;
 };

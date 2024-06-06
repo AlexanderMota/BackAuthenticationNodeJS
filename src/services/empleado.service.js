@@ -11,6 +11,9 @@ module.exports = class EmpleadoService extends BaseService{
     async mysqlGet(){
         return await _empleadoRep.getOne(nombre);
     }
+    async mongoGetEmpleadosEst(){
+        return await _empleadoRep.mongoGetEmpleadosEst();
+    }
     async mongoGetEmpleadosByIdTarea(idEmpleado){
         return await _empleadoRep.mongoGetEmpleadosByIdTarea(idEmpleado);
     }

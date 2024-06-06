@@ -1,5 +1,6 @@
 const BaseRepository = require('./base.repository');
 const { ObjectId } = require('mongodb');
+const { format } = require('date-fns');
 
 let _tarea = null;
 let _supertarea = null;
@@ -22,13 +23,56 @@ module.exports = class TareaRepository extends BaseRepository{
         _comentario = Comentario;
         _ubicacion = Ubicacion;
     }
-    async mongoGetComentariosEst(){
-        const comentario = await _comentario.findAll();
-        if(!comentario){
-            return {status: 208, message:"No se encontró ningún comentario con el id especificado."}
+    async mongoGetComentariosEst() {
+        const comentarios = await _comentario.find({}, { _id: 0, __v: 0, idTarea: 0, idAutor: 0, nombre: 0, descripcion: 0 }).sort({ fechaRegistro: 1 });
+        if (!comentarios) {
+            return { status: 208, message: "No se encontró ningún comentario con el id especificado." };
         }
-        return comentario;
-    } 
+    
+        // Objeto para almacenar las fechas y sus valores sumados
+        const fechaSumaValores = {};
+    
+        comentarios.forEach(comentario => {
+            const fecha = format(new Date(comentario.fechaRegistro), 'yyyy-MM-dd');
+            if (!fechaSumaValores[fecha]) {
+                fechaSumaValores[fecha] = 0;
+            }
+            fechaSumaValores[fecha] += 1;  // Suponiendo que estás contando los comentarios
+        });
+    
+        // Convertir el objeto en un array de objetos
+        const formattedData = Object.keys(fechaSumaValores).map(fecha => ({
+            time: fecha,
+            value: fechaSumaValores[fecha]
+        }));
+    
+        return formattedData;
+    }
+    async mongoGetTareasEst() {
+        const tareas = await _tarea.find({}, { _id: 0 }).sort({ fechaRegistro: 1 });
+        if (!tareas || tareas.length === 0) {
+            return { status: 208, message: "No se encontró ninguna tarea." };
+        }
+    
+        // Objeto para almacenar las fechas y sus valores sumados
+        const fechaSumaValores = {};
+    
+        tareas.forEach(tarea => {
+            const fecha = format(new Date(tarea.fechaRegistro), 'yyyy-MM-dd');
+            if (!fechaSumaValores[fecha]) {
+                fechaSumaValores[fecha] = 0;
+            }
+            fechaSumaValores[fecha] += 1;  // Suponiendo que estás contando las tareas
+        });
+    
+        // Convertir el objeto en un array de objetos y ordenar por fecha
+        const formattedData = Object.keys(fechaSumaValores)
+            .map(fecha => ({ time: fecha, value: fechaSumaValores[fecha] }))
+            .sort((a, b) => new Date(a.time) - new Date(b.time));
+    
+        return formattedData;
+    }
+    
     async mongoCreateSupertarea( idSuper) {
         const supert = await _supertarea.find({idTarea:idSuper});
         if(supert.length > 0){

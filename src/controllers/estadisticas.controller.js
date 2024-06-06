@@ -10,19 +10,34 @@ module.exports = class EstadisticasController {
   }
 
   async mongoGetComentariosEst(req, res) {
-    console.log("llegamos mongoGetComentariosEst");
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
       const comen = await _tareaService.mongoGetComentariosEst();
-      console.log(comen);
       return res.send(comen);
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }
-  async mongoGetComentariosEst2(req, res) {
+  async mongoGetEmpleadosEst(req, res) {
     if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
-      const { id } = req.params;
-      const tarea = await _solicitudService.mongoGet(id);
-      return res.send(tarea);
+      const emps = await _empleadoService.mongoGetEmpleadosEst();
+      return res.send(emps);
+    }
+    return res.send({status:407,message:"Usuario no autorizado."});
+  }
+  /*async mongoGetSolicitudesEst(req, res) {
+    console.log("solis");
+    if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
+      const solis = await _solicitudService.mongoGetSolicitudesEst();
+      console.log(solis);
+      return res.send(solis);
+    }
+    return res.send({status:407,message:"Usuario no autorizado."});
+  }*/
+  async mongoGetTareasEst(req, res) {
+    //console.log("taras");
+    if(req.empleado.rol <= 2 && req.empleado.rol >= 0){
+      const taras = await _tareaService.mongoGetTareasEst();
+      //console.log(taras);
+      return res.send(taras);
     }
     return res.send({status:407,message:"Usuario no autorizado."});
   }

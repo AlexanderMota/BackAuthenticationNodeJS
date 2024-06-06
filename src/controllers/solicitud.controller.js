@@ -35,7 +35,7 @@ module.exports = class SolicitudController {
       return res.send(await _solicitudService.mongoGetAll(pageSize, pageNum));
     }else if(req.empleado.rol <= 4){
       const solis = await _solicitudService.mongoGetSolicitudesByEmpleado(req.empleado.id);
-      console.log(solis);
+      //console.log(solis);
       return res.send(solis);
     }
     return res.send({status:407,message:"Usuario no autorizado."});

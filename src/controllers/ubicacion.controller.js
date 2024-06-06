@@ -60,7 +60,7 @@ module.exports = class UbicacionController {
   async mongoGetParada(req, res){
     if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const { idUbi } = req.params;
-      console.log(idUbi);
+      //console.log(idUbi);
       const ubicaciones = await _ubicacionService.mongoGetParada(idUbi);
       return res.send(ubicaciones);
     }
@@ -68,7 +68,7 @@ module.exports = class UbicacionController {
   }
   
   async mongoGetParadasByIdPasajero(req, res){
-    console.log("llegamos");
+    //console.log("llegamos");
     if (req.empleado.rol <= 2 || req.empleado.id == req.params.idPasajero) {
       try {
         const vehi = await _vehiculoService.mongoGetVehiculoByPasajero(req.params.idPasajero);
@@ -87,7 +87,7 @@ module.exports = class UbicacionController {
             vehiPros[i].paradas.push(res);
           }
         }
-        console.log(vehiPros);
+        //console.log(vehiPros);
         
         return res.send(vehiPros);
       } catch (error) {

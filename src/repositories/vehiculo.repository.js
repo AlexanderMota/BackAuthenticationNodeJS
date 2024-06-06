@@ -15,7 +15,7 @@ module.exports = class VehiculoRepository extends BaseRepository{
             ocupantes: new ObjectId(idPasajero) 
           },{_id:0,ocupantes:0,fechaRegistro:0,propietario:0});
         //console.log("vehiculosConPlazas: "+vehiculosConPlazas);
-        console.log(vehis);
+        //console.log(vehis);
         if(!vehis){
             return {status:402,message:"Algo ha ido mal"};
         }
@@ -44,7 +44,7 @@ module.exports = class VehiculoRepository extends BaseRepository{
               $elemMatch: { idParada: idParada }
             }
         });
-        console.log(vehi);
+        //console.log(vehi);
         if(!vehi){
             return {status:402,message:"Algo ha ido mal"};
         }
@@ -71,7 +71,7 @@ module.exports = class VehiculoRepository extends BaseRepository{
             { matricula: idVehi }, 
             { $pull: { puntosDestinoRecogida: idParada } } 
         );
-        console.log(val);
+        //console.log(val);
         if(val){
             if(!val.acknowledged){
                 return {status:403, message:"Operacion no reconocida por MongoDB."};

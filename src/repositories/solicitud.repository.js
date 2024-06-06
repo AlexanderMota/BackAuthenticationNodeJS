@@ -13,6 +13,30 @@ module.exports = class SolicitudRepository extends BaseRepository{
         _empleado = Empleado;
         _tareaHasEmpleados = TareaHasEmpleados;
     }
+    /*async mongoGetSolicitudesEst(){
+        const _solicitudes = await _solicitud.find({},{_id:0,__v:0,idEmpleado:0,idTarea:0,aprobada:0});
+        if (_solicitudes.length < 1) return {status:403,message:"Sin solicitudes."};
+        // Objeto para almacenar las fechas y sus valores sumados
+        const fechaSumaValores = {};
+    
+        _solicitudes.forEach(solicitud => {
+            const fecha = format(new Date(solicitud.fechaRegistro), 'yyyy-MM-dd');
+            if (!fechaSumaValores[fecha]) {
+                fechaSumaValores[fecha] = 0;
+            }
+            fechaSumaValores[fecha] += 1;  // Suponiendo que estás contando los comentarios
+        });
+        console.log(fechaSumaValores);
+    
+        // Convertir el objeto en un array de objetos
+        const formattedData = Object.keys(fechaSumaValores).map(fecha => ({
+            time: fecha,
+            value: fechaSumaValores[fecha]
+        }));
+    
+        return formattedData;
+        //return _solicitudes;
+    }*/
     async mongoSolicitarTarea(idTarea, idEmpleado){
         const _idAsignacion = await _tareaHasEmpleados.find({$and:[
             {"idTarea":idTarea},

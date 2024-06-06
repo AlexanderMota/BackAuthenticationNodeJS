@@ -14,6 +14,9 @@ module.exports = class TareaService extends BaseService{
     async mongoGetComentariosEst(){
         return await _tareaRep.mongoGetComentariosEst();
     }
+    async mongoGetTareasEst(){
+        return await _tareaRep.mongoGetTareasEst();
+    }
     async mongoCreateSupertarea(idTarea){
         return await _tareaRep.mongoCreateSupertarea(idTarea);
     }

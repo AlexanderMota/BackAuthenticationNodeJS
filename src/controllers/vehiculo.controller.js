@@ -10,7 +10,7 @@ module.exports = class UbicacionController {
 
   async mongoCreate(req, res){
       const {body} = req;
-      console.log(body);
+      //console.log(body);
     if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       if(await _vehiculoService.mongoCreate(body)){
         return res.send({status:201,message:"Vehículo guardado correctamente"});
@@ -56,7 +56,7 @@ module.exports = class UbicacionController {
   async mongoGetVehiculoByIdParada(req, res){
     if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const { idParada } = req.params;
-      console.log(req.params);
+      //console.log(req.params);
       const vehiculo = await _vehiculoService.mongoGetVehiculoByIdParada(idParada);
       return res.send(vehiculo);
     }
@@ -87,11 +87,11 @@ module.exports = class UbicacionController {
     if(req.empleado.rol <= 4 && req.empleado.rol >= 0){
       const { matricula } = req.params;
       const { pasajero } = req.query;
-      console.log(matricula);
-      console.log(pasajero);
+      /*console.log(matricula);
+      console.log(pasajero);*/
       
       const vehi = await _vehiculoService.mongoGetVehiculoByMatricula(matricula);
-      console.log(vehi);
+      //console.log(vehi);
   
       if(vehi[0].ocupantes){
         if (vehi[0].ocupantes.includes(new ObjectId(pasajero))) {
