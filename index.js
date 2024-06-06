@@ -1,6 +1,7 @@
 const container = require("./src/server/container");
 const server = container.resolve("app");
 const { MONGO_URI_DEV } = container.resolve("config");
+require('dotenv').config();
 
 const mongoose = require("mongoose");
 
