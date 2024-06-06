@@ -1,7 +1,7 @@
 language: node_js
 services:
   - docker
-node_js: 16.14.2
+node_js: 20
 deploy:
   provider: heroku
   api_key:

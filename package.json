@@ -19,13 +19,13 @@
   },
   "homepage": "https://github.com/AlexanderMota/back-granja#readme",
   "dependencies": {
-    "dotenv": "^16.4.5",
-    "camel-case": "^4.1.2",
     "awilix": "^7.0.1",
     "bcryptjs": "^2.4.3",
+    "camel-case": "^4.1.2",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "date-fns": "^3.6.0",
+    "dotenv": "^16.4.5",
     "express": "^4.17.3",
     "express-async-errors": "^3.1.1",
     "express-fileupload": "^1.4.0",
@@ -34,14 +34,14 @@
     "memory-cache": "^0.2.0",
     "mongoose": "^6.2.10",
     "mongoose-autopopulate": "^0.16.1",
+    "nodemon": "^2.0.15",
     "sequelize": "^6.18.0",
     "sequelize-cli": "^6.4.1",
-    "swagger-ui-express": "^4.3.0",
-    "nodemon": "^2.0.15"
+    "swagger-ui-express": "^4.3.0"
   },
   "devDependencies": {
     "jest": "^27.5.1",
-    "mysql2": "^2.3.3",
-    "mockingoose": "^2.15.2"
+    "mockingoose": "^2.15.2",
+    "mysql2": "^2.3.3"
   }
 }
