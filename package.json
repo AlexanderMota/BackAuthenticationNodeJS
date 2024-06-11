@@ -39,7 +39,6 @@
     "swagger-ui-express": "^4.3.0"
   },
   "devDependencies": {
-    "dotenv": "^16.4.5",
     "jest": "^27.5.1",
     "mockingoose": "^2.15.2",
     "nodemon": "^2.0.15"
