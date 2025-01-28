@@ -1,46 +1,21 @@
 {
-  "name": "back-granja",
-  "version": "1.0.0",
-  "description": "Esta es la parte del proyecto que se encargara de gestionar y servir los datos a las distintias partes que los necesiten.",
+  "name": "back_todo_list",
+  "version": "1.0.1",
+  "description": "Este proyecto es una API backend desarrollada en Node.js que utiliza un enfoque basado en la **inyección de dependencias** con Awilix. Su principal objetivo es gestionar los datos necesarios para un frontend y manejar sesiones de usuario.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "node index.js",
-    "dev": "node index.js",
-    "test": ""
+    "dev": "node --watch source/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AlexanderMota/back-granja.git"
+    "url": "git+https://github.com/AlexanderMota/back_todo_list_nodejs.git"
   },
-  "author": "B. Alexander M. Maldonado",
-  "license": "ISC",
+  "author": "github.com/AlexanderMota",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/AlexanderMota/back-granja/issues"
+    "url": "https://github.com/AlexanderMota/back_todo_list_nodejs/issues"
   },
-  "homepage": "https://github.com/AlexanderMota/back-granja#readme",
-  "dependencies": {
-    "dotenv": "^16.4.5",
-    "awilix": "^7.0.1",
-    "bcryptjs": "^2.4.3",
-    "compression": "^1.7.4",
-    "cors": "^2.8.5",
-    "date-fns": "^3.6.0",
-    "express": "^4.17.3",
-    "express-async-errors": "^3.1.1",
-    "express-fileupload": "^1.4.0",
-    "helmet": "^5.0.2",
-    "jsonwebtoken": "^8.5.1",
-    "memory-cache": "^0.2.0",
-    "mongoose": "^6.2.10",
-    "mongoose-autopopulate": "^0.16.1",
-    "mysql2": "^2.3.3",
-    "sequelize": "^6.18.0",
-    "sequelize-cli": "^6.4.1",
-    "swagger-ui-express": "^4.3.0"
-  },
-  "devDependencies": {
-    "jest": "^27.5.1",
-    "mockingoose": "^2.15.2",
-    "nodemon": "^2.0.15"
-  }
+  "homepage": "https://github.com/AlexanderMota/back_todo_list_nodejs#readme"
 }
