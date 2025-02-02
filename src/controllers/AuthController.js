@@ -21,7 +21,9 @@ class AuthController {
         if (!user.email || !user.password) return res.status(400).json({ error: 'Email y contraseña son requeridos' });
   
         const data = await this.authService.login(user.email, user.password);
-        res.json(data);
+        const token = data.token;
+        delete data.token;
+        res.set('Authorization', token).json(data);
       } catch (error) {
         res.status(401).json({ error: error.message });
       }

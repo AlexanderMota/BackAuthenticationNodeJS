@@ -23,7 +23,7 @@
           "summary": "Iniciar sesión",
           "parameters": [
             {
-              "name": "UserPassJson",
+              "name": "User",
               "in": "body",
               "description": "Objeto JSON con email y contraseña para autenticación",
               "required": true,
@@ -34,7 +34,14 @@
           ],
           "responses": {
             "200": {
-              "description": "Operación exitosa",
+              "message": "Operación exitosa",
+              "code": 200,
+              "headers": {
+              "Authorization": {
+                "type": "string",
+                "description": "Token de acceso JWT",
+                "example": "Bearer eyJhbGciOiJIUzI1..."
+              },
               "schema": {
                 "type": "object",
                 "properties": {
@@ -50,14 +57,15 @@
             }
           }
         }
-      },
+      }
+    },
       "/register": {
         "post": {
           "tags": ["Registro"],
           "summary": "Registro usuario",
           "parameters": [
             {
-              "name": "UserPassJson",
+              "name": "User",
               "in": "body",
               "description": "Objeto JSON con email, contraseña y otros atributos para registro de usuarios",
               "required": true,
@@ -68,18 +76,32 @@
           ],
           "responses": {
             "200": {
-              "description": "Operación exitosa",
+              "message": "Operación exitosa",
+              "code": 200,
+              "headers": {
+              "Authorization": {
+                "type": "string",
+                "description": "Token de acceso JWT",
+                "example": "Bearer eyJhbGciOiJIUzI1..."
+              },
               "schema": {
-                "$ref": "#/definitions/User"
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1..."
+                  }
+                }
               }
             },
             "401": {
               "description": "Credenciales incorrectas"
             }
+              }
+            }
           }
         }
-      }
-    },
+      },
     "definitions": {
       "User": {
         "type": "object",
@@ -108,8 +130,8 @@
                 "example": "JuGar"
               },
               "phone": {
-                "type": "int",
-                "example": 1234567890
+                "type": "string",
+                "example": "1234567890"
               },
               "avatar_url": {
                 "type": "string",
