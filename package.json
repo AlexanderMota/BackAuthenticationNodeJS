@@ -1,7 +1,7 @@
 {
-  "name": "back_todo_list",
-  "version": "1.0.1",
-  "description": "Este proyecto es una API backend desarrollada en Node.js que utiliza un enfoque basado en la **inyección de dependencias** con Awilix. Su principal objetivo es gestionar los datos necesarios para un frontend y manejar sesiones de usuario.",
+  "name": "back_authentication_nodejs",
+  "version": "1.0.2",
+  "description": " Este proyecto es un microservicio de autenticación desarrollado en **Node.js** que se enfoca en **gestionar la autenticación de usuarios** mediante el uso de **JSON Web Tokens (JWT)**. El sistema permite el registro, inicio de sesión y verificación de usuarios, asegurando la seguridad de las sesiones mediante el uso de tokens cifrados.",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AlexanderMota/back_todo_list_nodejs.git"
+    "url": "git+https://github.com/AlexanderMota/BackAuthenticationNodeJS.git"
   },
   "author": "github.com/AlexanderMota",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/AlexanderMota/back_todo_list_nodejs/issues"
+    "url": "https://github.com/AlexanderMota/BackAuthenticationNodeJS/issues"
   },
-  "homepage": "https://github.com/AlexanderMota/back_todo_list_nodejs#readme",
+  "homepage": "https://github.com/AlexanderMota/BackAuthenticationNodeJS#readme",
   "dependencies": {
     "awilix": "12.0.4",
     "bcrypt": "5.1.1",

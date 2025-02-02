@@ -9,6 +9,14 @@ class AuthService {
     this.UserVals = UserValidations;
   }
 
+  async register(email, password, name, lastname, username , phone, avatar_url, role_id) {
+    if (!this.UserVals.validateEmail(email)) throw new Error('Formato email incorrecto');
+    if (!this.UserVals.validatePasswordFormat(password)) throw new Error('Formato password incorrecto');
+    const hashedPassword = this.UserVals.hashPassword(password);
+    const resp = await this.UserRepository.createUser(email, hashedPassword, name, lastname, username , phone, avatar_url, role_id);
+    console.log(resp);
+    return resp;
+  }
   async login(email, password) {
     if (!this.UserVals.validateEmail(email)) throw new Error('Formato email incorrecto');
     const user = await this.UserRepository.findByEmail(email);
@@ -22,8 +30,10 @@ class AuthService {
       process.env.JWT_SECRET,
       { expiresIn: '3h' }
     );
-
-    return { token, user: { user_id: user.user_id, username: user.username, email: user.email, role: user.role_id } };
+    delete user.password;
+    delete user.role_id;
+    delete user.user_id;
+    return { token, user, code:200,message:"Login exitoso" };
   }
 }
 

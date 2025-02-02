@@ -1,9 +1,9 @@
 {
     "swagger": "2.0",
     "info": {
-      "description": "Este proyecto es una API desarrollada en Node.js que utiliza un enfoque basado en la inyección de dependencias con Awilix. Esto facilita la contrucción de la aplicación siguiendo una arquitectura de microservicios y Rest.",
+      "description": "Este proyecto es un microservicio de autenticación desarrollado en **Node.js** que se enfoca en **gestionar la autenticación de usuarios** mediante el uso de **JSON Web Tokens (JWT)**. El sistema permite el registro, inicio de sesión y verificación de usuarios, asegurando la seguridad de las sesiones mediante el uso de tokens cifrados.",
       "version": "1.0.1",
-      "title": "Docs ToDoList",
+      "title": "Docs BackAuthNodeJS",
       "contact": {
         "email": "alexandermota@outlook.es",
         "name": "Alexander Mota",
@@ -28,7 +28,7 @@
               "description": "Objeto JSON con email y contraseña para autenticación",
               "required": true,
               "schema": {
-                "$ref": "#/definitions/UserLogin"
+                "$ref": "#/definitions/User"
               }
             }
           ],
@@ -50,19 +50,76 @@
             }
           }
         }
+      },
+      "/register": {
+        "post": {
+          "tags": ["Registro"],
+          "summary": "Registro usuario",
+          "parameters": [
+            {
+              "name": "UserPassJson",
+              "in": "body",
+              "description": "Objeto JSON con email, contraseña y otros atributos para registro de usuarios",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Operación exitosa",
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            },
+            "401": {
+              "description": "Credenciales incorrectas"
+            }
+          }
+        }
       }
     },
     "definitions": {
-      "UserLogin": {
+      "User": {
         "type": "object",
         "properties": {
-          "email": {
-            "type": "string",
-            "example": "usuario@example.com"
-          },
-          "password": {
-            "type": "string",
-            "example": "password123"
+          "user": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "example": "usuario@example.com"
+              },
+              "password": {
+                "type": "string",
+                "example": "password123"
+              },
+              "name": {
+                "type": "string",
+                "example": "Juan"
+              },
+              "lastname": {
+                "type": "string",
+                "example": "Garcia"
+              },
+              "username": {
+                "type": "string",
+                "example": "JuGar"
+              },
+              "phone": {
+                "type": "int",
+                "example": 1234567890
+              },
+              "avatar_url": {
+                "type": "string",
+                "example": "foto.jpg"
+              },
+              "role": {
+                "type": "string",
+                "example": "Viewer"
+              }
+            }
           }
         }
       }

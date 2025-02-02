@@ -11,6 +11,6 @@ export default ({ AuthRoutes }) => {
 
   router.use('/auth', AuthRoutes);
 
-  router.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+  router.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
   return router;
 }

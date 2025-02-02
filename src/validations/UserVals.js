@@ -17,12 +17,12 @@ export default class UserValidations {
     }
 
     static validatePasswordFormat(password) {
-        return (typeof password !== 'string' || password.length < 6)
+        return (typeof password === 'string' || password.length > 6)
     }   
     static validateComparePassword(password,userpassword) {
         return bcrypt.compareSync(password, userpassword);
     }
     static hashPassword(password) {
-        return bcrypt.hashSync(password, process.env.SALT_ROUNDS);
+        return bcrypt.hashSync(password, parseInt(process.env.SALT_ROUNDS));
     }
 }
