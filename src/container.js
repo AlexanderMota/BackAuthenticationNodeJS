@@ -33,7 +33,7 @@ const container = createContainer();
 container.register({
   app: asClass(app).singleton(),
   routes: asFunction(routes).singleton(),
-  DBPool: asValue(DBPool)
+  DBPool: asValue(DBPool),
 });
 
 // Registrar Rutas
