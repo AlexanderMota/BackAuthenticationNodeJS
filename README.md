@@ -46,7 +46,7 @@ src/
 
 1. **Clona el repositorio:**
 ```bash
-git clone https://github.com/TuUsuario/BackAuthenticationNodeJS.git
+git clone https://github.com/TuUsuario/MicroBackAuthenticationNodeJS.git
 ```
 2. **Instala las dependencias:**
 ```bash
