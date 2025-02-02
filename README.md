@@ -79,8 +79,11 @@ URL: http://localhost:4300
 ## Futuras funcionalidades
 
 **Roles de usuario:** Implementación de roles y permisos para diferentes tipos de usuarios.
+
 **Recuperación de contraseña:** Funcionalidad para que los usuarios puedan restablecer su contraseña en caso de olvidarla.
+
 **Integración con otros microservicios:** Ampliar el sistema para integrarse con otros microservicios, como la gestión de tareas, de manera segura mediante JWT.
+
 **Mejoras en seguridad:** Autenticación multifactor (MFA) y medidas adicionales para fortalecer la seguridad.
 
 
