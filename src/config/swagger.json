@@ -1,0 +1,71 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "description": "Este proyecto es una API desarrollada en Node.js que utiliza un enfoque basado en la inyección de dependencias con Awilix. Esto facilita la contrucción de la aplicación siguiendo una arquitectura de microservicios y Rest.",
+      "version": "1.0.1",
+      "title": "Docs ToDoList",
+      "contact": {
+        "email": "alexandermota@outlook.es",
+        "name": "Alexander Mota",
+        "url": "https://github.com/AlexanderMota"
+      },
+      "license": {
+        "name": "Apache 2.0",
+        "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+      }
+    },
+    "basePath": "/auth",
+    "schemes": ["http", "https"],
+    "paths": {
+      "/login": {
+        "post": {
+          "tags": ["Autenticación"],
+          "summary": "Iniciar sesión",
+          "parameters": [
+            {
+              "name": "UserPassJson",
+              "in": "body",
+              "description": "Objeto JSON con email y contraseña para autenticación",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/UserLogin"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Operación exitosa",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1..."
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Credenciales incorrectas"
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "UserLogin": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "usuario@example.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "password123"
+          }
+        }
+      }
+    }
+  }
+  
