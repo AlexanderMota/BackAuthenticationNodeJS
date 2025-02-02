@@ -11,7 +11,7 @@ export default class Server {
   start() {
     return new Promise( resolve => {
       app.listen( process.env.PORT, () => {
-        console.log( "API running on port " + process.env.PORT );
+        console.log( "🌍 HTTP Server API running on port " + process.env.PORT );
         resolve();
       });
     });
