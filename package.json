@@ -1,5 +1,5 @@
 {
-  "name": "back_authentication_nodejs",
+  "name": "microback_authentication_nodejs",
   "version": "1.0.2",
   "description": " Este proyecto es un microservicio de autenticación desarrollado en **Node.js** que se enfoca en **gestionar la autenticación de usuarios** mediante el uso de **JSON Web Tokens (JWT)**. El sistema permite el registro, inicio de sesión y verificación de usuarios, asegurando la seguridad de las sesiones mediante el uso de tokens cifrados.",
   "main": "index.js",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AlexanderMota/BackAuthenticationNodeJS.git"
+    "url": "git+https://github.com/AlexanderMota/MicroBackAuthenticationNodeJS.git"
   },
   "author": "github.com/AlexanderMota",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/AlexanderMota/BackAuthenticationNodeJS/issues"
+    "url": "https://github.com/AlexanderMota/MicroBackAuthenticationNodeJS/issues"
   },
-  "homepage": "https://github.com/AlexanderMota/BackAuthenticationNodeJS#readme",
+  "homepage": "https://github.com/AlexanderMota/MicroBackAuthenticationNodeJS#readme",
   "dependencies": {
     "awilix": "12.0.4",
     "bcrypt": "5.1.1",
