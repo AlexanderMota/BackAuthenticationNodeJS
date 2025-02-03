@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import cookieParser from "cookie-parser";
 import swaggerUi from "swagger-ui-express";
 
 import fs from "fs";
@@ -9,7 +10,7 @@ const swaggerDocument = JSON.parse(fs.readFileSync(swaggerPath, "utf8"));
 export default ({ AuthRoutes }) => {
   const router = Router();
 
-  router.use('/auth', AuthRoutes);
+  router.use('/auth', cookieParser(), AuthRoutes);
 
   router.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
   return router;

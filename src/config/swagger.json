@@ -37,11 +37,11 @@
               "message": "Operación exitosa",
               "code": 200,
               "headers": {
-              "Authorization": {
-                "type": "string",
-                "description": "Token de acceso JWT",
-                "example": "Bearer eyJhbGciOiJIUzI1..."
-              },
+                "Set-Cookie": {
+                  "type": "string",
+                  "description": "Cookie HTTP-only con el token JWT",
+                  "example": "access_token=eyJhbGciOiJIUzI1...; HttpOnly; Secure; SameSite=Strict; Max-Age=10800"
+                },
               "schema": {
                 "type": "object",
                 "properties": {
@@ -79,11 +79,11 @@
               "message": "Operación exitosa",
               "code": 200,
               "headers": {
-              "Authorization": {
-                "type": "string",
-                "description": "Token de acceso JWT",
-                "example": "Bearer eyJhbGciOiJIUzI1..."
-              },
+                "Set-Cookie": {
+                  "type": "string",
+                  "description": "Cookie HTTP-only con el token JWT",
+                  "example": "access_token=eyJhbGciOiJIUzI1...; HttpOnly; Secure; SameSite=Strict; Max-Age=10800"
+                },
               "schema": {
                 "type": "object",
                 "properties": {

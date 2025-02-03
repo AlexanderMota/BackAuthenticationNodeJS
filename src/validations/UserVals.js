@@ -25,4 +25,7 @@ export default class UserValidations {
     static hashPassword(password) {
         return bcrypt.hashSync(password, parseInt(process.env.SALT_ROUNDS));
     }
+    static validatePhone(phone) {
+        return (typeof phone === 'number' || phone.toString().length === 9);
+    }
 }

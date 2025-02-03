@@ -4,13 +4,13 @@ class UserRepository {
     this.DBPool = DBPool;
   }
 
-  async createUser (email, password, name = "", lastname = "",
+  async createUser (email, password, user_id, name = "", lastname = "",
     username = "", phone = 0, avatar_url = "", role_id = 5) {
   
   
     const result = await this.DBPool.query(
-      'INSERT INTO users (name, lastname, username ,email,  phone, password, avatar_url, role_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-      [name, lastname, username ,email,  phone, password, avatar_url, role_id]
+      'INSERT INTO users (user_id, name, lastname, username ,email,  phone, password, avatar_url, role_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      [user_id, name, lastname, username ,email,  phone, password, avatar_url, role_id]
     );
 
     return result[0].insertId;

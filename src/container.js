@@ -24,6 +24,8 @@ import {UserRepository} from './repositories/index.js';
 // validaciones
 import { UserValidations } from './validations/index.js';
 
+// middlewares
+import {MiddleCookieParser} from './middlewares/index.js';
 
 
 const container = createContainer();
@@ -62,6 +64,11 @@ container.register({
 // Registrar Validaciones
 container.register({
   UserValidations: asValue(UserValidations)
+});
+
+// Registrar Middlewares
+container.register({
+  MiddleCookieParser: asFunction(MiddleCookieParser).singleton()
 });
 
 export default container;

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-export default ({ AuthController }) => {
+export default ({ AuthController, MiddleCookieParser }) => {
   const router = Router();
 
   router.post('/login', (req, res) => AuthController.login(req, res));
