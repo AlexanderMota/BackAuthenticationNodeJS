@@ -16,15 +16,16 @@ class AuthController {
     }
   
     login = async (req, res) => {
+        console.log("req.cookies");
       try {
         const { user } = req.body;
-        console.log("req.cookies");
         console.log(req.cookies);
+        console.log(user);
         if (!user.email || !user.password) return res.status(400).json({ error: 'Email y contraseña son requeridos' });
   
         const { token, userres, code, message } = await this.authService.login(user.email, user.password);
         //res.set('Authorization', token).json(data);
-        res.cookie('access_token', token, { httpOnly: true , secure: process.env.NODE_ENV === 'production',  sameSite:'strict', maxAge:3600*3})
+        res/*.header('Access-Control-Allow-Origin', '*')*/.cookie('access_token', token, { httpOnly: true , secure: process.env.NODE_ENV === 'production',  sameSite:'strict', maxAge:3600*3})
         .cookie('user', JSON.stringify(userres), { httpOnly: true , secure: process.env.NODE_ENV === 'production',  sameSite:'strict', maxAge:3600*3})
         .json({message,code});
       } catch (error) {
